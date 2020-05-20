@@ -13,3 +13,8 @@ int main() {
 
     return 0;
 }
+
+
+/* fileTxt.txt è qualcosa del genere:
+    Pikachu 25 Electric
+    Charizard 6 Fire */
