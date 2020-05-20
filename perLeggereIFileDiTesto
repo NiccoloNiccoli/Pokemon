@@ -1,0 +1,15 @@
+#include <iostream>
+#include <fstream>
+int main() {
+    std::ifstream myInputFile ("../fileTxt.txt");
+    std::string name, type;
+    int id;
+    if(myInputFile.is_open()){
+        while( myInputFile >> name >> id >> type){
+            std::cout << "name: "<<name<<" id:"<<id<<" type:"<<type<<std::endl;
+        }
+        myInputFile.close();
+    }
+
+    return 0;
+}
