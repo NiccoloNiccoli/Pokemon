@@ -15,8 +15,14 @@ public:
     void update(Trainer& player, const int screenWidth, const int screenHeight, sf::Vector2f position);
     TileMap tileMap;
     CollisionMap collisionMap;
+    sf::Sprite box;
+    sf::Texture boxTexture;
+    sf::Font font;
+    sf::Text name;
 
-    Map();
+    sf::Clock timer;
+
+    Map(const std::string& mapName);
 };
 
 

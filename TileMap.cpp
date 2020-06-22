@@ -8,14 +8,14 @@
 #include <fstream>
 #include <vector>
 
-bool TileMap::load(const std::string &tilesetName, sf::Vector2u tileSize, unsigned int width, unsigned int height)
+bool TileMap::load(const std::string &tilesetName, sf::Vector2u tileSize, unsigned int width, unsigned int height, const std::string& mapName)
 {
     if(!tileset.loadFromFile("../Textures/" + tilesetName))
         return false;
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(width * height * 4);
     std::vector<int> tiles;
-    getMap("foglio2", tiles);
+    getMap(mapName, tiles);
     for(unsigned int i = 0; i<width; ++i)
         for(unsigned int j = 0; j<height; ++j)
         {

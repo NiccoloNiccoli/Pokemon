@@ -9,7 +9,7 @@
 
 class TileMap : public sf::Drawable, public sf::Transformable {
 public:
-    bool load(const std::string& tilesetName, sf::Vector2u tileSize, unsigned int width, unsigned int height);
+    bool load(const std::string& tilesetName, sf::Vector2u tileSize, unsigned int width, unsigned int height, const std::string& mapName);
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -17,6 +17,7 @@ private:
 
     sf::VertexArray vertices;
     sf::Texture tileset;
+    std::string mapName;
 };
 
 //TODO mettere il nome della mappa(?) che sta in alto a sinistra per un paio di secondi e poi va via

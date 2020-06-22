@@ -2,10 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <ctime>
 #include <fstream>
 #include "TileMap.h"
 #include "Trainer.h"
 #include "Map.h"
+#include "Pokemon.h"
+
 
 //C'è un fattore x3 a moltiplicare qualsiasi lunghezza
 
@@ -40,20 +43,13 @@ int main() {
     view.setViewport(sf::FloatRect(0,0,3,3));
     //FIXME togliere i vari M A G I C   N U M B E R S
 
-    sf::RectangleShape placeName(sf::Vector2f(100, 20));
-    sf::Text text;
-    text.setString("Sample");
-    text.setCharacterSize(20);
-    text.setFillColor(sf::Color::Black);
-    sf::Font font;
-    font.loadFromFile("../pokemon_pixel_font.ttf");
-    text.setFont(font);
-    text.setPosition(placeName.getPosition().x + 4,placeName.getPosition().y - 5); //2 e -5 sono offset tirati fuori un po' a casa
-    Map map;
+
+    Map map("mappaDiProva");
 
 
 //XXX
 Trainer player(0,40,70);
+Pokemon pika ("pikachu", 34);
     //XXX
         while(window.isOpen()){
             sf::Event event;
@@ -77,9 +73,14 @@ Trainer player(0,40,70);
             window.setView(view);
             window.draw(map.tileMap);
             window.draw(player.overworldSprite);
-            window.draw(placeName);
-            window.draw(text);
+            if(map.timer.getElapsedTime().asSeconds() < 5.f){
+                window.draw(map.box);
+                window.draw(map.name);
+                window.draw(pika.sprite);
+            }
+
             window.setView(window.getDefaultView());
+
 
     //render UI
             window.display();
