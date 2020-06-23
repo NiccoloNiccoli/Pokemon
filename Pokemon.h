@@ -9,6 +9,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "Type.h"
+#include "Move.h"
+
 class Pokemon {
 public:
     Pokemon(const std::string& pokemonName, unsigned int);
@@ -27,6 +29,7 @@ private:
     int defense;
     int speed;
     std::vector<Type> type;
+    std::vector<Move> moves;
     //TODO Ability, Moves
     bool isWild;
     int level;

@@ -1,0 +1,9 @@
+4 4
+bug
+grass
+ice
+steel
+dragon
+fire
+rock
+water

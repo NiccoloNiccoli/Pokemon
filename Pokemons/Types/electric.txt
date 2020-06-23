@@ -1,0 +1,7 @@
+2 4
+flying
+water
+dragon
+electric
+grass
+ground

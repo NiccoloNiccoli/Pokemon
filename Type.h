@@ -12,9 +12,11 @@
 
 class Type {
 public:
+    Type();
     Type(const std::string& type);
 
     const std::string &getTypeName() const;
+
 
 private:
     std::string typeName;

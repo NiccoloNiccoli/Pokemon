@@ -7,6 +7,9 @@
 #include <fstream>
 #include <iostream>
 #include "Pokemon.h"
+#include <ctime>
+#include <random>
+
 Pokemon::Pokemon(const std::string& pokemonName, unsigned int level){
   loadData(pokemonName);
   texture.loadFromFile("../Pokemons/Textures/" + pokemonName + ".png");
@@ -30,10 +33,27 @@ bool Pokemon::loadData (const std::string& pokemonName){
             type.push_back(tmpType);
 
         }
-       std::cout << id << " " <<  name << " " << maxHP << " " << attack << " " << defense << " " << speed;
-        for (auto i: type)
-            std::cout << i.getTypeName() << std::endl;
-       std::cout << evolvingLevel << " " << nextFormId <<std::endl;
+
+        std::vector<Move> tmpMoves;
+        std::string currentMove_string;
+        while(file >> currentMove_string){
+            Move currentMove (currentMove_string);
+            tmpMoves.push_back(currentMove);
+        }
+        srand(time(NULL));
+        for(int i = 0; i < 3; i++){
+            int r = rand()%tmpMoves.size();
+            moves.push_back(tmpMoves[r]);
+            tmpMoves.erase(tmpMoves.begin() + r);
+        }
+
+        std::cout << id << " " <<  name << " " << maxHP << " " << attack << " " << defense << " " << speed << " ";
+        for (auto i: type){
+            std::cout << i.getTypeName() << " ";
+        }
+
+
+       std::cout <<  evolvingLevel << " " << nextFormId <<std::endl;
        //TODO (?)
     }
 }
