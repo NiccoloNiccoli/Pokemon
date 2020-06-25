@@ -8,6 +8,7 @@
 #include "Trainer.h"
 #include "Map.h"
 #include "Pokemon.h"
+#include "Battle.h"
 
 
 //C'è un fattore x3 a moltiplicare qualsiasi lunghezza
@@ -50,6 +51,7 @@ int main() {
 //XXX
 Trainer player(0,40,70);
 Pokemon pika ("pikachu", 34);
+Battle battle;
     //XXX
         while(window.isOpen()){
             sf::Event event;
@@ -77,6 +79,10 @@ Pokemon pika ("pikachu", 34);
                 window.draw(map.box);
                 window.draw(map.name);
                 window.draw(pika.sprite);
+                battle.chooseAction();
+               battle.draw(window);
+
+
             }
 
             window.setView(window.getDefaultView());

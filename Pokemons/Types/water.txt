@@ -1,8 +1,7 @@
-3 4
+3 3
 fire
 ground
 rock
 dragon
 grass
 water
-electric
