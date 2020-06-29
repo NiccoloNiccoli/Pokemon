@@ -1,5 +1,5 @@
 //
-// Created by super on 19/06/2020.
+// Created by Niccolò Niccoli on 19/06/2020.
 //
 
 #include "Trainer.h"

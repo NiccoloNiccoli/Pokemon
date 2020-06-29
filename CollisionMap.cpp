@@ -1,5 +1,5 @@
 //
-// Created by super on 19/06/2020.
+// Created by Niccolò Niccoli on 19/06/2020.
 //
 #include <fstream>
 #include <vector>
@@ -33,7 +33,7 @@ void CollisionMap::checkCollisions(Trainer& player,  const int screenWidth, cons
          //TODO-incontra un pokemon selvatico
          std::cout<<"Qui puoi trovare pokemon selvatici"<<std::endl;
      }else if(collTiles[column + row * 27]){
-         //TODO-entra nel centro pokemon(?)
+         //TODO-entra nel centro pokemon
          std::cout<<"Questo è il centro pokemon"<<std::endl;
      }
 }

@@ -1,5 +1,5 @@
 //
-// Created by super on 22/05/2020.
+// Created by Niccolò Niccoli on 22/05/2020.
 //
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -20,7 +20,6 @@ private:
     std::string mapName;
 };
 
-//TODO mettere il nome della mappa(?) che sta in alto a sinistra per un paio di secondi e poi va via
 //TODO pokemon selvatici nell'erba alta
 
 #endif //POKEMON_TILEMAP_H

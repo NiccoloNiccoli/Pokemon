@@ -1,5 +1,5 @@
 //
-// Created by super on 25/06/2020.
+// Created by Niccolò Niccoli on 25/06/2020.
 //
 
 #include "Battle.h"

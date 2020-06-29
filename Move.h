@@ -1,5 +1,5 @@
 //
-// Created by super on 23/06/2020.
+// Created by Niccolò Niccoli on 23/06/2020.
 //
 
 #ifndef POKEMON_MOVE_H

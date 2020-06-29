@@ -1,5 +1,5 @@
 //
-// Created by super on 23/06/2020.
+// Created by Niccolò Niccoli on 23/06/2020.
 //
 
 #include <fstream>
@@ -15,20 +15,10 @@ Move::Move(const std::string& moveName){
         Type tmpType(tmpType_string);
         type = tmpType;
         std::cout << " *bling blong* " << name << " Power: " << power << " Healing percentage: " << healingPercentage << " Number of usage: " << n_usage <<
-        " Type: " /*<< type.getTypeName() */<< " Accuracy: " << accuracy << std::endl;
+        " Type: " << type.getTypeName() << " Accuracy: " << accuracy << std::endl;
     }
 }
 
 const std::string &Move::getName() const {
     return name;
 }
-
-/*
- *  std::string name;
-    int power;
-    float healingPercentage;
-    int n_usage;
-    //TODO animation(?)
-    Type type;
-    float accuracy;
- */

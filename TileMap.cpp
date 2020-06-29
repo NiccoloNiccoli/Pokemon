@@ -1,5 +1,5 @@
 //
-// Created by super on 22/05/2020.
+// Created by Niccolò Niccoli on 22/05/2020.
 //
 
 #include "TileMap.h"

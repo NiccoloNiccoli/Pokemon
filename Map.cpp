@@ -1,12 +1,13 @@
 //
-// Created by super on 19/06/2020.
+// Created by Niccolò Niccoli on 19/06/2020.
 //
 
 #include "Map.h"
 
 Map::Map(const std::string& mapName){
-    tileMap.load("tileset1_1.png", sf::Vector2u(16,16), 27, 15, mapName);
-    //se non esiste il tileset lanciare un'eccezione
+    if(!tileMap.load("tileset1_1.png", sf::Vector2u(16,16), 27, 15, mapName)){
+        //TODO handle error
+    }
     collisionMap.load("collisionMap.txt");
     boxTexture.loadFromFile("../Textures/boxTexture.png");
     box.setScale(0.5f, 0.5f);

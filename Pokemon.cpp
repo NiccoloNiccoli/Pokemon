@@ -1,5 +1,5 @@
 //
-// Created by super on 22/06/2020.
+// Created by Niccolò Niccoli on 22/06/2020.
 //
 
 //Textures are 256x256 px
@@ -54,21 +54,5 @@ bool Pokemon::loadData (const std::string& pokemonName){
 
 
        std::cout <<  evolvingLevel << " " << nextFormId <<std::endl;
-       //TODO (?)
     }
 }
-/*
-int id;
-std::string name;
-sf::Sprite sprite;
-sf::Texture texture;
-int currentHP;
-int maxHP;
-int attack;
-int defense;
-int speed;
-//TODO Type, Ability, Moves
-bool isWild;
-int level;
-int evolvingLevel;
-int nextFormId;*/
