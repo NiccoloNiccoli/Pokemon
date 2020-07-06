@@ -14,27 +14,48 @@
 class Pokemon {
 public:
     Pokemon(const std::string& pokemonName, unsigned int);
-    bool doMove(); //TODO
+    bool doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window);
     void evolve(); //TODO->copia di tutti i valori in un nuovo pokemon
-    bool checkStatus(); //TODO: is dead or not?
     sf::Sprite sprite;
+    sf::Texture texture;
+    void draw(sf::RenderWindow& window);
+    std::vector<Move> moves;
+    void loseHp(const int damage);
+
+    bool isAlive() ;
+
+    int getDefense() const;
+
+    const std::string &getName() const;
+
+    int getCurrentHp() const;
+
+    int getMaxHp() const;
+
+    int getSpeed() const;
+
+    int getLevel() const;
+
+
+
 private:
     int id;
     std::string name;
 
-    sf::Texture texture;
+
     int currentHP;
     int maxHP;
     int attack;
     int defense;
     int speed;
     std::vector<Type> type;
-    std::vector<Move> moves;
-    //TODO Ability, Moves
+
+    //TODO Ability
     bool isWild;
     int level;
     int evolvingLevel;
     int nextFormId;
+    bool alive = true;
 
     bool loadData(const std::string& pokemonName);
 };

@@ -16,7 +16,7 @@ public:
     Type(const std::string& type);
 
     const std::string &getTypeName() const;
-
+    static float checkTypeAdvantage(Type moveType,std::vector<Type> pokemonType);
 
 private:
     std::string typeName;

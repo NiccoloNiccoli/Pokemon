@@ -12,7 +12,7 @@
 
 class Map {
 public:
-    void update(Trainer& player, const int screenWidth, const int screenHeight, sf::Vector2f position);
+    void update(Trainer& player, const int screenWidth, const int screenHeight, sf::Vector2f position, bool hasPlayerMoved);
     TileMap tileMap;
     CollisionMap collisionMap;
     sf::Sprite box;

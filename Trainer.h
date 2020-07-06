@@ -6,6 +6,7 @@
 #define POKEMON_TRAINER_H
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "Pokemon.h"
 
 class Trainer {
 public:
@@ -52,7 +53,7 @@ public:
 
 
     sf::Sprite overworldSprite;
-
+    std::vector<Pokemon> team;
 
 
 private:
@@ -60,7 +61,7 @@ private:
 
     int id;
     std::string name;
-    //TODO Pokemon[n] team;
+
     sf::Texture overworldSprite_Texture;
     //TODO inBattleSprite
     int money;

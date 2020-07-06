@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "CollisionMap.h"
+#include "Battle.h"
 
 void CollisionMap::load(const std::string &collisionMapName){
     std::ifstream mapFile("../Maps/" + collisionMapName);
@@ -14,8 +15,7 @@ void CollisionMap::load(const std::string &collisionMapName){
             collTiles.push_back(currentTile);
     }
 }
-void CollisionMap::checkCollisions(Trainer& player,  const int screenWidth, const int screenHeight, sf::Vector2f position) {
-    //std::cout<<player.overworldSprite.getPosition().x <<player.overworldSprite.getPosition().y<<std::endl;
+void CollisionMap::checkCollisions(Trainer& player,  const int screenWidth, const int screenHeight, sf::Vector2f position, bool hasPlayerMoved) {
     if(player.overworldSprite.getPosition().x < 0.f)
         player.overworldSprite.setPosition(0.f, player.overworldSprite.getPosition().y);
     if(player.overworldSprite.getPosition().y < 0.f)
@@ -27,13 +27,30 @@ void CollisionMap::checkCollisions(Trainer& player,  const int screenWidth, cons
 
      int column = (player.overworldSprite.getPosition().x + player.overworldSprite.getGlobalBounds().width/2)/16;
      int row = (player.overworldSprite.getPosition().y+ player.overworldSprite.getGlobalBounds().height/2)/16;
-     if(collTiles[column + row * 27] == 2){
-         player.overworldSprite.setPosition(position);
-     }else if(collTiles[column + row * 27] == 1){
-         //TODO-incontra un pokemon selvatico
-         std::cout<<"Qui puoi trovare pokemon selvatici"<<std::endl;
-     }else if(collTiles[column + row * 27]){
-         //TODO-entra nel centro pokemon
-         std::cout<<"Questo è il centro pokemon"<<std::endl;
+     if(hasPlayerMoved){
+         if(collTiles[column + row * 27] == 2){
+             player.overworldSprite.setPosition(position);
+         }else if(collTiles[column + row * 27] == 1){
+             //FIXME do it better
+             int r = rand()%5;
+             if(::timer.getElapsedTime().asSeconds() > 5+r){
+                 ::isInBattle = true;
+                 if(::wildPokemon == nullptr){
+                     int s = rand()%3;
+                     if(s == 0)
+                         ::wildPokemon = new Pokemon ("charmander", 20);
+                     else if (s == 1)
+                         ::wildPokemon = new Pokemon("squirtle", 20);
+                     else if (s == 2)
+                         ::wildPokemon = new Pokemon("pikachu", 20);
+
+                 }
+             }
+             std::cout<<"Qui puoi trovare pokemon selvatici"<<std::endl;
+         }else if(collTiles[column + row * 27]){
+             //TODO-entra nel centro pokemon
+             std::cout<<"Questo è il centro pokemon"<<std::endl;
+         }
      }
+
 }

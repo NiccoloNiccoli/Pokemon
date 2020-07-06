@@ -4,15 +4,18 @@
 
 #include "Trainer.h"
 #include <SFML/Window.hpp>
+#include <iostream>
 
 Trainer::Trainer(int id, int x, int y){
-    //TODO
     id = 0;
     xPosition = x;
     yPosition = y;
     initOverworldSprite("trainer.png");
-
-};
+    //FIXME-non so perché faccia così
+    Pokemon pika("pikachu", 20);
+    team.push_back(pika);
+    team[0].sprite.setTexture(team[0].texture);
+}
 
 int Trainer::getId() const {
     return id;
@@ -60,8 +63,9 @@ void Trainer::move(){
 }
 
 bool Trainer::initOverworldSprite(std::string fileName){
-    if(!overworldSprite_Texture.loadFromFile("../Textures/" + fileName))
-        return -1;
+    if(!overworldSprite_Texture.loadFromFile("../Textures/" + fileName)){
+    //TODO handle error
+    }
     sf::Vector2f position (xPosition,yPosition);
     overworldSprite.setPosition(position);
     overworldSprite.setTexture(overworldSprite_Texture);

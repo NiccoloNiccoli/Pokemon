@@ -20,6 +20,4 @@ private:
     std::string mapName;
 };
 
-//TODO pokemon selvatici nell'erba alta
-
 #endif //POKEMON_TILEMAP_H

@@ -21,6 +21,6 @@ Map::Map(const std::string& mapName){
 
 }
 
-void Map::update(Trainer& player,  const int screenWidth, const int screenHeight, sf::Vector2f position){
-    collisionMap.checkCollisions(player, screenWidth, screenHeight, position);
+void Map::update(Trainer& player,  const int screenWidth, const int screenHeight, sf::Vector2f position, bool hasPlayerMoved){
+    collisionMap.checkCollisions(player, screenWidth, screenHeight, position, hasPlayerMoved);
 }

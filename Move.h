@@ -12,24 +12,38 @@
 class Move {
 public:
     Move(const std::string& moveName);
+    void playAnimation(sf::RenderWindow& window);
     void use();
 
+    int getPower() const;
+
+    void setPower(int power);
+
+    float getHealingPercentage() const;
+
+    void setHealingPercentage(float healingPercentage);
+
+    int getNUsage() const;
+
+    void setNUsage(int nUsage);
+
+    const std::string &getName() const;
+
+    const Type &getType() const;
+
+    int getAccuracy() const;
+
 private:
+    std::string name;
+    int power;
+    float healingPercentage;
+    int nUsage;
+    //TODO animation(?)
+    Type type;
+    int accuracy;
 
     int hit();
     int heal();
-
-    std::string name;
-public:
-    const std::string &getName() const;
-
-private:
-    int power;
-    float healingPercentage;
-    int n_usage;
-    //TODO animation(?)
-    Type type;
-    float accuracy;
 };
 
 

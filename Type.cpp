@@ -35,4 +35,16 @@ Type::Type(const std::string& type) {
 const std::string &Type::getTypeName() const {
     return typeName;
 }
-//TODO controllare contro quali tipi fa danno x2 e contro quali x0.5
+
+float Type::checkTypeAdvantage(Type moveType, std::vector<Type> pokemonType) {
+    float multiplier = 1.f;
+   for(int i = 0; i < pokemonType.size(); i++) {
+       for (auto j : moveType.strongAgainst)
+           if (j == pokemonType[i].getTypeName())
+               multiplier *= 2.f;
+       for (auto j : moveType.weakAgainst)
+           if (j == pokemonType[i].getTypeName())
+               multiplier *= 0.5f;
+   }
+   return multiplier;
+}
