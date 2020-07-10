@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 14)
 set(SFML_STATIC_LIBRARIES, TRUE)
 find_package(SFML 2.5 COMPONENTS system window graphics)
 
-add_executable(Pokemon main.cpp TileMap.cpp TileMap.h Trainer.cpp Trainer.h Map.cpp Map.h CollisionMap.cpp CollisionMap.h Pokemon.cpp Pokemon.h Type.cpp Type.h Move.cpp Move.h Battle.cpp Battle.h)
+add_executable(Pokemon main.cpp Trainer.cpp Trainer.h Pokemon.cpp Pokemon.h Type.cpp Type.h Move.cpp Move.h Battle.cpp Battle.h debug.h GameState.cpp GameState.h Tile.cpp Tile.h Map.cpp Map.h Player.cpp Player.h)
 target_link_libraries(Pokemon sfml-system sfml-window sfml-graphics -static)
