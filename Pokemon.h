@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include "Type.h"
 #include "Move.h"
+#include "debug.h"
 
 class Pokemon {
 public:

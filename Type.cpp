@@ -23,13 +23,14 @@ Type::Type(const std::string& type) {
             file >> currentType;
             weakAgainst.push_back(currentType);
         }
-
+#ifdef DEBUG
         std::cout << typeName << " is strong against: ";
         for(auto i:strongAgainst)
             std::cout << i << " ";
         std::cout << "and weak against: ";
         for(auto i:weakAgainst)
             std::cout << i << " ";
+#endif
     }
 }
 const std::string &Type::getTypeName() const {

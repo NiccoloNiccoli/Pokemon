@@ -54,14 +54,15 @@ bool Pokemon::loadData (const std::string& pokemonName){
             moves.push_back(tmpMoves[r]);
             tmpMoves.erase(tmpMoves.begin() + r);
         }
-
+#ifdef DEBUG
         std::cout << id << " " <<  name << " " << maxHP << " " << attack << " " << defense << " " << speed << " ";
+#endif
         for (auto i: type){
             std::cout << i.getTypeName() << " ";
         }
-
-
+#ifdef DEBUG
        std::cout <<  evolvingLevel << " " << nextFormId <<std::endl;
+#endif
     }
 }
 
@@ -73,7 +74,9 @@ bool Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
     int r1;
     r1 = rand() % 100;
     move.setNUsage(move.getNUsage()-1);
+#ifdef DEBUG
     std::cout<<move.getNUsage()<<" uses left"<<std::endl;
+#endif
     if(r1 <= move.getAccuracy()){
         float modifier;
         int damage;
@@ -84,7 +87,9 @@ bool Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
         r = rand()%16;
         if(r==0){
             criticalHitMultiplier = 1.5f;
+#ifdef DEBUG
             std::cout<<"Critical hit!"<<std::endl;
+#endif
         }
         randomFactor = ((rand()%25)+85);
         for(auto i : type)
@@ -92,20 +97,28 @@ bool Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
                 STAB = 1.5f;
         //type advantage mult.
         modifier = criticalHitMultiplier * randomFactor/100 * Type::checkTypeAdvantage(move.getType(), enemy.type) * STAB;
+#ifdef DEBUG
         std::cout<<"criticalMult. "<<criticalHitMultiplier<<" random factor "<<randomFactor<<" type adv. "<<Type::checkTypeAdvantage(move.getType(), enemy.type)<<" STAB "<<STAB<<std::endl;
         std::cout<<"modifier: "<<modifier<<std::endl;
+#endif
         damage = (((2/5 * level + 2) * move.getPower() * attack/enemy.getDefense() + 2)/50 * modifier);
+#ifdef DEBUG
         std::cout<<"il danno inflitto è "<<damage<<std::endl;
+#endif
         if(damage < 1)
             damage = 1;
         currentHP += currentHP*move.getHealingPercentage();
         if(currentHP > maxHP)
             currentHP = maxHP;
         enemy.loseHp(damage);
+#ifdef DEBUG
         std::cout<<enemy.name<<" has "<<enemy.currentHP<<" / "<<enemy.maxHP<<" HP"<<std::endl;
+#endif
         move.playAnimation(window);
     }else{
+#ifdef DEBUG
         std::cerr<<"Missed!"<<std::endl;
+#endif
         return false;
     }
 }
@@ -140,7 +153,9 @@ int Pokemon::getLevel() const {
 
 bool Pokemon::isAlive(){
     if(currentHP <= 0) {
+#ifdef DEBUG
         std::cout << name << " is dead :(" << std::endl;
+#endif
         currentHP = 0;
         alive = false;
     }

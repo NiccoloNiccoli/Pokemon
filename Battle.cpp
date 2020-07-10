@@ -5,15 +5,15 @@
 #include <iostream>
 #include <string>
 #include "Battle.h"
+#include "GameState.h"
+#include "Player.h"
 
-bool isInBattle = false;
-Pokemon* wildPokemon = new Pokemon ("squirtle", 10);
-sf::Clock timer;
+Pokemon Battle::wildPokemon ("Pikachu",1);
 
-Battle::Battle(Trainer& trainer, Pokemon& pokemon){
-   if(!background_texture.loadFromFile("../Textures/background.png")){
-       //TODO handle error
-   }
+Battle::Battle(Player& player){
+    if(!background_texture.loadFromFile("../Textures/background.png")){
+        //TODO handle error
+    }
     background.setTexture(background_texture);
     background.setScale(0.35f,0.35f);
     sf::RectangleShape tmpBox (sf::Vector2f(120.f,100.f));
@@ -27,46 +27,50 @@ Battle::Battle(Trainer& trainer, Pokemon& pokemon){
     resetMenu();
 
     //HP bar
-   sf::RectangleShape tmpHpBox (sf::Vector2f(100, 40));
-   tmpHpBox.setFillColor(sf::Color::White);
-   myHealthBarBox = tmpHpBox;
-   myHealthBarBox.setPosition(sf::Vector2f(0, 100));
-   enemysHealthBarBox = tmpHpBox;
-   enemysHealthBarBox.setPosition(sf::Vector2f(130,5));
-   sf::RectangleShape tmpHpBar (sf::Vector2f(80, 10));
-   tmpHpBar.setFillColor(sf::Color::Green);
-   myHealthBar = tmpHpBar;
-   myHealthBar.setPosition(sf::Vector2f(5,120));
-   enemysHealthBar = tmpHpBar;
-   enemysHealthBar.setPosition(sf::Vector2f(135,25));
-   myPokemonName.setFont(font);
-   myPokemonName.setFillColor(sf::Color::Black);
-   myPokemonName.setPosition(sf::Vector2f(5, 100));
-   myPokemonName.setScale(sf::Vector2f(0.5f,0.5f));
-   enemysPokemonName.setFont(font);
-   enemysPokemonName.setFillColor(sf::Color::Black);
-   enemysPokemonName.setPosition(sf::Vector2f(135, 5));
-   enemysPokemonName.setScale(sf::Vector2f(0.5f,0.5f));
-   myPokemonLevel.setFont(font);
-   myPokemonLevel.setFillColor(sf::Color::Black);
-   myPokemonLevel.setPosition(sf::Vector2f(70, 105));
-   myPokemonLevel.setScale(sf::Vector2f(0.3f, 0.3f));
-   enemysPokemonLevel.setFont(font);
-   enemysPokemonLevel.setFillColor(sf::Color::Black);
-   enemysPokemonLevel.setPosition(sf::Vector2f(200, 10));
-   enemysPokemonLevel.setScale(sf::Vector2f(0.3f, 0.3f));
+    sf::RectangleShape tmpHpBox (sf::Vector2f(100, 40));
+    tmpHpBox.setFillColor(sf::Color::White);
+    myHealthBarBox = tmpHpBox;
+    myHealthBarBox.setPosition(sf::Vector2f(0, 100));
+    enemysHealthBarBox = tmpHpBox;
+    enemysHealthBarBox.setPosition(sf::Vector2f(130,5));
+    sf::RectangleShape tmpHpBar (sf::Vector2f(80, 10));
+    tmpHpBar.setFillColor(sf::Color::Green);
+    myHealthBar = tmpHpBar;
+    myHealthBar.setPosition(sf::Vector2f(5,120));
+    enemysHealthBar = tmpHpBar;
+    enemysHealthBar.setPosition(sf::Vector2f(135,25));
+    myPokemonName.setFont(font);
+    myPokemonName.setFillColor(sf::Color::Black);
+    myPokemonName.setPosition(sf::Vector2f(5, 100));
+    myPokemonName.setScale(sf::Vector2f(0.5f,0.5f));
+    enemysPokemonName.setFont(font);
+    enemysPokemonName.setFillColor(sf::Color::Black);
+    enemysPokemonName.setPosition(sf::Vector2f(135, 5));
+    enemysPokemonName.setScale(sf::Vector2f(0.5f,0.5f));
+    myPokemonLevel.setFont(font);
+    myPokemonLevel.setFillColor(sf::Color::Black);
+    myPokemonLevel.setPosition(sf::Vector2f(70, 105));
+    myPokemonLevel.setScale(sf::Vector2f(0.3f, 0.3f));
+    enemysPokemonLevel.setFont(font);
+    enemysPokemonLevel.setFillColor(sf::Color::Black);
+    enemysPokemonLevel.setPosition(sf::Vector2f(200, 10));
+    enemysPokemonLevel.setScale(sf::Vector2f(0.3f, 0.3f));
+#ifdef DEBUG
+    std::cout<<"Battle created"<<std::endl;
+    resetMenu();
+#endif
 }
 
-void Battle::draw(sf::RenderWindow &window, Trainer& player, Pokemon& enemy) {
+void Battle::draw(sf::RenderWindow &window, Player& player) {
     window.draw(background);
     window.draw(menuBox);
     for(auto i : menuButtons)
         window.draw(i);
     player.team[0].sprite.setPosition(40,100);
     window.draw(player.team[0].sprite);
-    enemy.sprite.setPosition(240,0);
-    enemy.draw(window);
-    updateUI(player, enemy);
+    wildPokemon.sprite.setPosition(240,0);
+    wildPokemon.draw(window);
+    updateUI(player);
     window.draw(myHealthBarBox);
     window.draw(enemysHealthBarBox);
     window.draw(myHealthBar);
@@ -74,27 +78,27 @@ void Battle::draw(sf::RenderWindow &window, Trainer& player, Pokemon& enemy) {
     window.draw(myPokemonName);
     window.draw(enemysPokemonName);
     myPokemonName.setString(player.team[0].getName());
-    enemysPokemonName.setString(enemy.getName());
+    enemysPokemonName.setString(wildPokemon.getName());
     myPokemonLevel.setString("L." + std::to_string(player.team[0].getLevel()));
-    enemysPokemonLevel.setString("L. " + std::to_string(enemy.getLevel()));
+    enemysPokemonLevel.setString("L. " + std::to_string(wildPokemon.getLevel()));
     window.draw(myPokemonLevel);
     window.draw(enemysPokemonLevel);
 }
 
 
 void Battle::moveUp(){
-        menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Black);
-        selectedItemIndex--;
-        menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Red);
+    menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Black);
+    selectedItemIndex--;
+    menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Red);
 }
 
 void Battle::moveDown() {
-        menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Black);
-        selectedItemIndex++;
-        menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Red);
+    menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Black);
+    selectedItemIndex++;
+    menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Red);
 }
 
-void Battle::refreshMenu(Trainer& player, Pokemon& enemy, sf::RenderWindow& window) {
+void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
     if(menuPageIndex == 0){
         switch (selectedItemIndex){
             case 0:
@@ -115,10 +119,8 @@ void Battle::refreshMenu(Trainer& player, Pokemon& enemy, sf::RenderWindow& wind
                 //TODO catch pokemon
                 break;
             case 3:
-                //TODO run away
-                ::isInBattle = false;
-                ::wildPokemon = nullptr;
-                ::timer.restart();
+                GameState::changeState(STATE_MAP);
+                GameState::resetTimer();
                 break;
         }
     }else if(menuPageIndex == 1){
@@ -126,13 +128,15 @@ void Battle::refreshMenu(Trainer& player, Pokemon& enemy, sf::RenderWindow& wind
             haveYouSelectedAnAction = selectedItemIndex+1;
             resetMenu();
         }else{
+#ifdef DEBUG
             std::cerr<<"You can't use this move"<<std::endl;
+#endif
         }
 
     }
 }
 
-    void Battle::resetMenu() {
+void Battle::resetMenu() {
     if(menuPageIndex!=0){
         menuButtons[0].setFont(font);
         menuButtons[0].setFillColor(sf::Color::Red);
@@ -160,63 +164,68 @@ void Battle::refreshMenu(Trainer& player, Pokemon& enemy, sf::RenderWindow& wind
 
         selectedItemIndex = 0;
         menuPageIndex=0;
+#ifdef DEBUG
+        std::cout<<"menu resetted"<<std::endl;
+#endif
     }
 
 }
 
-void Battle::updateUI(Trainer& player, Pokemon& enemy) {
+void Battle::updateUI(Player& player) {
     myHealthBar.setSize(sf::Vector2f(80*player.team[0].getCurrentHp()/player.team[0].getMaxHp(),10.f));
-    enemysHealthBar.setSize(sf::Vector2f(80 * enemy.getCurrentHp()/enemy.getMaxHp(),10.f));
+    enemysHealthBar.setSize(sf::Vector2f(80 * wildPokemon.getCurrentHp()/wildPokemon.getMaxHp(),10.f));
 }
 
-void Battle::battleEngine(sf::RenderWindow &window, Trainer &player, Pokemon &enemy) {
-    if(player.team[0].isAlive() && enemy.isAlive()){
+void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
+    if(player.team[0].isAlive() && wildPokemon.isAlive()){
 //battle cycle
-        draw(window, player, enemy);
+        draw(window, player);
         if(haveYouSelectedAnAction == 0){
 
 
         }else{
-            //enemy does a random move
-            if(player.team[0].getSpeed() > enemy.getSpeed()){
+            //wildPokemon does a random move
+            if(player.team[0].getSpeed() > wildPokemon.getSpeed()){
                 //i go first
-                player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], enemy, window);
-                if(enemy.isAlive() && player.team[0].isAlive()){
-                    //enemy does a random move
+                player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
+                if(wildPokemon.isAlive() && player.team[0].isAlive()){
+                    //wildPokemon does a random move
                     int r = rand()%4;
-                    enemy.doMove(enemy.moves[r], player.team[0], window);
+                    wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
                 }
-            }else if(player.team[0].getSpeed() < enemy.getSpeed()){
-                //enemy goes first
+            }else if(player.team[0].getSpeed() < wildPokemon.getSpeed()){
+                //wildPokemon goes first
                 int r = rand()%4;
-                enemy.doMove(enemy.moves[r], player.team[0], window);
-                if(enemy.isAlive() && player.team[0].isAlive())
-                    player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], enemy, window);
+                wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
+                if(wildPokemon.isAlive() && player.team[0].isAlive())
+                    player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
             }else{
                 int r = rand()%2;
                 if (r==0){
                     //i go first
-                    player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], enemy, window);
-                    if(enemy.isAlive() && player.team[0].isAlive()){
-                        //enemy does a random move
+                    player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
+                    if(wildPokemon.isAlive() && player.team[0].isAlive()){
+                        //wildPokemon does a random move
                         int r = rand()%4;
-                        enemy.doMove(enemy.moves[r], player.team[0], window);
+                        wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
                     }
                 }else{
                     int r = rand()%4;
-                    enemy.doMove(enemy.moves[r], player.team[0], window);
-                    if(enemy.isAlive() && player.team[0].isAlive())
-                        player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], enemy, window);
+                    wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
+                    if(wildPokemon.isAlive() && player.team[0].isAlive())
+                        player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
                 }
             }
             haveYouSelectedAnAction = 0;
         }
 
     }else{
-        //FIXME!!!!!
-        ::isInBattle = false;
-        ::wildPokemon = nullptr;
-        ::timer.restart();
+        GameState::changeState(STATE_MAP);
+        GameState::resetTimer();
     }
 }
 
+void Battle::setWildPokemon(Pokemon& pokemon) {
+    wildPokemon = pokemon;
+    wildPokemon.sprite.setTexture(wildPokemon.texture);
+}

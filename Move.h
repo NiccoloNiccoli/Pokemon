@@ -8,6 +8,7 @@
 
 #include <string>
 #include "Type.h"
+#include "debug.h"
 
 class Move {
 public:

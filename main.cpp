@@ -1,15 +1,17 @@
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <ctime>
 #include <fstream>
-#include "TileMap.h"
 #include "Trainer.h"
-#include "Map.h"
 #include "Pokemon.h"
 #include "Battle.h"
-
+#include "Map.h"
+#include "GameState.h"
+#include "debug.h"
+#include "Player.h"
 
 //C'è un fattore x3 a moltiplicare qualsiasi lunghezza
 int main() {
@@ -19,12 +21,12 @@ int main() {
     sf::View view(sf::FloatRect(0,0,width,height));
     view.setViewport(sf::FloatRect(0,0,3,3));
 
-    Map map("mappaDiProva");
+    Map map("tileset1_1.png", 27, 15, "MappaDiProva");
 
-Trainer player(0,40,70);
-Battle battle(player, *::wildPokemon);
-//fixme
-bool hasPlayerMoved = false;
+Player player(0,40,70,"Niccolò");
+Trainer rival(1,390,140,"Rival","blue.png");
+Battle battle(player);
+//fixme - sono scomparsi i pulsanti della battaglia!!!!
 
         while(window.isOpen()){
             sf::Event event;
@@ -33,16 +35,22 @@ bool hasPlayerMoved = false;
                     window.close();
                 }
 
-                if(::isInBattle){
+                if(GameState::getState()==STATE_BATTLE){
                     if(event.type == sf::Event::KeyReleased){
                         if(event.key.code == sf::Keyboard::Up){
                             battle.moveUp();
                         }else if(event.key.code == sf::Keyboard::Down){
                             battle.moveDown();
                         }else if(event.key.code == sf::Keyboard::Enter){
-                            battle.refreshMenu(player, *::wildPokemon, window);
+                            battle.refreshMenu(player,window);
                         }else if(event.key.code == sf::Keyboard::BackSpace){
                             battle.resetMenu();
+                        }
+                    }
+                }else if(GameState::getState()==STATE_MAP){
+                    if(event.type == sf::Event::KeyReleased){
+                        if(event.key.code == sf::Keyboard::Enter){
+                            player.fight(rival);
                         }
                     }
                 }
@@ -50,29 +58,28 @@ bool hasPlayerMoved = false;
             }
             window.clear();
             window.setView(view);
-            if(!::isInBattle){
-                sf::Vector2f position = player.overworldSprite.getPosition();
+            if(GameState::getState()!=STATE_BATTLE) {
                 player.move();
-                if(position != sf::Vector2f(player.overworldSprite.getPosition()))
-                    hasPlayerMoved = true;
-                else
-                    hasPlayerMoved = false;
-                map.update(player, width, height, position, hasPlayerMoved);
 
-                 //render game elements
+                /* if(position != sf::Vector2f(player.overworldSprite.getPosition()))
+                     hasPlayerMoved = true;
+                 else
+                     hasPlayerMoved = false;
+ */
+                map.checkCollisions(player);
 
-                 window.draw(map.tileMap);
-                 window.draw(player.overworldSprite);
-                 if(map.timer.getElapsedTime().asSeconds() < 5.f){
-                    window.draw(map.box);
-                    window.draw(map.name);
+                //render game elements
 
-                 }
+                window.draw(map);
+                window.draw(player.overworldSprite);
+                window.draw(rival.overworldSprite);
+                map.drawUI(window);
+
             }
 
 
-           if(::isInBattle){
-               battle.battleEngine(window, player, *::wildPokemon);
+           if(GameState::getState()==STATE_BATTLE){
+               battle.battleEngine(window, player);
                }
 
 

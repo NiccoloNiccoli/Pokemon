@@ -7,21 +7,22 @@
 #include <SFML/Graphics.hpp>
 #include "Trainer.h"
 #include "Pokemon.h"
+#include "debug.h"
+#include "Player.h"
 
 //FIXME farlo meglio!!!!!
-extern bool isInBattle;
-extern Pokemon* wildPokemon;
-extern sf::Clock timer;
 
 class Battle {
 public:
-    Battle(Trainer& player, Pokemon& pokemon);
-    void draw(sf::RenderWindow& window, Trainer& player, Pokemon& pokemon);
+    Battle(Player& player);
+    void draw(sf::RenderWindow& window, Player& player);
     void moveUp();
     void moveDown();
-    void refreshMenu(Trainer& player, Pokemon& enemy, sf::RenderWindow& window);//Fixme find a better way to do it
+    void refreshMenu(Player& player, sf::RenderWindow& window);//Fixme find a better way to do it
     void resetMenu();
-    void battleEngine(sf::RenderWindow& window, Trainer& player, Pokemon& enemy);//FIXME change its name
+    void battleEngine(sf::RenderWindow& window, Player& player);//FIXME change its name
+
+    static void setWildPokemon(Pokemon& pokemon);
 
     sf::Sprite background;
     sf::RectangleShape menuBox;
@@ -38,17 +39,16 @@ public:
     //FIXME
     int haveYouSelectedAnAction = 0;
 private:
-    void updateUI(Trainer& player, Pokemon& pokemon);
-
-    int menuPageIndex;
+    void updateUI(Player& player);
+    static Pokemon wildPokemon;
+    int menuPageIndex = 1;
     //page 0 -> actions page 1 -> moves page 2 -> show team to change active pokemon
-    int selectedItemIndex;
+    int selectedItemIndex = 0;
     sf::Font font;
     sf::Texture background_texture;
 
 
 
 };
-
 
 #endif //POKEMON_BATTLE_H

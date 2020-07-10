@@ -8,7 +8,7 @@
 
 #include <string>
 #include <vector>
-
+#include "debug.h"
 
 class Type {
 public:
