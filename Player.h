@@ -15,7 +15,7 @@ public:
 
     void fight(Trainer& trainer); //TODO fight-catch-escape
 
-    bool catchPokemon(); //True if pokemon get caught, False if not
+    bool catchPokemon(Pokemon& pokemon); //True if pokemon get caught, False if not
 
     bool escape(); //True if you run away, false if not
 

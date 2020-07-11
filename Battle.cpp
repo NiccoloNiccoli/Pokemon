@@ -89,13 +89,19 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
 void Battle::moveUp(){
     menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Black);
     selectedItemIndex--;
+    if(selectedItemIndex == -1)
+        selectedItemIndex = 3;
     menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Red);
+
 }
 
 void Battle::moveDown() {
     menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Black);
     selectedItemIndex++;
+    if(selectedItemIndex == 4)
+        selectedItemIndex = 0;
     menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Red);
+
 }
 
 void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
@@ -116,11 +122,14 @@ void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
                 //TODO swap pokemon
                 break;
             case 2:
-                //TODO catch pokemon
-                break;
+                player.catchPokemon(wildPokemon);
             case 3:
                 GameState::changeState(STATE_MAP);
                 GameState::resetTimer();
+#ifdef DEBUG
+                for(auto i:player.team)
+                    std::cout<<i.getName()<<std::endl;
+#endif
                 break;
         }
     }else if(menuPageIndex == 1){
