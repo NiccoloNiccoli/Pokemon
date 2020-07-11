@@ -12,6 +12,7 @@
 #include "GameState.h"
 #include "debug.h"
 #include "Player.h"
+#include "Dice.h"
 
 //C'è un fattore x3 a moltiplicare qualsiasi lunghezza
 int main() {
@@ -20,11 +21,14 @@ int main() {
     window.setFramerateLimit(60);
     sf::View view(sf::FloatRect(0,0,width,height));
     view.setViewport(sf::FloatRect(0,0,3,3));
+    srand(time(NULL));
 
     Map map("tileset1_1.png", 27, 15, "MappaDiProva");
 
 Player player(0,40,70,"Niccolò");
 Trainer rival(1,390,140,"Rival","blue.png");
+Trainer lance(2, 144, 30, "Lance", "lance.png");
+Trainer girl(3, 200, 150, "Giulia", "girl.png");
 Battle battle(player);
 //fixme - sono scomparsi i pulsanti della battaglia!!!!
 
@@ -73,6 +77,8 @@ Battle battle(player);
                 window.draw(map);
                 window.draw(player.overworldSprite);
                 window.draw(rival.overworldSprite);
+                window.draw(lance.overworldSprite);
+                window.draw(girl.overworldSprite);
                 map.drawUI(window);
 
             }

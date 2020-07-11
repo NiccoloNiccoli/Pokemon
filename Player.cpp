@@ -34,14 +34,14 @@ void Player::fight(Trainer &enemy) {
 
    }
 
-bool Player::catchPokemon(Pokemon& pokemon) {
+bool Player::catchPokemon(Pokemon* pokemon) {
     if(team.size()<6){
         int r = rand()%10;
         if(r != 0){
             //FIXME
             team.push_back(pokemon);
 #ifdef DEBUG
-            std::cout<<pokemon.getName()<<" is now in your team "<<std::endl;
+            std::cout<<pokemon->getName()<<" is now in your team "<<std::endl;
 #endif
             return true;
         }else return false;

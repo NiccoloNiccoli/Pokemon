@@ -10,6 +10,7 @@
 #include <ctime>
 #include <random>
 #include "Type.h"
+#include "Dice.h"
 
 Pokemon::Pokemon(const std::string& pokemonName, unsigned int lvl){
   loadData(pokemonName);
@@ -48,9 +49,8 @@ bool Pokemon::loadData (const std::string& pokemonName){
             Move currentMove (currentMove_string);
             tmpMoves.push_back(currentMove);
         }
-        srand(time(NULL));
         for(int i = 0; i < 4 ; i++){
-            int r = rand()%tmpMoves.size();
+            int r = Dice::random(tmpMoves.size());
             moves.push_back(tmpMoves[r]);
             tmpMoves.erase(tmpMoves.begin() + r);
         }
@@ -71,27 +71,23 @@ void Pokemon::draw(sf::RenderWindow& window){
 }
 
 bool Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
-    int r1;
-    r1 = rand() % 100;
     move.setNUsage(move.getNUsage()-1);
 #ifdef DEBUG
     std::cout<<move.getNUsage()<<" uses left"<<std::endl;
 #endif
-    if(r1 <= move.getAccuracy()){
+    if(Dice::random(100) <= move.getAccuracy()){
         float modifier;
         int damage;
         float criticalHitMultiplier = 1.f;
         int randomFactor;
         float STAB = 1.f; //same type attack bonus
-        int r;
-        r = rand()%16;
-        if(r==0){
+        if(Dice::random(16)==0){
             criticalHitMultiplier = 1.5f;
 #ifdef DEBUG
             std::cout<<"Critical hit!"<<std::endl;
 #endif
         }
-        randomFactor = ((rand()%25)+85);
+        randomFactor = Dice::random(85,110);
         for(auto i : type)
             if(move.getType().getTypeName() == i.getTypeName())
                 STAB = 1.5f;

@@ -7,8 +7,9 @@
 #include "Battle.h"
 #include "GameState.h"
 #include "Player.h"
+#include "Dice.h"
 
-Pokemon Battle::wildPokemon ("Pikachu",1);
+Pokemon* Battle::wildPokemon = new Pokemon("Pikachu",1);
 
 Battle::Battle(Player& player){
     if(!background_texture.loadFromFile("../Textures/background.png")){
@@ -66,10 +67,10 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
     window.draw(menuBox);
     for(auto i : menuButtons)
         window.draw(i);
-    player.team[0].sprite.setPosition(40,100);
-    window.draw(player.team[0].sprite);
-    wildPokemon.sprite.setPosition(240,0);
-    wildPokemon.draw(window);
+    player.team[0]->sprite.setPosition(40,100);
+    window.draw(player.team[0]->sprite);
+    wildPokemon->sprite.setPosition(240,0);
+    wildPokemon->draw(window);
     updateUI(player);
     window.draw(myHealthBarBox);
     window.draw(enemysHealthBarBox);
@@ -77,10 +78,10 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
     window.draw(enemysHealthBar);
     window.draw(myPokemonName);
     window.draw(enemysPokemonName);
-    myPokemonName.setString(player.team[0].getName());
-    enemysPokemonName.setString(wildPokemon.getName());
-    myPokemonLevel.setString("L." + std::to_string(player.team[0].getLevel()));
-    enemysPokemonLevel.setString("L. " + std::to_string(wildPokemon.getLevel()));
+    myPokemonName.setString(player.team[0]->getName());
+    enemysPokemonName.setString(wildPokemon->getName());
+    myPokemonLevel.setString("L." + std::to_string(player.team[0]->getLevel()));
+    enemysPokemonLevel.setString("L. " + std::to_string(wildPokemon->getLevel()));
     window.draw(myPokemonLevel);
     window.draw(enemysPokemonLevel);
 }
@@ -108,18 +109,23 @@ void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
     if(menuPageIndex == 0){
         switch (selectedItemIndex){
             case 0:
-                menuButtons[0].setString(player.team[0].moves[0].getName());
+                menuButtons[0].setString(player.team[0]->moves[0].getName());
                 menuButtons[0].setScale(sf::Vector2f(0.4f,0.4f));
-                menuButtons[1].setString(player.team[0].moves[1].getName());
+                menuButtons[1].setString(player.team[0]->moves[1].getName());
                 menuButtons[1].setScale(sf::Vector2f(0.4f,0.4f));
-                menuButtons[2].setString(player.team[0].moves[2].getName());
+                menuButtons[2].setString(player.team[0]->moves[2].getName());
                 menuButtons[2].setScale(sf::Vector2f(0.4f,0.4f));
-                menuButtons[3].setString(player.team[0].moves[3].getName());
+                menuButtons[3].setString(player.team[0]->moves[3].getName());
                 menuButtons[3].setScale(sf::Vector2f(0.4f,0.4f));
                 menuPageIndex = 1;
                 break;
             case 1:
                 //TODO swap pokemon
+                if(player.team.size() > 1){
+                    auto tmpPokemon = player.team[0];
+                    player.team[0] = player.team[1];
+                    player.team[1] = tmpPokemon;
+                }
                 break;
             case 2:
                 player.catchPokemon(wildPokemon);
@@ -128,12 +134,12 @@ void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
                 GameState::resetTimer();
 #ifdef DEBUG
                 for(auto i:player.team)
-                    std::cout<<i.getName()<<std::endl;
+                    std::cout<<i->getName()<<std::endl;
 #endif
                 break;
         }
     }else if(menuPageIndex == 1){
-        if(player.team[0].moves[selectedItemIndex].getNUsage() > 0){
+        if(player.team[0]->moves[selectedItemIndex].getNUsage() > 0){
             haveYouSelectedAnAction = selectedItemIndex+1;
             resetMenu();
         }else{
@@ -181,12 +187,12 @@ void Battle::resetMenu() {
 }
 
 void Battle::updateUI(Player& player) {
-    myHealthBar.setSize(sf::Vector2f(80*player.team[0].getCurrentHp()/player.team[0].getMaxHp(),10.f));
-    enemysHealthBar.setSize(sf::Vector2f(80 * wildPokemon.getCurrentHp()/wildPokemon.getMaxHp(),10.f));
+    myHealthBar.setSize(sf::Vector2f(80*player.team[0]->getCurrentHp()/player.team[0]->getMaxHp(),10.f));
+    enemysHealthBar.setSize(sf::Vector2f(80 * wildPokemon->getCurrentHp()/wildPokemon->getMaxHp(),10.f));
 }
 
 void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
-    if(player.team[0].isAlive() && wildPokemon.isAlive()){
+    if(player.team[0]->isAlive() && wildPokemon->isAlive()){
 //battle cycle
         draw(window, player);
         if(haveYouSelectedAnAction == 0){
@@ -194,47 +200,43 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
 
         }else{
             //wildPokemon does a random move
-            if(player.team[0].getSpeed() > wildPokemon.getSpeed()){
+            if(player.team[0]->getSpeed() > wildPokemon->getSpeed()){
                 //i go first
-                player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
-                if(wildPokemon.isAlive() && player.team[0].isAlive()){
+                player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
+                if(wildPokemon->isAlive() && player.team[0]->isAlive()){
                     //wildPokemon does a random move
-                    int r = rand()%4;
-                    wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
+                    wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
                 }
-            }else if(player.team[0].getSpeed() < wildPokemon.getSpeed()){
+            }else if(player.team[0]->getSpeed() < wildPokemon->getSpeed()){
                 //wildPokemon goes first
-                int r = rand()%4;
-                wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
-                if(wildPokemon.isAlive() && player.team[0].isAlive())
-                    player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
+                wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                if(wildPokemon->isAlive() && player.team[0]->isAlive())
+                    player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
             }else{
-                int r = rand()%2;
-                if (r==0){
+                if (Dice::random(2)==0){
                     //i go first
-                    player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
-                    if(wildPokemon.isAlive() && player.team[0].isAlive()){
+                    player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
+                    if(wildPokemon->isAlive() && player.team[0]->isAlive()){
                         //wildPokemon does a random move
-                        int r = rand()%4;
-                        wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
+                        wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
                     }
                 }else{
-                    int r = rand()%4;
-                    wildPokemon.doMove(wildPokemon.moves[r], player.team[0], window);
-                    if(wildPokemon.isAlive() && player.team[0].isAlive())
-                        player.team[0].doMove(player.team[0].moves[haveYouSelectedAnAction-1], wildPokemon, window);
+                    wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                    if(wildPokemon->isAlive() && player.team[0]->isAlive())
+                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
                 }
             }
             haveYouSelectedAnAction = 0;
         }
 
     }else{
+        delete wildPokemon;
         GameState::changeState(STATE_MAP);
         GameState::resetTimer();
     }
 }
 
-void Battle::setWildPokemon(Pokemon& pokemon) {
+void Battle::setWildPokemon(Pokemon* pokemon) {
     wildPokemon = pokemon;
-    wildPokemon.sprite.setTexture(wildPokemon.texture);
+    wildPokemon->sprite.setTexture(wildPokemon->texture);
 }

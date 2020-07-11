@@ -22,7 +22,7 @@ public:
     void resetMenu();
     void battleEngine(sf::RenderWindow& window, Player& player);//FIXME change its name
 
-    static void setWildPokemon(Pokemon& pokemon);
+    static void setWildPokemon(Pokemon* pokemon);
 
     sf::Sprite background;
     sf::RectangleShape menuBox;
@@ -40,7 +40,7 @@ public:
     int haveYouSelectedAnAction = 0;
 private:
     void updateUI(Player& player);
-    static Pokemon wildPokemon;
+    static Pokemon* wildPokemon;
     int menuPageIndex = 1;
     //page 0 -> actions page 1 -> moves page 2 -> show team to change active pokemon
     int selectedItemIndex = 0;

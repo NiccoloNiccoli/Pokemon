@@ -5,6 +5,7 @@
 #define POKEMON_TRAINER_H
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <deque>
 #include "Pokemon.h"
 #include "debug.h"
 
@@ -27,8 +28,8 @@ public:
 
 
     sf::Sprite overworldSprite;
-    std::vector<Pokemon> team;
-
+    /*std::vector<Pokemon> team;*/
+    std::vector<Pokemon*> team;
 
 protected:
     bool initOverworldSprite(std::string fileName);

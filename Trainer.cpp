@@ -13,9 +13,13 @@ Trainer::Trainer(int id, int x, int y, std::string trainerName, std::string spri
     name = trainerName;
     initOverworldSprite(spriteName);
     //FIXME-non so perché faccia così
-    Pokemon pika("pikachu", 20);
+    Pokemon* pika;
+    pika = new Pokemon("pikachu", 20);
     team.push_back(pika);
-    team[0].sprite.setTexture(team[0].texture);
+#ifdef DEBUG
+    std::cout<<team[0]->getName()<<" is a beautiful pokemon(?)"<<std::endl;
+#endif
+    //team[0].sprite.setTexture(team[0].texture);
 }
 
 int Trainer::getMoney() const {
