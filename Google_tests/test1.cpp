@@ -56,6 +56,6 @@ TEST(PokemonTest, DamageDoneByEveryMove){
     Move quickAttack("quick_attack");
     damageMax = (((2/5 * 50 + 2)*40 * (((2*48+31)*50/100)+5) / (((2*30+31)*50/100)+5) + 2 )/50 * 1.5*1.1);
     damageMin = (((2/5 * 50 + 2)*40 * (((2*48+31)*50/100)+5) / (((2*30+31)*50/100)+5) + 2 )/50 * 0.85);
-    realDamage = squirtle50.doMove(thunder,pikachu50,window);
+    realDamage = squirtle50.doMove(quickAttack,pikachu50,window);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
 }

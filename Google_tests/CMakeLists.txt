@@ -3,9 +3,10 @@ project(Google_tests)
 
 # 'lib' is the folder with Google Test sources
 add_subdirectory(lib)
+find_package(GTest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # 'Google_Tests_run' is the target name
 # 'test1.cpp tests2.cpp' are source files with tests
-add_executable(Google_Tests_run test1.cpp main.cpp)
-target_link_libraries(Google_Tests_run gtest gtest_main sfml-system sfml-window sfml-graphics core)
+add_executable(runAllTests main.cpp test1.cpp)
+target_link_libraries(runAllTests gtest gtest_main core)
