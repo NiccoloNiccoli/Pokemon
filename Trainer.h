@@ -5,7 +5,6 @@
 #define POKEMON_TRAINER_H
 #include <string>
 #include <SFML/Graphics.hpp>
-#include <deque>
 #include "Pokemon.h"
 #include "debug.h"
 
@@ -25,10 +24,9 @@ public:
 
     int winMoney(Trainer& opponent, int prize); //Print how much money you've won
 
-
+    const std::string &getName() const;
 
     sf::Sprite overworldSprite;
-    /*std::vector<Pokemon> team;*/
     std::vector<Pokemon*> team;
 
 protected:
@@ -42,9 +40,6 @@ protected:
     int money;
     int xPosition;
     int yPosition;
-    const int width = 32;
-    const int height = 32;
-
 };
 
 

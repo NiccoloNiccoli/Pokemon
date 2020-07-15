@@ -9,7 +9,8 @@
 #include "Player.h"
 #include "Dice.h"
 
-Pokemon* Battle::wildPokemon = new Pokemon("Pikachu",1);
+Pokemon* Battle::wildPokemon = nullptr;
+Trainer* Battle::trainer = nullptr;
 
 Battle::Battle(Player& player){
     if(!background_texture.loadFromFile("../Textures/background.png")){
@@ -69,8 +70,19 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
         window.draw(i);
     player.team[0]->sprite.setPosition(40,100);
     window.draw(player.team[0]->sprite);
-    wildPokemon->sprite.setPosition(240,0);
-    wildPokemon->draw(window);
+    myPokemonName.setString(player.team[0]->getName());
+    myPokemonLevel.setString("L." + std::to_string(player.team[0]->getLevel()));
+    if(trainer == nullptr && wildPokemon != nullptr){
+        wildPokemon->sprite.setPosition(240,0);
+        wildPokemon->draw(window);
+        enemysPokemonName.setString(wildPokemon->getName());
+        enemysPokemonLevel.setString("L. " + std::to_string(wildPokemon->getLevel()));
+    }else{
+        trainer->team[0]->sprite.setPosition(240,0);
+        trainer->team[0]->draw(window);
+        enemysPokemonName.setString(trainer->team[0]->getName());
+        enemysPokemonLevel.setString("L. " + std::to_string(trainer->team[0]->getLevel()));
+    }
     updateUI(player);
     window.draw(myHealthBarBox);
     window.draw(enemysHealthBarBox);
@@ -78,10 +90,6 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
     window.draw(enemysHealthBar);
     window.draw(myPokemonName);
     window.draw(enemysPokemonName);
-    myPokemonName.setString(player.team[0]->getName());
-    enemysPokemonName.setString(wildPokemon->getName());
-    myPokemonLevel.setString("L." + std::to_string(player.team[0]->getLevel()));
-    enemysPokemonLevel.setString("L. " + std::to_string(wildPokemon->getLevel()));
     window.draw(myPokemonLevel);
     window.draw(enemysPokemonLevel);
 }
@@ -128,14 +136,33 @@ void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
                 }
                 break;
             case 2:
-                player.catchPokemon(wildPokemon);
-            case 3:
-                GameState::changeState(STATE_MAP);
-                GameState::resetTimer();
+                if(trainer== nullptr){
+                    if(player.catchPokemon(wildPokemon)){
+                        GameState::changeState(STATE_MAP);
+                        GameState::resetTimer();
 #ifdef DEBUG
-                for(auto i:player.team)
-                    std::cout<<i->getName()<<std::endl;
+                        for(auto i:player.team)
+                            std::cout<<i->getName()<<std::endl;
 #endif
+                    }
+                }else{
+#ifdef DEBUG
+                    std::cout<<"You can't catch "<<trainer->getName()<<"'s pokemon!"<<std::endl;
+#endif
+                }
+
+                break;
+            case 3:
+                if(trainer == nullptr){
+                    delete wildPokemon;
+                    GameState::changeState(STATE_MAP);
+                    GameState::resetTimer();
+                }else{
+#ifdef DEBUG
+                    std::cout<<"You can't run away"<<std::endl;
+#endif
+                }
+
                 break;
         }
     }else if(menuPageIndex == 1){
@@ -188,55 +215,108 @@ void Battle::resetMenu() {
 
 void Battle::updateUI(Player& player) {
     myHealthBar.setSize(sf::Vector2f(80*player.team[0]->getCurrentHp()/player.team[0]->getMaxHp(),10.f));
-    enemysHealthBar.setSize(sf::Vector2f(80 * wildPokemon->getCurrentHp()/wildPokemon->getMaxHp(),10.f));
+    if(trainer == nullptr && wildPokemon != nullptr)
+        enemysHealthBar.setSize(sf::Vector2f(80 * wildPokemon->getCurrentHp()/wildPokemon->getMaxHp(),10.f));
+    else
+        enemysHealthBar.setSize(sf::Vector2f(80 * trainer->team[0]->getCurrentHp()/trainer->team[0]->getMaxHp(),10.f));
 }
 
 void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
-    if(player.team[0]->isAlive() && wildPokemon->isAlive()){
+    if(trainer == nullptr && wildPokemon != nullptr){ //battle against a wild Pokemon
+        if(player.team[0]->isAlive() && wildPokemon->isAlive()){
 //battle cycle
-        draw(window, player);
-        if(haveYouSelectedAnAction == 0){
+            draw(window, player);
+            if(haveYouSelectedAnAction == 0){
 
 
-        }else{
-            //wildPokemon does a random move
-            if(player.team[0]->getSpeed() > wildPokemon->getSpeed()){
-                //i go first
-                player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
-                if(wildPokemon->isAlive() && player.team[0]->isAlive()){
-                    //wildPokemon does a random move
-                    wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
-                }
-            }else if(player.team[0]->getSpeed() < wildPokemon->getSpeed()){
-                //wildPokemon goes first
-                wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
-                if(wildPokemon->isAlive() && player.team[0]->isAlive())
-                    player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
             }else{
-                if (Dice::random(2)==0){
+                //wildPokemon does a random move
+                if(player.team[0]->getSpeed() > wildPokemon->getSpeed()){
                     //i go first
                     player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
                     if(wildPokemon->isAlive() && player.team[0]->isAlive()){
                         //wildPokemon does a random move
                         wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
                     }
-                }else{
+                }else if(player.team[0]->getSpeed() < wildPokemon->getSpeed()){
+                    //wildPokemon goes first
                     wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
                     if(wildPokemon->isAlive() && player.team[0]->isAlive())
                         player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
+                }else{
+                    if (Dice::random(2)==0){
+                        //i go first
+                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
+                        if(wildPokemon->isAlive() && player.team[0]->isAlive()){
+                            //wildPokemon does a random move
+                            wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                        }
+                    }else{
+                        wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                        if(wildPokemon->isAlive() && player.team[0]->isAlive())
+                            player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *wildPokemon, window);
+                    }
                 }
+                haveYouSelectedAnAction = 0;
             }
-            haveYouSelectedAnAction = 0;
+
+        }else{
+            delete wildPokemon;
+            GameState::changeState(STATE_MAP);
+            GameState::resetTimer();
+        }
+    }else{ //battle against a trainer
+        //TODO quando vinci guadagni dei soldi
+        if(player.team[0]->isAlive() && trainer->team[0]->isAlive()){
+//battle cycle
+            draw(window, player);
+            if(haveYouSelectedAnAction == 0){
+
+            }else{
+                //enemy does a random move
+                if(player.team[0]->getSpeed() > trainer->team[0]->getSpeed()){
+                    //i go first
+                    player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *trainer->team[0], window);
+                    if(trainer->team[0]->isAlive() && player.team[0]->isAlive()){
+                        //enemy does a random move
+                        trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                    }
+                }else if(player.team[0]->getSpeed() < trainer->team[0]->getSpeed()){
+                    //wildPokemon goes first
+                    trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                    if(trainer->team[0]->isAlive() && player.team[0]->isAlive())
+                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *trainer->team[0], window);
+                }else{
+                    if (Dice::random(2)==0){
+                        //i go first
+                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *trainer->team[0], window);
+                        if(trainer->team[0]->isAlive() && player.team[0]->isAlive()){
+                            //wildPokemon does a random move
+                            trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                        }
+                    }else{
+                        trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                        if(trainer->team[0]->isAlive() && player.team[0]->isAlive())
+                            player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction-1], *trainer->team[0], window);
+                    }
+                }
+                haveYouSelectedAnAction = 0;
+            }
+
+        }else{
+
+            GameState::changeState(STATE_MAP);
+            GameState::resetTimer();
         }
 
-    }else{
-        delete wildPokemon;
-        GameState::changeState(STATE_MAP);
-        GameState::resetTimer();
     }
+
 }
 
 void Battle::setWildPokemon(Pokemon* pokemon) {
     wildPokemon = pokemon;
-    wildPokemon->sprite.setTexture(wildPokemon->texture);
+}
+
+void Battle::setTrainer(Trainer* enemy){
+    trainer = enemy;
 }

@@ -10,14 +10,17 @@
 #include <SFML/Graphics.hpp>
 #include "Tile.h"
 #include "Trainer.h"
+#include "Player.h"
 #include "debug.h"
 
 class Map : public sf::Drawable, public sf::Transformable {
 public:
     Map(const std::string& tilesetName, unsigned int mapColumns, unsigned int mapRows,
         const std::string& mapName, sf::Vector2u tileSize_ = sf::Vector2u(16,16));
-    void drawUI(sf::RenderWindow& window);
     void checkCollisions(Trainer& player);
+    void drawUI(sf::RenderWindow& window);
+    void drawNPC(sf::RenderWindow& window);
+    Trainer* lookForNearestEnemy(const Player& player);
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void loadMap(const std::string& mapName);
@@ -38,7 +41,7 @@ private:
 
     unsigned int averagePokemonLevel;
     std::vector<std::string> wildPokemons;
-    //TODO vector con gli NPC che si trovano sulla mappa
+    std::vector<Trainer*> npc;
 };
 
 

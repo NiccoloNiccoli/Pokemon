@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cmath>
 #include "Map.h"
 #include "GameState.h"
 #include "Dice.h"
@@ -56,6 +57,19 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
         wildPokemons.emplace_back("Pikachu");
         wildPokemons.emplace_back("Squirtle");
         wildPokemons.emplace_back("Charmander");
+        Trainer* rival;
+        rival = new Trainer(1,390,140,"Rival","blue.png");
+        npc.emplace_back(rival);
+        Trainer* lance;
+        lance = new Trainer(2, 144, 30, "Lance", "lance.png");
+        npc.emplace_back(lance);
+        Trainer* girl01;
+        girl01 = new Trainer (3, 200, 150, "Giulia", "girl.png");
+        npc.emplace_back(girl01);
+#ifdef DEBUG
+        for(auto i : npc)
+            std::cout<<i->getName()<<std::endl;
+#endif
     }
 
 #ifdef DEBUG
@@ -69,8 +83,8 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
 
 void Map::loadMap(const std::string &mapName) {
     std::ifstream mapFile("../Maps/" + mapName + ".txt");
-    int currentTileValue;
     if(mapFile.is_open()){
+        int currentTileValue;
         while(mapFile >> currentTileValue){
             Tile currentTile(currentTileValue);
             tiles.push_back(currentTile);
@@ -96,6 +110,17 @@ void Map::checkCollisions(Trainer& player){
             player.overworldSprite.setPosition(columns*tileSize.x - player.overworldSprite.getGlobalBounds().width, player.overworldSprite.getPosition().y);
         if(player.overworldSprite.getPosition().y + player.overworldSprite.getGlobalBounds().height > rows*tileSize.y)
             player.overworldSprite.setPosition(player.overworldSprite.getPosition().x, rows*tileSize.y - player.overworldSprite.getGlobalBounds().height);
+
+        //you can't walk on NPCs
+        for(auto i : npc){
+            if((((player.overworldSprite.getPosition().x + player.overworldSprite.getGlobalBounds().width) > i->overworldSprite.getPosition().x) &&
+               (player.overworldSprite.getPosition().x < (i->overworldSprite.getPosition().x + i->overworldSprite.getGlobalBounds().width))) &&
+            (((player.overworldSprite.getPosition().y + player.overworldSprite.getGlobalBounds().height) > i->overworldSprite.getPosition().y) &&
+             (player.overworldSprite.getPosition().y < (i->overworldSprite.getPosition().y + i->overworldSprite.getGlobalBounds().height))))
+
+                player.overworldSprite.setPosition(oldPlayerPosition);
+        }
+
 
         int column = (player.overworldSprite.getPosition().x + player.overworldSprite.getGlobalBounds().width/2)/16;
         int row = (player.overworldSprite.getPosition().y+ player.overworldSprite.getGlobalBounds().height/2)/16;
@@ -133,4 +158,27 @@ void Map::drawUI(sf::RenderWindow &window) {
         window.draw(box);
         window.draw(name);
     }
+}
+
+void Map::drawNPC(sf::RenderWindow &window) {
+    for(auto i : npc)
+        window.draw(i->overworldSprite);
+}
+
+Trainer *Map::lookForNearestEnemy(const Player& player) {
+    Trainer* nearestTrainer = nullptr;
+    if(npc.size() > 0) {
+        double distance = INT64_MAX; //distance = actualDistance^2, INT64_MAX = 9.22337e+018
+        for (auto i : npc) {
+            if (distance > (pow(player.overworldSprite.getPosition().x - i->overworldSprite.getPosition().x, 2) +
+                            pow(player.overworldSprite.getPosition().y - i->overworldSprite.getPosition().y, 2))) {
+                distance = pow(player.overworldSprite.getPosition().x - i->overworldSprite.getPosition().x, 2) +
+                           pow(player.overworldSprite.getPosition().y - i->overworldSprite.getPosition().y, 2);
+                nearestTrainer = i;
+            }
+        }
+        if(distance > 1600) //if the distance between the player and the nearest enemy is more than 40 (player is wide 17) you can't fight with him
+            nearestTrainer = nullptr;
+    }
+    return nearestTrainer;
 }

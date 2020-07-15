@@ -13,7 +13,7 @@ class Player : public Trainer {
 public:
     Player(int id, int x, int y, std::string trainerName, std::string spriteName = "player.png");
 
-    void fight(Trainer& trainer); //TODO fight-catch-escape
+    void fight(Trainer* enemy); //TODO fight-catch-escape
 
     bool catchPokemon(Pokemon* pokemon); //True if pokemon get caught, False if not
 

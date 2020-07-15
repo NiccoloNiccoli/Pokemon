@@ -26,9 +26,6 @@ int main() {
     Map map("tileset1_1.png", 27, 15, "MappaDiProva");
 
 Player player(0,40,70,"Niccolò");
-Trainer rival(1,390,140,"Rival","blue.png");
-Trainer lance(2, 144, 30, "Lance", "lance.png");
-Trainer girl(3, 200, 150, "Giulia", "girl.png");
 Battle battle(player);
 //fixme - sono scomparsi i pulsanti della battaglia!!!!
 
@@ -54,7 +51,7 @@ Battle battle(player);
                 }else if(GameState::getState()==STATE_MAP){
                     if(event.type == sf::Event::KeyReleased){
                         if(event.key.code == sf::Keyboard::Enter){
-                            player.fight(rival);
+                            player.fight(map.lookForNearestEnemy(player));
                         }
                     }
                 }
@@ -64,23 +61,12 @@ Battle battle(player);
             window.setView(view);
             if(GameState::getState()!=STATE_BATTLE) {
                 player.move();
-
-                /* if(position != sf::Vector2f(player.overworldSprite.getPosition()))
-                     hasPlayerMoved = true;
-                 else
-                     hasPlayerMoved = false;
- */
                 map.checkCollisions(player);
-
                 //render game elements
-
                 window.draw(map);
                 window.draw(player.overworldSprite);
-                window.draw(rival.overworldSprite);
-                window.draw(lance.overworldSprite);
-                window.draw(girl.overworldSprite);
+                map.drawNPC(window);
                 map.drawUI(window);
-
             }
 
 

@@ -15,6 +15,7 @@
 class Battle {
 public:
     Battle(Player& player);
+    Battle(Player& player, Trainer* enemy);
     void draw(sf::RenderWindow& window, Player& player);
     void moveUp();
     void moveDown();
@@ -23,6 +24,7 @@ public:
     void battleEngine(sf::RenderWindow& window, Player& player);//FIXME change its name
 
     static void setWildPokemon(Pokemon* pokemon);
+    static void setTrainer(Trainer* enemy);
 
     sf::Sprite background;
     sf::RectangleShape menuBox;
@@ -41,6 +43,7 @@ public:
 private:
     void updateUI(Player& player);
     static Pokemon* wildPokemon;
+    static Trainer* trainer;
     int menuPageIndex = 1;
     //page 0 -> actions page 1 -> moves page 2 -> show team to change active pokemon
     int selectedItemIndex = 0;

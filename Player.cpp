@@ -5,6 +5,9 @@
 #include <cmath>
 #include <iostream>
 #include "Player.h"
+#include "Battle.h"
+#include "Dice.h"
+#include "GameState.h"
 
 Player::Player(int id, int x, int y, std::string trainerName, std::string spriteName) : Trainer(id, x, y, trainerName, spriteName) {
 
@@ -25,19 +28,19 @@ void Player::move(){
     yPosition = getYPosition();
 }
 
-void Player::fight(Trainer &enemy) {
-   if ((abs(xPosition - enemy.getXPosition())< 30.f) && (abs(yPosition - enemy.getYPosition()) < 40.f)){
+void Player::fight(Trainer* enemy) {
+    if(enemy != nullptr){
 #ifdef DEBUG
-       std::cout<<"In battle range, xpos "<<xPosition<<" enemyxpos "<<enemy.getXPosition()<<std::endl;
+        std::cout<<"In battle range, "<<enemy->getName()<<" is ready to fight"<<std::endl;
+        Battle::setTrainer(enemy);
+        GameState::changeState(STATE_BATTLE);
 #endif
-   }
-
+    }
    }
 
 bool Player::catchPokemon(Pokemon* pokemon) {
     if(team.size()<6){
-        int r = rand()%10;
-        if(r != 0){
+        if(Dice::random(10) != 0){
             //FIXME
             team.push_back(pokemon);
 #ifdef DEBUG

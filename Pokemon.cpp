@@ -14,14 +14,17 @@
 
 Pokemon::Pokemon(const std::string& pokemonName, unsigned int lvl){
   loadData(pokemonName);
-  if(!texture.loadFromFile("../Pokemons/Textures/" + pokemonName + ".png")){
-      //TODO handle error
-  }
+    if(!texture.loadFromFile("../Pokemons/Textures/" + pokemonName + ".png")){
+        //TODO handle error
+    }
   texture.setSmooth(true);
   sprite.setTexture(texture);
   sprite.setScale(0.5f, 0.5f);
   //TODO load ability, if it's wild,
-  level = lvl;
+  if(lvl <= 100 && lvl >= 1)
+    level = lvl;
+  else
+      level = 1;
   maxHP = ((2*maxHP+31)*level/100)+level + 10;
   attack = ((2*attack+31)*level/100)+5;
   defense = ((2*defense+31)*level/100)+5;
@@ -30,7 +33,7 @@ Pokemon::Pokemon(const std::string& pokemonName, unsigned int lvl){
 
 }
 
-bool Pokemon::loadData (const std::string& pokemonName){
+void Pokemon::loadData (const std::string& pokemonName){
     std::string type1, type2;
     std::ifstream file("../Pokemons/" + pokemonName + ".txt");
     if(file.is_open()){
@@ -70,7 +73,7 @@ void Pokemon::draw(sf::RenderWindow& window){
     window.draw(sprite);
 }
 
-bool Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
+int Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
     move.setNUsage(move.getNUsage()-1);
 #ifdef DEBUG
     std::cout<<move.getNUsage()<<" uses left"<<std::endl;
@@ -111,11 +114,12 @@ bool Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
         std::cout<<enemy.name<<" has "<<enemy.currentHP<<" / "<<enemy.maxHP<<" HP"<<std::endl;
 #endif
         move.playAnimation(window);
+        return damage;
     }else{
 #ifdef DEBUG
         std::cerr<<"Missed!"<<std::endl;
 #endif
-        return false;
+        return -1;
     }
 }
 
@@ -123,8 +127,9 @@ int Pokemon::getDefense() const {
     return defense;
 }
 
-void Pokemon::loseHp(const int damage) {
+int Pokemon::loseHp(const int damage) {
     currentHP -= damage;
+    return currentHP;
 }
 
 int Pokemon::getCurrentHp() const {
@@ -156,4 +161,8 @@ bool Pokemon::isAlive(){
         alive = false;
     }
     return alive;
+}
+
+int Pokemon::getAttack() const {
+    return attack;
 }

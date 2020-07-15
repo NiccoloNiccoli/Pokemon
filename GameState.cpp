@@ -4,6 +4,7 @@
 
 #include "GameState.h"
 #include "Battle.h"
+#include "Map.h"
 
 State GameState::state = STATE_MAP;
 sf::Clock GameState::timer;
@@ -12,7 +13,6 @@ void GameState::changeState(State nextState) {
         switch (nextState){
             case STATE_MAP:
                 state = STATE_MAP;
-                //TODO-creare degli allenatori da mettere sulla mappa, caricarli/passarli a un vettore dentro map
                 //something
                 break;
 

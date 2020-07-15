@@ -19,7 +19,6 @@ Trainer::Trainer(int id, int x, int y, std::string trainerName, std::string spri
 #ifdef DEBUG
     std::cout<<team[0]->getName()<<" is a beautiful pokemon(?)"<<std::endl;
 #endif
-    //team[0].sprite.setTexture(team[0].texture);
 }
 
 int Trainer::getMoney() const {
@@ -53,4 +52,8 @@ int Trainer::getXPosition() const {
 
 int Trainer::getYPosition() const {
     return overworldSprite.getPosition().y;
+}
+
+const std::string &Trainer::getName() const {
+    return name;
 }
