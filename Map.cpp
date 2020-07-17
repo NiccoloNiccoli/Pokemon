@@ -48,9 +48,10 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     name.setString(mapName);
     name.setCharacterSize(30);
     name.setFillColor(sf::Color::Black);
-    font.loadFromFile("../pokemon_pixel_font.ttf");
+    font.loadFromFile("../pkmnem.ttf");
     name.setFont(font);
-    name.setPosition(box.getPosition().x + 7, box.getPosition().y - 9);
+    name.setPosition(box.getPosition().x + 7, box.getPosition().y);
+    name.setScale(0.8f,0.8f);
 
     if(mapName == "MappaDiProva"){
         averagePokemonLevel = 20;
@@ -58,13 +59,13 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
         wildPokemons.emplace_back("Squirtle");
         wildPokemons.emplace_back("Charmander");
         Trainer* rival;
-        rival = new Trainer(1,390,140,"Rival","blue.png");
+        rival = new Trainer(1,390,140);
         npc.emplace_back(rival);
         Trainer* lance;
-        lance = new Trainer(2, 144, 30, "Lance", "lance.png");
+        lance = new Trainer(2, 144, 30);
         npc.emplace_back(lance);
         Trainer* girl01;
-        girl01 = new Trainer (3, 200, 150, "Giulia", "girl.png");
+        girl01 = new Trainer (3, 200, 150);
         npc.emplace_back(girl01);
 #ifdef DEBUG
         for(auto i : npc)
@@ -135,8 +136,9 @@ void Map::checkCollisions(Trainer& player){
 #ifdef DEBUG
                     std::cout<<"You have found "<<wildPokemon->getName()<<" at level "<<wildPokemon->getLevel()<<std::endl;
 #endif
-                    GameState::changeState(STATE_BATTLE);
                     Battle::setWildPokemon(wildPokemon);
+                    GameState::changeState(STATE_BATTLE);
+
                 }
                 //else you are already in a battle
 #ifdef DEBUG

@@ -12,15 +12,20 @@ void GameState::changeState(State nextState) {
     if(nextState!=state){
         switch (nextState){
             case STATE_MAP:
+                timer.restart();
                 state = STATE_MAP;
                 //something
                 break;
 
             case STATE_BATTLE:
+                timer.restart();
+                //FIXME
+                Battle::changeBattleLog("Choose what to do!");
                 state = STATE_BATTLE;
                 break;
 
             case STATE_POKEMON_CENTER:
+                timer.restart();
                 state = STATE_POKEMON_CENTER;
                 //tp to pokemon center
                 break;
@@ -53,3 +58,11 @@ void GameState::resetTimer() {
 float GameState::getTime() {
     return timer.getElapsedTime().asSeconds();
 }
+
+/*
+void GameState::wait(float seconds) {
+    timer.restart();
+    while(timer.getElapsedTime().asSeconds() < seconds){
+        //just wait
+    }
+}*/

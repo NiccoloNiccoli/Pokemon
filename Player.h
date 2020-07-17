@@ -11,7 +11,7 @@
 
 class Player : public Trainer {
 public:
-    Player(int id, int x, int y, std::string trainerName, std::string spriteName = "player.png");
+    Player(int id, int x, int y, std::string trainerName);
 
     void fight(Trainer* enemy); //TODO fight-catch-escape
 

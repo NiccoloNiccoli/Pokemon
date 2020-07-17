@@ -3,37 +3,70 @@
 //
 
 #include "Trainer.h"
+#include "Battle.h"
+#include "GameState.h"
 #include <SFML/Window.hpp>
 #include <iostream>
 
-Trainer::Trainer(int id, int x, int y, std::string trainerName, std::string spriteName){
-    id = 0;
+Trainer::Trainer(int ID, int x, int y){
+    id = ID;
+    std::string spriteName;
+    std::string trainerName;
+    switch(id){
+        case 0:
+            //player
+            spriteName = "player.png";
+            Pokemon* pika;
+            pika = new Pokemon ("Pikachu",20);
+            team.emplace_back(pika);
+            money = 1000;
+            break;
+        case 1:
+            //rival
+            trainerName = "Blue";
+            spriteName = "blue.png";
+            Pokemon* squirtle1;
+            squirtle1 = new Pokemon ("Squirtle",20);
+            team.emplace_back(squirtle1);
+            money = 1000;
+            break;
+        case 2:
+            //lance
+            trainerName = "Lance";
+            spriteName = "lance.png";
+            Pokemon* charmander2;
+            charmander2 = new Pokemon ("charmander",20);
+            team.emplace_back(charmander2);
+            money = 1000;
+            break;
+        case 3:
+            //girl
+            trainerName = "Megan";
+            spriteName = "girl.png";
+            Pokemon* pikachu3;
+            pikachu3 = new Pokemon ("Pikachu",15);
+            team.emplace_back(pikachu3);
+            money = 1000;
+            break;
+    }
     xPosition = x;
     yPosition = y;
     name = trainerName;
     initOverworldSprite(spriteName);
-    //FIXME-non so perché faccia così
-    Pokemon* pika;
-    pika = new Pokemon("pikachu", 20);
-    team.push_back(pika);
-#ifdef DEBUG
-    std::cout<<team[0]->getName()<<" is a beautiful pokemon(?)"<<std::endl;
-#endif
 }
 
-int Trainer::getMoney() const {
-    return money;
-}
-
-void Trainer::setMoney(int money) {
-    Trainer::money = money;
-}
-int Trainer::winMoney(Trainer& opponent, int prize){
-    if(opponent.getMoney() > 0){
+int Trainer::winMoney(Trainer* opponent){
+    //TODO impedire che si possa chiedere i soldi più volte di fila alla stessa persona solo perché ha il pokemon morto
+    if(opponent->money > 0){
+        int prize;
         //You win always 10% of opponent's max money
-        prize = opponent.getMoney() * 0.1;
-        opponent.setMoney(opponent.getMoney()-prize);
-        Trainer::setMoney(prize);
+        prize = opponent->money * 0.1;
+        opponent->money -= prize;
+        Trainer::money += prize;
+        Battle::changeBattleLog(name+" has won "+opponent->name+"$!");
+#ifdef DEBUG
+        std::cout<<name<<" ha vinto "<<prize<<std::endl;
+#endif
     }
 }
 

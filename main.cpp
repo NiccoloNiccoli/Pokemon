@@ -39,9 +39,9 @@ Battle battle(player);
                 if(GameState::getState()==STATE_BATTLE){
                     if(event.type == sf::Event::KeyReleased){
                         if(event.key.code == sf::Keyboard::Up){
-                            battle.moveUp();
+                            battle.moveUp(player);
                         }else if(event.key.code == sf::Keyboard::Down){
-                            battle.moveDown();
+                            battle.moveDown(player);
                         }else if(event.key.code == sf::Keyboard::Enter){
                             battle.refreshMenu(player,window);
                         }else if(event.key.code == sf::Keyboard::BackSpace){

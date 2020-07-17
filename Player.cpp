@@ -9,8 +9,8 @@
 #include "Dice.h"
 #include "GameState.h"
 
-Player::Player(int id, int x, int y, std::string trainerName, std::string spriteName) : Trainer(id, x, y, trainerName, spriteName) {
-
+Player::Player(int id, int x, int y, std::string trainerName) : Trainer(id, x, y) {
+    name = trainerName;
 
 }
 
@@ -32,9 +32,9 @@ void Player::fight(Trainer* enemy) {
     if(enemy != nullptr){
 #ifdef DEBUG
         std::cout<<"In battle range, "<<enemy->getName()<<" is ready to fight"<<std::endl;
+#endif
         Battle::setTrainer(enemy);
         GameState::changeState(STATE_BATTLE);
-#endif
     }
    }
 
@@ -43,11 +43,14 @@ bool Player::catchPokemon(Pokemon* pokemon) {
         if(Dice::random(10) != 0){
             //FIXME
             team.push_back(pokemon);
+            Battle::changeBattleLog(pokemon->getName() + " is now in your team!");
 #ifdef DEBUG
             std::cout<<pokemon->getName()<<" is now in your team "<<std::endl;
 #endif
             return true;
         }else return false;
-    }else
+    }else{
+        Battle::changeBattleLog("Your team is full!");
+    }
         return false;
 }

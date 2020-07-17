@@ -10,11 +10,7 @@
 
 class Trainer {
 public:
-    Trainer(int id, int x, int y, std::string trainerName, std::string spriteName);
-
-    int getMoney() const;
-
-    void setMoney(int money);
+    Trainer(int ID, int x, int y);
 
     int getXPosition() const;
 
@@ -22,7 +18,7 @@ public:
     int getYPosition() const;
 
 
-    int winMoney(Trainer& opponent, int prize); //Print how much money you've won
+    int winMoney(Trainer* opponent); //Print how much money you've won
 
     const std::string &getName() const;
 

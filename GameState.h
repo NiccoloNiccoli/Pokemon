@@ -18,11 +18,14 @@ enum State{
 class GameState {
 public:
     static void changeState(State nextState);
+    /* FIXME maybe i don't need these
     static void changeState(State nextState, Trainer& player, Pokemon* wildPokemon);
     void draw(sf::RenderWindow window, Battle* battle,Trainer& player, Pokemon* wildPokemon);
+     static void wait(float seconds);*/
     static State getState();
     static float getTime();
     static void resetTimer();
+
 
 private:
     static State state;

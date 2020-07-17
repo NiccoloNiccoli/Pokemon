@@ -11,6 +11,8 @@
 #include <random>
 #include "Type.h"
 #include "Dice.h"
+#include "Battle.h"
+#include "GameState.h"
 
 Pokemon::Pokemon(const std::string& pokemonName, unsigned int lvl){
   loadData(pokemonName);
@@ -114,6 +116,7 @@ int Pokemon::doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window) {
         std::cout<<enemy.name<<" has "<<enemy.currentHP<<" / "<<enemy.maxHP<<" HP"<<std::endl;
 #endif
         move.playAnimation(window);
+        Battle::changeBattleLog(name + " used " + move.getName() + "!");
         return damage;
     }else{
 #ifdef DEBUG
@@ -154,10 +157,8 @@ int Pokemon::getLevel() const {
 
 bool Pokemon::isAlive(){
     if(currentHP <= 0) {
-#ifdef DEBUG
-        std::cout << name << " is dead :(" << std::endl;
-#endif
         currentHP = 0;
+        Battle::changeBattleLog(name + " fainted!");
         alive = false;
     }
     return alive;

@@ -15,20 +15,20 @@
 class Battle {
 public:
     Battle(Player& player);
-    Battle(Player& player, Trainer* enemy);
     void draw(sf::RenderWindow& window, Player& player);
-    void moveUp();
-    void moveDown();
+    void moveUp(Player& player);
+    void moveDown(Player& player);
     void refreshMenu(Player& player, sf::RenderWindow& window);//Fixme find a better way to do it
     void resetMenu();
     void battleEngine(sf::RenderWindow& window, Player& player);//FIXME change its name
 
     static void setWildPokemon(Pokemon* pokemon);
     static void setTrainer(Trainer* enemy);
+    static void changeBattleLog(std::string msg);
 
     sf::Sprite background;
     sf::RectangleShape menuBox;
-    sf::Text menuButtons[4];
+    sf::Text menuButtons[5];
     sf::RectangleShape myHealthBarBox;
     sf::RectangleShape enemysHealthBarBox;
     sf::RectangleShape myHealthBar;
@@ -37,9 +37,12 @@ public:
     sf::Text enemysPokemonName;
     sf::Text myPokemonLevel;
     sf::Text enemysPokemonLevel;
+    sf::RectangleShape dialogBox;
+    static sf::Text battleLog;
 
     //FIXME
     int haveYouSelectedAnAction = 0;
+    bool haveYouSwitchedYourPokemon = false;
 private:
     void updateUI(Player& player);
     static Pokemon* wildPokemon;
