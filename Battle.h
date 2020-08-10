@@ -18,7 +18,7 @@ public:
     void draw(sf::RenderWindow& window, Player& player);
     void moveUp(Player& player);
     void moveDown(Player& player);
-    void refreshMenu(Player& player, sf::RenderWindow& window);//Fixme find a better way to do it
+    void refreshMenu(Player& player);//Fixme find a better way to do it
     void resetMenu();
     void battleEngine(sf::RenderWindow& window, Player& player);//FIXME change its name
 

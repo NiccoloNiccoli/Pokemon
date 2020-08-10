@@ -2,13 +2,13 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="Pokemon" targetName="gmock" />
-      <config projectName="Pokemon" targetName="gmock_main" />
-      <config projectName="Pokemon" targetName="runAllTests" />
       <config projectName="Pokemon" targetName="gtest_main" />
+      <config projectName="Pokemon" targetName="core" />
+      <config projectName="Pokemon" targetName="gmock" />
+      <config projectName="Pokemon" targetName="runAllTests" />
       <config projectName="Pokemon" targetName="Pokemon" />
       <config projectName="Pokemon" targetName="gtest" />
-      <config projectName="Pokemon" targetName="core" />
+      <config projectName="Pokemon" targetName="gmock_main" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -17,20 +17,32 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="fixed">
-      <change afterPath="$PROJECT_DIR$/pkmnem.ttf" afterDir="false" />
+    <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Minor changes and improvement">
+      <change afterPath="$PROJECT_DIR$/Game.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Game.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/State.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/State.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StateBattle.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StateBattle.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StateMap.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StateMap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StatePokemonCenter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StatePokemonCenter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Battle.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Battle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Battle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GameState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameState.h" beforeDir="false" afterPath="$PROJECT_DIR$/GameState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameState.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GameState.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Map.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Player.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Player.h" beforeDir="false" afterPath="$PROJECT_DIR$/Player.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pokemon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Pokemon.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TileMap.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TileMap.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Trainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pokemon_pixel_font.ttf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +94,9 @@
         <option value="https://github.com/NiccoloNiccoli/Pokemon.git" />
       </set>
     </option>
+  </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-core" />
   </component>
   <component name="ProjectId" id="1cB9vGcfaZG0KPx6AMQsWptx9JW" />
   <component name="ProjectLevelVcsManager">
@@ -155,14 +170,14 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.core" />
+      <item itemvalue="Google Test.All in runAllTests" />
       <item itemvalue="CMake Application.Pokemon" />
-      <item itemvalue="CMake Application.runAllTests" />
+      <item itemvalue="CMake Application.core" />
       <item itemvalue="CMake Application.gmock" />
       <item itemvalue="CMake Application.gmock_main" />
       <item itemvalue="CMake Application.gtest" />
       <item itemvalue="CMake Application.gtest_main" />
-      <item itemvalue="Google Test.All in runAllTests" />
+      <item itemvalue="CMake Application.runAllTests" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -209,7 +224,9 @@
       <workItem from="1594820336671" duration="2170000" />
       <workItem from="1594823082694" duration="4732000" />
       <workItem from="1594909981901" duration="7358000" />
-      <workItem from="1594998802625" duration="5781000" />
+      <workItem from="1594998802625" duration="6076000" />
+      <workItem from="1595249010339" duration="3582000" />
+      <workItem from="1597064548202" duration="19095000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed collisions">
       <created>1592491206629</created>
@@ -288,7 +305,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594821979608</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Minor changes and improvement">
+      <created>1595004759238</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1595004759238</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -320,7 +344,8 @@
     <MESSAGE value="Minor bugs fixed" />
     <MESSAGE value="Dice class created" />
     <MESSAGE value="fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed" />
+    <MESSAGE value="Minor changes and improvement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor changes and improvement" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -340,14 +365,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="548" y="119" key="#com.intellij.ide.macro.MacrosDialog/0.0.1536.824@0.0.1536.824" timestamp="1594563530968" />
-    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1594724651942">
+    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1597081156353">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1594724651942" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1594235438033">
+    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1597081156353" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597092127427">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1594235438033" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1597092127427" />
     <state x="537" y="243" width="460" height="341" key="#com.intellij.tools.ToolEditorDialog" timestamp="1594563538090">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -376,22 +401,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="639" y="306" key="Github.ShareDialog/0.0.1536.824@0.0.1536.824" timestamp="1589994814526" />
-    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1595004663863">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1597092775275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1595004663863" />
-    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1595004663863">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597092775275" />
+    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1597092775275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1595004663863" />
-    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1595004663863">
+    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597092775275" />
+    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1597092775275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1595004663863" />
-    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1595004663863">
+    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597092775275" />
+    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1597092775275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1595004663863" />
+    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597092775275" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1593878438334">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -424,18 +449,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="55" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1594820635632" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1594822465681">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1595004800716">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1594822465681" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1595004800716" />
     <state x="433" y="141" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1592491160497">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="433" y="141" key="com.intellij.dvcs.ui.CompareBranchesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592491160497" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1594998804630">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1597092801332">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1594998804630" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1597092801332" />
     <state x="408" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595004080774">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

@@ -12,7 +12,6 @@
 #include "Type.h"
 #include "Dice.h"
 #include "Battle.h"
-#include "GameState.h"
 
 Pokemon::Pokemon(const std::string& pokemonName, unsigned int lvl){
   loadData(pokemonName);

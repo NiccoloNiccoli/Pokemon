@@ -5,9 +5,9 @@
 #include <iostream>
 #include <string>
 #include "Battle.h"
-#include "GameState.h"
 #include "Player.h"
 #include "Dice.h"
+#include "Game.h"
 
 Pokemon* Battle::wildPokemon = nullptr;
 Trainer* Battle::trainer = nullptr;
@@ -148,7 +148,7 @@ void Battle::moveDown(Player& player) {
 
 }
 
-void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
+void Battle::refreshMenu(Player& player) {
     if(menuPageIndex == 0){
         switch (selectedItemIndex){
             case 0:
@@ -206,8 +206,8 @@ void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
             case 2:
                 if(trainer== nullptr){
                     if(player.catchPokemon(wildPokemon)){
-                        GameState::changeState(STATE_MAP);
-                        GameState::resetTimer();
+                        Game::getInstance()->changeState(GameState::STATE_MAP);
+                        Game::resetTimer();
 #ifdef DEBUG
                         for(auto i:player.team)
                             std::cout<<i->getName()<<std::endl;
@@ -222,8 +222,8 @@ void Battle::refreshMenu(Player& player, sf::RenderWindow& window) {
                 if(trainer == nullptr){
                     battleLog.setString("Got away safely!");
                     delete wildPokemon;
-                    GameState::changeState(STATE_MAP);
-                    GameState::resetTimer();
+                    Game::getInstance()->changeState(GameState::STATE_MAP);
+                    Game::resetTimer();
                 }else{
                     battleLog.setString("You can't run away!");
                 }
@@ -359,8 +359,8 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
 
         }else{
             delete wildPokemon;
-            GameState::changeState(STATE_MAP);
-            GameState::resetTimer();
+            Game::getInstance()->changeState(GameState::STATE_MAP);
+            Game::resetTimer();
         }
     }else{ //battle against a trainer
         if(player.team[0]->isAlive() && trainer->team[0]->isAlive()){
@@ -440,8 +440,8 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
 
             }
             trainer = nullptr;
-            GameState::changeState(STATE_MAP);
-            GameState::resetTimer();
+            Game::getInstance()->changeState(GameState::STATE_MAP);
+            Game::resetTimer();
         }
 
     }

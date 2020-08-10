@@ -4,7 +4,6 @@
 
 #include "Trainer.h"
 #include "Battle.h"
-#include "GameState.h"
 #include <SFML/Window.hpp>
 #include <iostream>
 

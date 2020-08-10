@@ -5,7 +5,7 @@
 #ifndef POKEMON_TILE_H
 #define POKEMON_TILE_H
 
-enum TypeOfTile{
+enum TypeOfTile{ //TODO class enum
     WALKABLE,
     NOT_WALKABLE,
     POKEMON_CENTER_DOOR,

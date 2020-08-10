@@ -6,8 +6,8 @@
 #include <iostream>
 #include <cmath>
 #include "Map.h"
-#include "GameState.h"
 #include "Dice.h"
+#include "Game.h"
 
 Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int mapRows, const std::string &mapName,
          sf::Vector2u tileSize_) {
@@ -129,16 +129,15 @@ void Map::checkCollisions(Trainer& player){
             player.overworldSprite.setPosition(oldPlayerPosition);
         }else if(tiles[column + row * 27].getType() == TALL_GRASS){
             //FIXME do it better
-            if(GameState::getState()!=STATE_BATTLE){
-                if(GameState::getTime() > 5.f + Dice::random(5)) {
+            if(!(Game::getInstance()->checkState(GameState::STATE_BATTLE))){
+                if(Game::getTime() > 5.f + Dice::random(5)) {
                     //pick a random pokemon
                     Pokemon* wildPokemon = new Pokemon(wildPokemons[Dice::random(wildPokemons.size())], averagePokemonLevel + Dice::random(6) - 3);
 #ifdef DEBUG
                     std::cout<<"You have found "<<wildPokemon->getName()<<" at level "<<wildPokemon->getLevel()<<std::endl;
 #endif
                     Battle::setWildPokemon(wildPokemon);
-                    GameState::changeState(STATE_BATTLE);
-
+                    Game::getInstance()->changeState(GameState::STATE_BATTLE);
                 }
                 //else you are already in a battle
 #ifdef DEBUG

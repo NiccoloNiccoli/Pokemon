@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Battle.h"
 #include "Dice.h"
-#include "GameState.h"
+#include "Game.h"
 
 Player::Player(int id, int x, int y, std::string trainerName) : Trainer(id, x, y) {
     name = trainerName;
@@ -34,7 +34,7 @@ void Player::fight(Trainer* enemy) {
         std::cout<<"In battle range, "<<enemy->getName()<<" is ready to fight"<<std::endl;
 #endif
         Battle::setTrainer(enemy);
-        GameState::changeState(STATE_BATTLE);
+        Game::getInstance()->changeState(GameState::STATE_BATTLE);
     }
    }
 
