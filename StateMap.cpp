@@ -4,7 +4,8 @@
 
 #include "StateMap.h"
 
-StateMap::StateMap(Game *gamePtr) : State(gamePtr) {
+StateMap::StateMap(Game *gamePtr) {
+    game = gamePtr;
     stateName = GameState ::STATE_MAP;
 }
 
@@ -16,7 +17,7 @@ void StateMap::changeState(State* nextState) {
 
 void StateMap::draw(sf::RenderWindow &window) {
     window.draw(game->map);
-    window.draw(game->player.overworldSprite);
+    game->player.draw(window,game->player.getState());
     game->map.drawNPC(window);
     game->map.drawUI(window);
 }
@@ -34,4 +35,8 @@ void StateMap::handleInput(sf::Event event) {
             game->player.fight(game->map.lookForNearestEnemy(game->player));
         }
     }
+}
+
+GameState StateMap::getStateName() {
+    return stateName;
 }

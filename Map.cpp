@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Dice.h"
 #include "Game.h"
+#include "NPC.h"
 
 Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int mapRows, const std::string &mapName,
          sf::Vector2u tileSize_) {
@@ -19,7 +20,8 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     tileSize=tileSize_;
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(columns * rows * 4);
-    loadMap(mapName);
+    _name = mapName;
+    loadMap(_name);
     for(unsigned int i = 0; i<columns; ++i)
         for(unsigned int j = 0; j<rows; ++j)
         {
@@ -45,7 +47,7 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     boxTexture.loadFromFile("../Textures/boxTexture.png");
     box.setScale(0.5f, 0.5f);
     box.setTexture(boxTexture);
-    name.setString(mapName);
+    name.setString(_name);
     name.setCharacterSize(30);
     name.setFillColor(sf::Color::Black);
     font.loadFromFile("../pkmnem.ttf");
@@ -53,19 +55,19 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     name.setPosition(box.getPosition().x + 7, box.getPosition().y);
     name.setScale(0.8f,0.8f);
 
-    if(mapName == "MappaDiProva"){
+    if(_name == "MappaDiProva"){
         averagePokemonLevel = 20;
         wildPokemons.emplace_back("Pikachu");
         wildPokemons.emplace_back("Squirtle");
         wildPokemons.emplace_back("Charmander");
-        Trainer* rival;
-        rival = new Trainer(1,390,140);
+        NPC* rival;
+        rival = new NPC(1,390,140);
         npc.emplace_back(rival);
-        Trainer* lance;
-        lance = new Trainer(2, 144, 30);
+        NPC* lance;
+        lance = new NPC(2, 144, 30);
         npc.emplace_back(lance);
-        Trainer* girl01;
-        girl01 = new Trainer (3, 200, 150);
+        NPC* girl01;
+        girl01 = new NPC (3, 200, 150);
         npc.emplace_back(girl01);
 #ifdef DEBUG
         for(auto i : npc)
@@ -82,8 +84,8 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     timer.restart();
 }
 
-void Map::loadMap(const std::string &mapName) {
-    std::ifstream mapFile("../Maps/" + mapName + ".txt");
+void Map::loadMap(const std::string &_name) {
+    std::ifstream mapFile("../Maps/" + _name + ".txt");
     if(mapFile.is_open()){
         int currentTileValue;
         while(mapFile >> currentTileValue){
@@ -162,12 +164,14 @@ void Map::drawUI(sf::RenderWindow &window) {
 }
 
 void Map::drawNPC(sf::RenderWindow &window) {
-    for(auto i : npc)
-        window.draw(i->overworldSprite);
+    for(auto i : npc){
+        i->doAction();
+        i->draw(window,i->getState());
+    }
 }
 
-Trainer *Map::lookForNearestEnemy(const Player& player) {
-    Trainer* nearestTrainer = nullptr;
+NPC *Map::lookForNearestEnemy(const Player& player) {
+    NPC* nearestTrainer = nullptr;
     if(npc.size() > 0) {
         double distance = INT64_MAX; //distance = actualDistance^2, INT64_MAX = 9.22337e+018
         for (auto i : npc) {
@@ -183,3 +187,8 @@ Trainer *Map::lookForNearestEnemy(const Player& player) {
     }
     return nearestTrainer;
 }
+
+const std::string &Map::getName() const {
+    return _name;
+}
+

@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "Pokemon.h"
 #include "debug.h"
+#include "AnimatedSprite.h"
 
 class Trainer {
 public:
@@ -16,26 +17,34 @@ public:
 
 
     int getYPosition() const;
+    void setPosition(int x, int y);
 
-
-    int winMoney(Trainer* opponent); //Print how much money you've won
+   int winMoney(Trainer* opponent); //Print how much money you've won
 
     const std::string &getName() const;
 
-    sf::Sprite overworldSprite;
+    void draw(sf::RenderWindow& window, int row = 0);
+    int getState() const;
+    AnimatedSprite overworldSprite = AnimatedSprite(overworldSpriteTexture,20,30,4);
     std::vector<Pokemon*> team;
 
-protected:
-    bool initOverworldSprite(std::string fileName);
+    void setState(int state);
 
+    int getMoney() const;
+    void setMoney(int money);
+
+    void setIsStateUpdated(bool isStateUpdated);
+
+protected:
     int id;
     std::string name;
-
-    sf::Texture overworldSprite_Texture;
+    sf::Texture overworldSpriteTexture;
     //TODO inBattleSprite
     int money;
     int xPosition;
     int yPosition;
+    int state=0;
+    bool isStateUpdated = true;
 };
 
 

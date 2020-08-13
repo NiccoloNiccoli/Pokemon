@@ -3,11 +3,3 @@
 //
 
 #include "State.h"
-
-State::State(Game* gamePtr) {
-    game = gamePtr;
-}
-
-GameState State::getStateName() {
-    return stateName;
-}

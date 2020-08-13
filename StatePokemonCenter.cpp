@@ -4,7 +4,8 @@
 
 #include "StatePokemonCenter.h"
 
-StatePokemonCenter::StatePokemonCenter(Game *gamePtr) : State(gamePtr) {
+StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
+    game = gamePtr;
     stateName = GameState ::STATE_POKEMON_CENTER;
 }
 void StatePokemonCenter::changeState(State *nextState) {
@@ -24,6 +25,10 @@ void StatePokemonCenter::update() {
 
 void StatePokemonCenter::handleInput(sf::Event event) {
 
+}
+
+GameState StatePokemonCenter::getStateName() {
+    return stateName;
 }
 
 

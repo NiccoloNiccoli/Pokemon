@@ -12,6 +12,7 @@
 #include "Trainer.h"
 #include "Player.h"
 #include "debug.h"
+#include "NPC.h"
 
 class Map : public sf::Drawable, public sf::Transformable {
 public:
@@ -20,7 +21,11 @@ public:
     void checkCollisions(Trainer& player);
     void drawUI(sf::RenderWindow& window);
     void drawNPC(sf::RenderWindow& window);
-    Trainer* lookForNearestEnemy(const Player& player);
+    NPC* lookForNearestEnemy(const Player& player);
+
+    const std::string &getName() const;
+
+
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void loadMap(const std::string& mapName);
@@ -31,17 +36,18 @@ private:
     sf::VertexArray vertices;
     sf::Texture tileset;
     std::vector<Tile> tiles;
-
+    sf::Text name;
+    std::string _name;
     //map ui
     sf::Sprite box;
     sf::Texture boxTexture;
     sf::Font font;
-    sf::Text name;
+    std::vector<NPC*> npc;
     sf::Clock timer;
 
     unsigned int averagePokemonLevel;
     std::vector<std::string> wildPokemons;
-    std::vector<Trainer*> npc;
+
 };
 
 

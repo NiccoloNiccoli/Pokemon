@@ -15,6 +15,7 @@ public:
     void changeState(State* nextState) override;
     void update() override;
     void handleInput(sf::Event event) override;
+    GameState getStateName() override;
 };
 
 

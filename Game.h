@@ -15,7 +15,8 @@ class State; //To avoid circular dependency
 enum class GameState{
     STATE_MAP,
     STATE_BATTLE,
-    STATE_POKEMON_CENTER
+    STATE_POKEMON_CENTER,
+    STATE_MAIN_MENU
 };
 class Game {
 public:
@@ -28,10 +29,15 @@ public:
     State *getCurrentState() const;
     void setCurrentState(State *currentState);
     bool checkState(GameState state);
+    void save();
+    bool doesSaveFileExists();
+
+    float getPreviousSessionsPlayTime() const;
 
     static float getTime();
     static void resetTimer();
 
+    void load();
 
     //FIXME
     Map map = Map("tileset1_1.png", 27, 15, "MappaDiProva");
@@ -42,8 +48,9 @@ private:
     static Game* instance;
     State* createPointer(GameState state);
     static sf::Clock timer;
+    sf::Clock playTime;
+    float previousSessionsPlayTime = 0;
     State* currentState;
-
 
 };
 

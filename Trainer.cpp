@@ -51,11 +51,15 @@ Trainer::Trainer(int ID, int x, int y){
     xPosition = x;
     yPosition = y;
     name = trainerName;
-    initOverworldSprite(spriteName);
+    if(!overworldSpriteTexture.loadFromFile("../Textures/" + spriteName)) {
+        //TODO EXCEPTION
+    }
+    overworldSprite = AnimatedSprite(overworldSpriteTexture,20,30,4);
+    sf::Vector2f position (xPosition,yPosition);
+    overworldSprite.setPosition(position);
 }
 
 int Trainer::winMoney(Trainer* opponent){
-    //TODO impedire che si possa chiedere i soldi più volte di fila alla stessa persona solo perché ha il pokemon morto
     if(opponent->money > 0){
         int prize;
         //You win always 10% of opponent's max money
@@ -69,15 +73,6 @@ int Trainer::winMoney(Trainer* opponent){
     }
 }
 
-bool Trainer::initOverworldSprite(std::string fileName){
-    if(!overworldSprite_Texture.loadFromFile("../Textures/" + fileName)){
-    //TODO handle error
-    }
-    sf::Vector2f position (xPosition,yPosition);
-    overworldSprite.setPosition(position);
-    overworldSprite.setTexture(overworldSprite_Texture);
-}
-
 int Trainer::getXPosition() const {
     return overworldSprite.getPosition().x;
 }
@@ -88,4 +83,32 @@ int Trainer::getYPosition() const {
 
 const std::string &Trainer::getName() const {
     return name;
+}
+
+void Trainer::draw(sf::RenderWindow &window, int row) {
+    overworldSprite.draw(window,8,row);
+}
+
+int Trainer::getState() const {
+    return state;
+}
+
+int Trainer::getMoney() const {
+    return money;
+}
+
+void Trainer::setMoney(int money) {
+    Trainer::money = money;
+}
+
+void Trainer::setPosition(int x, int y) {
+    overworldSprite.setPosition(x,y);
+}
+
+void Trainer::setState(int state) {
+    Trainer::state = state;
+}
+
+void Trainer::setIsStateUpdated(bool isStateUpdated) {
+    Trainer::isStateUpdated = isStateUpdated;
 }

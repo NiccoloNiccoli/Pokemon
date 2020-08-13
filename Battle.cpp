@@ -10,7 +10,7 @@
 #include "Game.h"
 
 Pokemon* Battle::wildPokemon = nullptr;
-Trainer* Battle::trainer = nullptr;
+NPC* Battle::trainer = nullptr;
 sf::Text Battle::battleLog;
 
 Battle::Battle(Player& player){
@@ -452,7 +452,7 @@ void Battle::setWildPokemon(Pokemon* pokemon) {
     wildPokemon = pokemon;
 }
 
-void Battle::setTrainer(Trainer* enemy){
+void Battle::setTrainer(NPC* enemy){
     trainer = enemy;
 }
 

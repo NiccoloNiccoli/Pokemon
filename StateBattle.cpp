@@ -3,7 +3,8 @@
 //
 
 #include "StateBattle.h"
-StateBattle::StateBattle(Game *gamePtr) : State(gamePtr) {
+StateBattle::StateBattle(Game *gamePtr){
+    game = gamePtr;
     stateName = GameState ::STATE_BATTLE;
 }
 
@@ -35,4 +36,8 @@ void StateBattle::handleInput(sf::Event event) {
             game->battle.resetMenu();
         }
     }
+}
+
+GameState StateBattle::getStateName() {
+        return stateName;
 }
