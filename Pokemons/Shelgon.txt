@@ -1,0 +1,1 @@
+372 Shelgon 65 95 100 50 Dragon NULL 50 Salamence brave_bird hyper_beam draco_meteor flamethrower

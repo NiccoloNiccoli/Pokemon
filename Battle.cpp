@@ -78,18 +78,21 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
     window.draw(menuBox);
     for(auto i : menuButtons)
         window.draw(i);
-    player.team[0]->sprite.setPosition(40,100);
-    window.draw(player.team[0]->sprite);
+    player.team[0]->sprite.setPosition(10,130);
+    player.team[0]->sprite.setScale(2.f,2.f);
+    player.team[0]->draw(window, 2);
     myPokemonName.setString(player.team[0]->getName());
     myPokemonLevel.setString("L." + std::to_string(player.team[0]->getLevel()));
     if(trainer == nullptr && wildPokemon != nullptr){
-        wildPokemon->sprite.setPosition(240,0);
-        wildPokemon->draw(window);
+        wildPokemon->sprite.setPosition(270,0);
+        wildPokemon->sprite.setScale(1.5f,1.5f);
+        wildPokemon->draw(window,0);
         enemysPokemonName.setString(wildPokemon->getName());
         enemysPokemonLevel.setString("L. " + std::to_string(wildPokemon->getLevel()));
     }else{
-        trainer->team[0]->sprite.setPosition(240,0);
-        trainer->team[0]->draw(window);
+        trainer->team[0]->sprite.setPosition(270,0);
+        trainer->team[0]->sprite.setScale(1.5f,1.5f);
+        trainer->team[0]->draw(window,0);
         enemysPokemonName.setString(trainer->team[0]->getName());
         enemysPokemonLevel.setString("L. " + std::to_string(trainer->team[0]->getLevel()));
     }
@@ -358,8 +361,16 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
             }
 
         }else{
-            delete wildPokemon;
-            Game::getInstance()->changeState(GameState::STATE_MAP);
+            if(player.team[0]->isAlive()){
+                player.team[0]->gainEXP(wildPokemon);
+                delete wildPokemon;
+                Game::getInstance()->changeState(GameState::STATE_MAP);
+            }
+
+            else{
+                delete wildPokemon;
+                Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
+            }
             Game::resetTimer();
         }
     }else{ //battle against a trainer
@@ -425,6 +436,7 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
                             trainer->team[i] = tmp;
                         }
                     }
+                    player.team[0]->gainEXP(trainer->team[0]);
                 }
                 haveYouSelectedAnAction = 0;
                 haveYouSwitchedYourPokemon = false;
@@ -434,13 +446,14 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
             if(player.team[0]->isAlive()){
                 //=> you have won
                 player.winMoney(trainer);
+                trainer = nullptr;
+                Game::getInstance()->changeState(GameState::STATE_MAP);
 
             } else{
                 trainer->winMoney(&player);
-
+                trainer = nullptr;
+                Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
             }
-            trainer = nullptr;
-            Game::getInstance()->changeState(GameState::STATE_MAP);
             Game::resetTimer();
         }
 

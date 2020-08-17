@@ -11,16 +11,17 @@
 #include "Type.h"
 #include "Move.h"
 #include "debug.h"
+#include "AnimatedSprite.h"
 
 class Pokemon {
 public:
     Pokemon(const std::string& pokemonName, unsigned int);
     int doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window);
     void evolve(); //TODO->copia di tutti i valori in un nuovo pokemon
-    sf::Sprite sprite;
-    sf::Texture texture;
-    void draw(sf::RenderWindow& window);
-    std::vector<Move> moves;
+    AnimatedSprite sprite = AnimatedSprite(texture,82,81,1);
+
+    void draw(sf::RenderWindow& window, int row);
+    Move moves[4];
     int loseHp(const int damage);
 
     bool isAlive() ;
@@ -39,15 +40,17 @@ public:
 
     int getLevel() const;
 
+    void gainEXP(Pokemon* enemy);
 
+    void heal();
 
 private:
     int id;
     std::string name;
 
-
-    int currentHP;
-    int maxHP;
+    sf::Texture texture;
+    int currentHP = 0;
+    int maxHP = 0;
     int attack;
     int defense;
     int speed;
@@ -57,10 +60,13 @@ private:
     bool isWild;
     int level;
     int evolvingLevel;
-    int nextFormId;
+    std::string nextFormName;
     bool alive = true;
+    int expToNextLevel;
+
 
     void loadData(const std::string& pokemonName);
+    void updateStats();
 };
 
 

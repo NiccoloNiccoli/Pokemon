@@ -10,7 +10,7 @@
 class Action;
 class NPC : public Trainer{
 public:
-    NPC(int id, int x, int y);
+    NPC(int id, int x, int y,bool canFight = true);
     void doAction();
 
     bool getIfIsFightable() const;

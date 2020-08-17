@@ -18,6 +18,7 @@ public:
     GameState getStateName() override;
 private:
     void loadInfo();
+    void initializeNPCList();
     int menuPageIndex = 0;
     int selectedItemIndex = 0;
     sf::Texture texture;

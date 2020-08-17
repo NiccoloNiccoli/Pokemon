@@ -19,6 +19,7 @@ Move::Move(const std::string& moveName){
        std::cout << name << " Power: " << power << " Healing percentage: " << healingPercentage << " Number of usage: " << nUsage <<
         " Type: " << type.getTypeName() << " Accuracy: " << accuracy << std::endl;
 #endif
+       maxUses = nUsage;
     }
 }
 
@@ -81,4 +82,12 @@ void Move::playAnimation(sf::RenderWindow& window){
         }
     }
 
+}
+
+Move::Move() {
+    Move("quick_attack");
+}
+
+int Move::getMaxUses() const {
+    return maxUses;
 }

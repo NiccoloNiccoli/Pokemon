@@ -32,7 +32,7 @@ public:
 
     int getMoney() const;
     void setMoney(int money);
-
+    void healTeam();
     void setIsStateUpdated(bool isStateUpdated);
 
 protected:

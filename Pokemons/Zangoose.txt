@@ -1,0 +1,1 @@
+335 Zangoose 73 115 60 90 normal NULL 101 none thunder quick_attack hyper_beam flamethrower

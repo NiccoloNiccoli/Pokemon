@@ -1,0 +1,11 @@
+3 7
+ground
+rock
+water
+bug
+dragon
+fire
+flying
+grass
+poison
+steel

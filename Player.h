@@ -25,6 +25,7 @@ public:
     void move();
 
     void setName(std::string playersName);
+    bool isAnyPokemonAlive();
 private:
 
 };

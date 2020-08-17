@@ -1,0 +1,7 @@
+3 3
+bug
+fight
+grass
+electric
+rock
+steel

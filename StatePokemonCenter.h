@@ -16,6 +16,10 @@ public:
     void update() override;
     void handleInput(sf::Event event) override;
     GameState getStateName() override;
+private:
+    //i need these to set properly the map when i leave the center
+    Map outsideMap = Map ("tileset1_1.png",27,15,"ROUTE01");
+    int x, y;
 
 };
 

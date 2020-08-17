@@ -4,10 +4,11 @@
 
 #include <iostream>
 #include <cmath>
+#include <fstream>
 #include "NPC.h"
 #include "Game.h"
 
-NPC::NPC(int id, int x, int y) : Trainer(id, x, y) {
+NPC::NPC(int id, int x, int y,bool canFight) : Trainer(id, x, y), isFightable (canFight) {
     switch(id){
         case 1:
             action = new Chase(this);
@@ -17,6 +18,9 @@ NPC::NPC(int id, int x, int y) : Trainer(id, x, y) {
             break;
         case 3:
             action = new Walk(this);
+            break;
+        case 4 :
+            action = new Chase(this);
             break;
     }
 }
@@ -30,7 +34,11 @@ bool NPC::getIfIsFightable() const {
 }
 
 void NPC::hasBeenDefeated() {
-    isFightable = false;//TODO maybe this should be saved, to avoid farming(?)
+    isFightable = false;
+    std::ofstream tmp("../Saves/tmp.txt", std::ios::app);
+    if(tmp.is_open()){
+        tmp << Game::getInstance()->map.getName() << " " << id << "\n";
+    }
 }
 
 Idle::Idle(NPC *_npc) {

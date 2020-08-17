@@ -1,0 +1,1 @@
+197 Umbreon 95 65 130 65 Dark NULL 101 none dark_pulse quick_attack shadow_ball flamethrower

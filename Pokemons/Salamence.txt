@@ -1,0 +1,1 @@
+373 Salamence 95 135 80 100 Dragon Flying 101 none brave_bird hyper_beam draco_meteor flamethrower

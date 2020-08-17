@@ -21,7 +21,7 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(columns * rows * 4);
     _name = mapName;
-    loadMap(_name);
+    loadMap(_name,tilesetName);
     for(unsigned int i = 0; i<columns; ++i)
         for(unsigned int j = 0; j<rows; ++j)
         {
@@ -44,37 +44,37 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
         }
 
     //map ui
-    boxTexture.loadFromFile("../Textures/boxTexture.png");
-    box.setScale(0.5f, 0.5f);
+    boxTexture.loadFromFile("../Textures/area_box.png");
     box.setTexture(boxTexture);
     name.setString(_name);
-    name.setCharacterSize(30);
+    name.setCharacterSize(20);
     name.setFillColor(sf::Color::Black);
     font.loadFromFile("../pkmnem.ttf");
     name.setFont(font);
-    name.setPosition(box.getPosition().x + 7, box.getPosition().y);
-    name.setScale(0.8f,0.8f);
+    name.setPosition(box.getPosition().x + 7, box.getPosition().y + 2);
 
-    if(_name == "MappaDiProva"){
+    std::ifstream npclist ("../Maps/" + _name +"/npclist.txt");
+    if(npclist.is_open()){
+        int id, x, y;
+        std::string isFightable;
+        bool _isFightable = false;
+        while(npclist >> id >> x >> y >> isFightable) {
+            if (isFightable == "true")
+                _isFightable = true;
+            npc.emplace_back(new NPC(id, x, y, _isFightable));
+        }
+    }
+
+    if(_name == "ROUTE01"){
         averagePokemonLevel = 20;
         wildPokemons.emplace_back("Pikachu");
         wildPokemons.emplace_back("Squirtle");
         wildPokemons.emplace_back("Charmander");
-        NPC* rival;
-        rival = new NPC(1,390,140);
-        npc.emplace_back(rival);
-        NPC* lance;
-        lance = new NPC(2, 144, 30);
-        npc.emplace_back(lance);
-        NPC* girl01;
-        girl01 = new NPC (3, 200, 150);
-        npc.emplace_back(girl01);
 #ifdef DEBUG
         for(auto i : npc)
             std::cout<<i->getName()<<std::endl;
 #endif
     }
-
 #ifdef DEBUG
         std::cout<<"Here you can find: "<<std::endl;
         for(auto i : wildPokemons)
@@ -84,12 +84,12 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     timer.restart();
 }
 
-void Map::loadMap(const std::string &_name) {
-    std::ifstream mapFile("../Maps/" + _name + ".txt");
+void Map::loadMap(const std::string &_name,const std::string& tilesetName) {
+    std::ifstream mapFile("../Maps/" + _name + "/" + _name + ".txt");
     if(mapFile.is_open()){
         int currentTileValue;
         while(mapFile >> currentTileValue){
-            Tile currentTile(currentTileValue);
+            Tile currentTile(currentTileValue, tilesetName);
             tiles.push_back(currentTile);
         }
 
@@ -148,7 +148,11 @@ void Map::checkCollisions(Trainer& player){
             }
 
         }else if(tiles[column + row * 27].getType() == POKEMON_CENTER_DOOR){
-            //TODO-entra nel centro pokemon
+            //Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
+            if(Game::getInstance()->checkState(GameState::STATE_POKEMON_CENTER))
+                Game::getInstance()->changeState(GameState::STATE_MAP);
+            else
+                Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
 #ifdef DEBUG
             std::cout<<"Questo è il centro pokemon"<<std::endl;
 #endif
@@ -157,7 +161,7 @@ void Map::checkCollisions(Trainer& player){
     }
 }
 void Map::drawUI(sf::RenderWindow &window) {
-    if(timer.getElapsedTime().asSeconds() < 5.f){
+    if(Game::getTime() < 5.f){
         window.draw(box);
         window.draw(name);
     }

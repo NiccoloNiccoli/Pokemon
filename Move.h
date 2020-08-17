@@ -12,6 +12,7 @@
 
 class Move {
 public:
+    Move();
     Move(const std::string& moveName);
     void playAnimation(sf::RenderWindow& window);
     void use();
@@ -34,17 +35,17 @@ public:
 
     int getAccuracy() const;
 
+    int getMaxUses() const;
+
 private:
     std::string name;
     int power;
     float healingPercentage;
     int nUsage;
+    int maxUses;
     //TODO animation(?)
     Type type;
     int accuracy;
-
-    int hit();
-    int heal();
 };
 
 

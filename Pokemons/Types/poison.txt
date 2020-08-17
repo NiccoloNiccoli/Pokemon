@@ -1,0 +1,8 @@
+2 5
+fairy
+grass
+poison
+ground
+rock
+ghost
+steel

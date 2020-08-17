@@ -1,0 +1,1 @@
+006 Charizard 78 109 85 100 fire flying 101 none flamethrower brave_bird quick_attack thunder

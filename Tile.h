@@ -14,7 +14,7 @@ enum TypeOfTile{ //TODO class enum
 
 class Tile {
 public:
-    Tile(const int currentTileValue);
+    Tile(const int currentTileValue,const std::string& tileset);
 
     int getValue() const;
 

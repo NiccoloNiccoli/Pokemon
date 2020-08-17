@@ -1,0 +1,6 @@
+2 3
+ghost
+psychic
+dark
+fairy
+fight

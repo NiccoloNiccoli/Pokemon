@@ -34,6 +34,9 @@ void StateMap::handleInput(sf::Event event) {
         if(event.key.code == sf::Keyboard::Enter){
             game->player.fight(game->map.lookForNearestEnemy(game->player));
         }
+        if(event.key.code == sf::Keyboard::Escape){
+            game->save();
+        }
     }
 }
 

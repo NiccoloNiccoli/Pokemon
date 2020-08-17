@@ -1,0 +1,1 @@
+009 Blastoise 79 85 105 78 water NULL 101 none thunder quick_attack hydro_pump hyper_beam

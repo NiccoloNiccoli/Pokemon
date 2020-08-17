@@ -122,6 +122,7 @@ void StateMainMenu::handleInput(sf::Event event) {
                    break;
                case 3:
                    Game::getInstance()->player.setName(playersName.getString().toAnsiString());
+                   initializeNPCList();
                    Game::getInstance()->changeState(GameState::STATE_MAP);
                    break;
            }
@@ -186,4 +187,14 @@ void StateMainMenu::loadInfo() {
 
 GameState StateMainMenu::getStateName() {
     return stateName;
+}
+
+void StateMainMenu::initializeNPCList() {
+    std::ofstream npclist("../Maps/ROUTE01/npclist.txt", std::ios::trunc);
+    if(npclist.is_open()){
+        //id - x - y - isFightable
+        npclist << 1 <<" " << 390 << " " << 140 << " true\n";
+        npclist << 2 <<" " << 144 << " " << 30 << " true\n";
+        npclist << 3 <<" " << 200 << " " << 150 << " true\n";
+    }
 }

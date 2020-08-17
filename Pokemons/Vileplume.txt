@@ -1,0 +1,1 @@
+045 Vileplume 75 110 90 50 Grass Poison 101 none giga_drain hyper_beam shadow_ball quick_attack

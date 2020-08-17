@@ -29,7 +29,6 @@ Game* game = Game::getInstance();
             sf::Event event;
             while(window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
-                    Game::getInstance()->save();
                     window.close();
                 }
                 game->handleInput(event);

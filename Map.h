@@ -28,7 +28,7 @@ public:
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void loadMap(const std::string& mapName);
+    void loadMap(const std::string& mapName,const std::string& tilesetName);
     unsigned int columns;
     unsigned int rows;
     sf::Vector2f oldPlayerPosition = sf::Vector2f(0,0);

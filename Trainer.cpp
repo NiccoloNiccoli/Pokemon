@@ -16,7 +16,7 @@ Trainer::Trainer(int ID, int x, int y){
             //player
             spriteName = "player.png";
             Pokemon* pika;
-            pika = new Pokemon ("Pikachu",20);
+            pika = new Pokemon ("salamence" ,50);
             team.emplace_back(pika);
             money = 1000;
             break;
@@ -25,7 +25,7 @@ Trainer::Trainer(int ID, int x, int y){
             trainerName = "Blue";
             spriteName = "blue.png";
             Pokemon* squirtle1;
-            squirtle1 = new Pokemon ("Squirtle",20);
+            squirtle1 = new Pokemon ("squirtle",20);
             team.emplace_back(squirtle1);
             money = 1000;
             break;
@@ -34,7 +34,7 @@ Trainer::Trainer(int ID, int x, int y){
             trainerName = "Lance";
             spriteName = "lance.png";
             Pokemon* charmander2;
-            charmander2 = new Pokemon ("charmander",20);
+            charmander2 = new Pokemon ("zangoose",50);
             team.emplace_back(charmander2);
             money = 1000;
             break;
@@ -46,6 +46,15 @@ Trainer::Trainer(int ID, int x, int y){
             pikachu3 = new Pokemon ("Pikachu",15);
             team.emplace_back(pikachu3);
             money = 1000;
+            break;
+        case 4:
+            trainerName = "Nurse";
+            spriteName = "nurse.png";
+            Pokemon* pkmn;
+            pkmn = new Pokemon("Pikachu",1);
+            team.emplace_back(pkmn);
+            state = 0;
+            money = 0;
             break;
     }
     xPosition = x;
@@ -111,4 +120,13 @@ void Trainer::setState(int state) {
 
 void Trainer::setIsStateUpdated(bool isStateUpdated) {
     Trainer::isStateUpdated = isStateUpdated;
+}
+
+void Trainer::healTeam() {
+    for(auto i : team){
+        i->heal();
+    }
+#ifdef DEBUG
+    std::cout<<"team healed!"<<std::endl;
+#endif
 }

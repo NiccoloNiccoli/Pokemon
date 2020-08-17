@@ -83,3 +83,12 @@ int Player::winMoney(NPC *opponent) {
     }
 
 }
+
+bool Player::isAnyPokemonAlive() {
+    bool returnValue = false;
+    for (auto i : team){
+        if(i->isAlive())
+            returnValue = true;
+    }
+    return returnValue;
+}
