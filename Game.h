@@ -40,7 +40,7 @@ public:
     void load();
 
     //FIXME
-    Map map = Map("tileset1_1.png", 27, 15, "ROUTE01");
+    Map map = Map("tileset1_1.png", 27, 15, "ROUTE_01");
     Player player = Player(0,40,70,"Niccolò");
     Battle battle = Battle(player);
 private:

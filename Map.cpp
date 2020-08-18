@@ -46,7 +46,9 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     //map ui
     boxTexture.loadFromFile("../Textures/area_box.png");
     box.setTexture(boxTexture);
-    name.setString(_name);
+    std::string tmp = _name;
+    std::replace(tmp.begin(),tmp.end(),'_',' ');
+    name.setString(tmp);
     name.setCharacterSize(20);
     name.setFillColor(sf::Color::Black);
     font.loadFromFile("../pkmnem.ttf");
@@ -65,7 +67,7 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
         }
     }
 
-    if(_name == "ROUTE01"){
+    if(_name == "ROUTE_01"){
         averagePokemonLevel = 20;
         wildPokemons.emplace_back("Pikachu");
         wildPokemons.emplace_back("Squirtle");
@@ -139,6 +141,8 @@ void Map::checkCollisions(Trainer& player){
                     std::cout<<"You have found "<<wildPokemon->getName()<<" at level "<<wildPokemon->getLevel()<<std::endl;
 #endif
                     Battle::setWildPokemon(wildPokemon);
+                    Battle::setSentenceIndex(0);
+                    Battle::changeFeedbackSentence();
                     Game::getInstance()->changeState(GameState::STATE_BATTLE);
                 }
                 //else you are already in a battle

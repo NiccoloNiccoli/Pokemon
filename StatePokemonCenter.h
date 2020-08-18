@@ -18,7 +18,7 @@ public:
     GameState getStateName() override;
 private:
     //i need these to set properly the map when i leave the center
-    Map outsideMap = Map ("tileset1_1.png",27,15,"ROUTE01");
+    Map outsideMap = Map ("tileset1_1.png",27,15,"ROUTE_01");
     int x, y;
 
 };

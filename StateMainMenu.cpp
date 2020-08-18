@@ -190,7 +190,7 @@ GameState StateMainMenu::getStateName() {
 }
 
 void StateMainMenu::initializeNPCList() {
-    std::ofstream npclist("../Maps/ROUTE01/npclist.txt", std::ios::trunc);
+    std::ofstream npclist("../Maps/ROUTE_01/npclist.txt", std::ios::trunc);
     if(npclist.is_open()){
         //id - x - y - isFightable
         npclist << 1 <<" " << 390 << " " << 140 << " true\n";

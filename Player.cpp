@@ -51,6 +51,8 @@ void Player::fight(NPC* enemy) {
         std::cout<<"In battle range, "<<enemy->getName()<<" is ready to fight"<<std::endl;
 #endif
         Battle::setTrainer(enemy);
+        Battle::setSentenceIndex(0);
+        Battle::changeFeedbackSentence();
         Game::getInstance()->changeState(GameState::STATE_BATTLE);
     }
    }

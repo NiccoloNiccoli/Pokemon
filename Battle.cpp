@@ -12,44 +12,42 @@
 Pokemon* Battle::wildPokemon = nullptr;
 NPC* Battle::trainer = nullptr;
 sf::Text Battle::battleLog;
+int Battle::sentenceIndex = 0;
+int Battle::selectedItemIndex = 0;
+sf::Text Battle::feedbackSentence;
 
-Battle::Battle(Player& player){
-    if(!background_texture.loadFromFile("../Textures/background.png")){
-        //TODO handle error
-    }
-    background.setTexture(background_texture);
-    background.setScale(0.35f,0.35f);
-    sf::RectangleShape tmpBox (sf::Vector2f(120.f,100.f));
+Battle::Battle(Player& player) {
+    sf::RectangleShape tmpBox(sf::Vector2f(120.f, 100.f));
     tmpBox.setFillColor(sf::Color::White);
     tmpBox.setPosition(sf::Vector2f(300, 135));
     menuBox = tmpBox;
-    if(!font.loadFromFile("../pkmnem.ttf")){
+    if (!font.loadFromFile("../pkmnem.ttf")) {
         //TODO handle error
     }
     //initializing buttons "FIGHT", "SWAP", "CATCH", "RUN"
     resetMenu();
 
     //HP bar
-    sf::RectangleShape tmpHpBox (sf::Vector2f(100, 40));
+    sf::RectangleShape tmpHpBox(sf::Vector2f(100, 40));
     tmpHpBox.setFillColor(sf::Color::White);
     myHealthBarBox = tmpHpBox;
     myHealthBarBox.setPosition(sf::Vector2f(0, 100));
     enemysHealthBarBox = tmpHpBox;
-    enemysHealthBarBox.setPosition(sf::Vector2f(130,5));
-    sf::RectangleShape tmpHpBar (sf::Vector2f(80, 10));
+    enemysHealthBarBox.setPosition(sf::Vector2f(130, 5));
+    sf::RectangleShape tmpHpBar(sf::Vector2f(80, 10));
     tmpHpBar.setFillColor(sf::Color::Green);
     myHealthBar = tmpHpBar;
-    myHealthBar.setPosition(sf::Vector2f(5,120));
+    myHealthBar.setPosition(sf::Vector2f(5, 120));
     enemysHealthBar = tmpHpBar;
-    enemysHealthBar.setPosition(sf::Vector2f(135,25));
+    enemysHealthBar.setPosition(sf::Vector2f(135, 25));
     myPokemonName.setFont(font);
     myPokemonName.setFillColor(sf::Color::Black);
     myPokemonName.setPosition(sf::Vector2f(5, 105));
-    myPokemonName.setScale(sf::Vector2f(0.35f,0.35f));
+    myPokemonName.setScale(sf::Vector2f(0.35f, 0.35f));
     enemysPokemonName.setFont(font);
     enemysPokemonName.setFillColor(sf::Color::Black);
     enemysPokemonName.setPosition(sf::Vector2f(135, 10));
-    enemysPokemonName.setScale(sf::Vector2f(0.35f,0.35f));
+    enemysPokemonName.setScale(sf::Vector2f(0.35f, 0.35f));
     myPokemonLevel.setFont(font);
     myPokemonLevel.setFillColor(sf::Color::Black);
     myPokemonLevel.setPosition(sf::Vector2f(70, 105));
@@ -58,24 +56,99 @@ Battle::Battle(Player& player){
     enemysPokemonLevel.setFillColor(sf::Color::Black);
     enemysPokemonLevel.setPosition(sf::Vector2f(200, 10));
     enemysPokemonLevel.setScale(sf::Vector2f(0.2f, 0.2f));
-    sf::RectangleShape tmpDialogBox (sf::Vector2f(250.f,40.f));
+    sf::RectangleShape tmpDialogBox(sf::Vector2f(250.f, 40.f));
     tmpDialogBox.setFillColor(sf::Color::White);
-    tmpDialogBox.setPosition(28.f,190.f);
-    dialogBox = tmpDialogBox;
+    tmpDialogBox.setPosition(28.f, 190.f);
+    _dialogBox = tmpDialogBox;
     battleLog.setFont(font);
     battleLog.setFillColor(sf::Color::Black);
-    battleLog.setPosition(35.f,195.f);
-    battleLog.setScale(0.6f,0.6f);
-    battleLog.setString("What will "+player.team[0]->getName()+" do?");
+    battleLog.setPosition(35.f, 195.f);
+    battleLog.setScale(0.6f, 0.6f);
+    battleLog.setString("What will " + player.team[0]->getName() + " do?");
 #ifdef DEBUG
-    std::cout<<"Battle created"<<std::endl;
+    std::cout << "Battle created" << std::endl;
     resetMenu();
 #endif
+    if (!backgroundTexture.loadFromFile("../Textures/background.png")) {
+        //TODO handle error
+    }
+    background.setTexture(backgroundTexture);
+    background.setScale(1.f, (240 - 85.44) / 240);
+    if (!dialogBoxTexture.loadFromFile("../Textures/dialogBox.png")) {
+        //TODO
+    }
+    dialogBox.setTexture(dialogBoxTexture);
+    dialogBox.setScale(scalingFactor, scalingFactor);
+    dialogBox.setPosition(0.f, 240 - dialogBox.getGlobalBounds().height);
+    if (!playersPlatformTexture.loadFromFile("../Textures/grassPlatformPlayer.png")) {
+        //TODO
+    }
+    if (!foesPlatformTexture.loadFromFile("../Textures/grassPlatformEnemy.png")) {
+        //TODO
+    }
+    if (!playersInfoBoxTexture.loadFromFile("../Textures/myHpBar.png")) {
+        //TODO
+    }
+    if (!foesInfoBoxTexture.loadFromFile("../Textures/enemyHpBar.png")) {
+        //TODO
+    }
+    playersPlatform.setTexture(playersPlatformTexture);
+    playersPlatform.setScale(1.3f, 1.3f);
+    playersPlatform.setPosition(0.f,
+                                240 - dialogBox.getGlobalBounds().height - playersPlatform.getGlobalBounds().height);
+    foesPlatform.setTexture(foesPlatformTexture);
+    playersInfoBox.setTexture(playersInfoBoxTexture);
+    foesInfoBox.setTexture(foesInfoBoxTexture);
+    foesPlatform.setScale(1.3f, 1.3f);
+    playersInfoBox.setScale(scalingFactor, scalingFactor);
+    foesInfoBox.setScale(scalingFactor, scalingFactor);
+    foesInfoBox.setPosition(10.f, 10.f);
+    playersInfoBox.setPosition(1280 / 3 - playersInfoBox.getGlobalBounds().width - 10,
+                               240 - dialogBox.getGlobalBounds().height - playersInfoBox.getGlobalBounds().height);
+    foesPlatform.setPosition(1280 / 3 - foesPlatform.getGlobalBounds().width - 5,
+                             240 - dialogBox.getGlobalBounds().height - playersInfoBox.getGlobalBounds().height -
+                             foesPlatform.getGlobalBounds().height + 10);
+    if (!actionBoxTexture.loadFromFile("../Textures/actionBox.png")) {
+        //TODO
+    }
+    actionBox.setTexture(actionBoxTexture);
+    if (!movesBoxTexture.loadFromFile("../Textures/movesBox.png")) {
+        //TODO
+    }
+    movesBox.setTexture(movesBoxTexture);
+    actionBox.setScale(scalingFactor, scalingFactor);
+    actionBox.setPosition(1280 / 3 - actionBox.getGlobalBounds().width, 240 - actionBox.getGlobalBounds().height);
+    movesBox.setScale(scalingFactor, scalingFactor);
+    movesBox.setPosition(dialogBox.getPosition());
+    playersHPBar.setFillColor(sf::Color::Green);
+    playersHPBar.setPosition(playersInfoBox.getPosition().x + 48 * scalingFactor, playersInfoBox.getPosition().y + 17 * scalingFactor);
+    playersEXPBar.setFillColor(sf::Color(255,215,0)); //TODO find a better color
+    playersEXPBar.setPosition(playersInfoBox.getPosition().x + 32 * scalingFactor, playersInfoBox.getPosition().y + 33 * scalingFactor);
+    playersEXPBackground.setFillColor(sf::Color(70,70,70));
+    playersEXPBackground.setPosition(playersEXPBar.getPosition());
+    foesHPBar.setFillColor(sf::Color::Green);
+    foesHPBar.setPosition(foesInfoBox.getPosition().x + 39 * scalingFactor, foesInfoBox.getPosition().y + 17 * scalingFactor);
+    for(int i = 0; i < 4; i++) {
+        menuButtons[i].setFont(font);
+        menuButtons[i].setFillColor(sf::Color::Black);
+        menuButtons[i].setCharacterSize(20);
+    }
+    menuButtons[0].setFillColor(sf::Color::Red);
+    for(int i = 0; i <3; i++){
+        moveData[i].setFont(font);
+        moveData[i].setFillColor(sf::Color::Black);
+        moveData[i].setCharacterSize(20);
+    }
+    feedbackSentence.setFont(font);
+    feedbackSentence.setFillColor(sf::Color::White);
+    feedbackSentence.setPosition(dialogBox.getPosition().x + 10 * scalingFactor, dialogBox.getPosition().y + 10 * scalingFactor);
+    changeFeedbackSentence();
+    UIstate = new BattleUI_FeedbackSentence(this);
 }
 
 void Battle::draw(sf::RenderWindow &window, Player& player) {
-    window.draw(background);
-    window.draw(menuBox);
+    drawBackground(window);
+    /*window.draw(menuBox);
     for(auto i : menuButtons)
         window.draw(i);
     player.team[0]->sprite.setPosition(10,130);
@@ -105,12 +178,15 @@ void Battle::draw(sf::RenderWindow &window, Player& player) {
     window.draw(enemysPokemonName);
     window.draw(myPokemonLevel);
     window.draw(enemysPokemonLevel);
-    window.draw(dialogBox);
-    window.draw(battleLog);
+    window.draw(_dialogBox);
+    window.draw(battleLog);*/
+    UIstate->draw(window);
 }
 
 
 void Battle::moveUp(Player& player){
+    UIstate->moveUp(selectedItemIndex);
+    /*
     if(menuPageIndex != 2){
         menuButtons[abs(selectedItemIndex)%4].setFillColor(sf::Color::Black);
         selectedItemIndex--;
@@ -127,12 +203,13 @@ void Battle::moveUp(Player& player){
         std::cout<<selectedItemIndex<<std::endl;
 #endif
     }
-
+*/
 
 }
 
 void Battle::moveDown(Player& player) {
-    if(menuPageIndex != 2){
+    UIstate->moveDown(selectedItemIndex);
+   /* if(menuPageIndex != 2){
         menuButtons[selectedItemIndex%4].setFillColor(sf::Color::Black);
         selectedItemIndex++;
         if(selectedItemIndex == 4)
@@ -147,11 +224,11 @@ void Battle::moveDown(Player& player) {
 #ifdef DEBUG
         std::cout<<selectedItemIndex<<std::endl;
 #endif
-    }
+    }*/
 
 }
 
-void Battle::refreshMenu(Player& player) {
+void Battle::refreshMenu(Player& player) {/*
     if(menuPageIndex == 0){
         switch (selectedItemIndex){
             case 0:
@@ -252,11 +329,12 @@ void Battle::refreshMenu(Player& player) {
         }
         resetMenu();
 
-    }
+    }*/
+    UIstate = UIstate->nextState(selectedItemIndex);
 }
 
 void Battle::resetMenu() {
-    if(menuPageIndex!=0){
+   /* if(menuPageIndex!=0){
         menuButtons[0].setFont(font);
         menuButtons[0].setFillColor(sf::Color::Red);
         menuButtons[0].setString("FIGHT");
@@ -289,7 +367,13 @@ void Battle::resetMenu() {
 #ifdef DEBUG
         std::cout<<"menu resetted"<<std::endl;
 #endif
-    }
+    }*/
+   //FIXME
+   BattleUIState* tmp;
+   tmp = UIstate;
+   UIstate = new BattleUI_ChooseAction(this);
+   delete tmp;
+
 
 }
 
@@ -472,3 +556,246 @@ void Battle::setTrainer(NPC* enemy){
 void Battle::changeBattleLog(std::string msg) {
     battleLog.setString(msg);
 }
+
+void Battle::drawBackground(sf::RenderWindow& window) {
+    window.draw(background);
+    window.draw(foesPlatform);
+    window.draw(playersPlatform);
+}
+
+void Battle::drawPlayersHPBar(sf::RenderWindow &window) {
+    window.draw(playersHPBar);
+    window.draw(playersEXPBackground);
+    window.draw(playersEXPBar);
+    window.draw(playersInfoBox);
+}
+
+void Battle::drawFoesHPBar(sf::RenderWindow &window) {
+    window.draw(foesHPBar);
+    window.draw(foesInfoBox);
+}
+
+void Battle::drawActionBox(sf::RenderWindow &window) {
+    drawDialogBox(window);
+    window.draw(actionBox);
+    for(auto i : menuButtons)
+        window.draw(i);
+}
+
+void Battle::drawMovesBox(sf::RenderWindow &window) {
+    window.draw(movesBox);
+    for(auto i : menuButtons)
+        window.draw(i);
+    for(auto i : moveData)
+        window.draw(i);
+}
+
+void Battle::drawDialogBox(sf::RenderWindow &window) {
+    window.draw(dialogBox);
+}
+
+void Battle::drawFeedbackSentence(sf::RenderWindow &window) {
+    window.draw(feedbackSentence);
+}
+
+
+void Battle::setMenuButtonString(std::string string, int index) {
+    menuButtons[index].setString(string);
+}
+
+void Battle::setMenuButtonPosition(BattleUIStates state) {
+    if(state == BattleUIStates::CHOOSE_ACTION){
+        menuButtons[0].setPosition(actionBox.getPosition().x + 15 * scalingFactor, actionBox.getPosition().y + 8 * scalingFactor);
+        menuButtons[1].setPosition(menuButtons[0].getPosition().x,actionBox.getPosition().y + 28 * scalingFactor);
+        menuButtons[2].setPosition(actionBox.getPosition().x + 71 * scalingFactor,menuButtons[0].getPosition().y);
+        menuButtons[3].setPosition(menuButtons[2].getPosition().x, menuButtons[1].getPosition().y);
+    }else if(state == BattleUIStates::CHOOSE_MOVE){
+        menuButtons[0].setPosition(movesBox.getPosition().x + 11 * scalingFactor, movesBox.getPosition().y + 8 * scalingFactor);
+        menuButtons[1].setPosition(menuButtons[0].getPosition().x, movesBox.getPosition().y  + 28 * scalingFactor);
+        menuButtons[2].setPosition(movesBox.getPosition().x  + 90 * scalingFactor, menuButtons[0].getPosition().y);
+        menuButtons[3].setPosition(menuButtons[2].getPosition().x, menuButtons[1].getPosition().y);
+        moveData[0].setPosition(movesBox.getPosition().x + 201 * scalingFactor,movesBox.getPosition().y + 8 * scalingFactor);
+        moveData[1].setPosition(movesBox.getPosition().x + 221 * scalingFactor,moveData[0].getPosition().y);
+        moveData[2].setPosition(movesBox.getPosition().x + 194 * scalingFactor,movesBox.getPosition().y + 26 * scalingFactor);
+    }
+}
+
+void Battle::setMoveDataString() {
+    moveData[0].setString(std::to_string(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getNUsage()));
+    moveData[1].setString(std::to_string(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getMaxUses()));
+    moveData[2].setString(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getType().getTypeName());
+}
+
+void Battle::changeColorSelectedButton(sf::Color color) {
+    for(int i = 0; i < 4; i++)
+        menuButtons[i].setFillColor(sf::Color::Black);
+    menuButtons[selectedItemIndex].setFillColor(color);
+}
+
+void Battle::changeFeedbackSentence() {
+    std::string newSentence;
+    if(trainer != nullptr){
+        switch(sentenceIndex){
+            case 0:
+                newSentence = trainer->getName() + " would like to battle!";
+                break;
+            case 1:
+                newSentence = trainer->getName() + " sent out " + trainer->team[0]->getName();
+                break;
+            case 2:
+                newSentence = "Go " + Game::getInstance()->player.team[0]->getName();
+                break;
+            case 3:
+                newSentence = "What will " + Game::getInstance()->player.team[0]->getName() + " do?";
+                break;
+            case 4:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " used " +
+                              Game::getInstance()->player.team[0]->moves[selectedItemIndex].getName();
+                break;
+            case 5:
+                newSentence = "Critical hit!";
+                break;
+            case 6:
+                newSentence = "It's not very effective!";
+                break;
+            case 7:
+                newSentence = "It's super effective!";
+                break;
+            case 8:
+                newSentence = "Missed!";
+                break;
+            case 9:
+                newSentence = "Foe " + trainer->team[0]->getName() + " used "; //TODO
+                break;
+            case 10:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " fainted!";
+                break;
+            case 11:
+                newSentence = "Foe " + trainer->team[0]->getName() + " fainted!";
+                break;
+            case 12:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " gained " + "Exp.Points!"; //TODO
+                break;
+            case 13:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " grew to Lv " +
+                              std::to_string(Game::getInstance()->player.team[0]->getLevel());
+                break;
+            case 14:
+                newSentence = "Choose your pokemon!";
+                break;
+            case 15:
+                newSentence = Game::getInstance()->player.team[0]->getName() + ", good! Come back!";
+                break;
+            case 16:
+                newSentence = Game::getInstance()->player.getName() + " defeated " + trainer->getName() + "!";
+                break;
+            case 17:
+                newSentence = Game::getInstance()->player.getName() + " got " + " € for winning!"; //TODO
+                break;
+            case 19:
+                newSentence = "You can't run away!";
+                break;
+            case 20:
+                newSentence = "Foe " + trainer->team[0]->getName() + " can't be caught!";
+                break;
+            default:
+                newSentence = "";
+        }
+
+    } else if(wildPokemon != nullptr){
+        switch (sentenceIndex) {
+            case 0:
+                newSentence = "Wild " + wildPokemon->getName() + " appeared!";
+                break;
+            case 1:
+                newSentence = "Wild " + wildPokemon->getName() + " is ready to fight!";
+                break;
+            case 2:
+                newSentence = "Go " + Game::getInstance()->player.team[0]->getName();
+                break;
+            case 3:
+                newSentence = "What will " + Game::getInstance()->player.team[0]->getName() + " do?";
+                break;
+            case 4:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " used " +
+                              Game::getInstance()->player.team[0]->moves[selectedItemIndex].getName();
+                break;
+            case 5:
+                newSentence = "Critical hit!";
+                break;
+            case 6:
+                newSentence = "It's not very effective!";
+                break;
+            case 7:
+                newSentence = "It's super effective!";
+                break;
+            case 8:
+                newSentence = "Missed!";
+                break;
+            case 9:
+                newSentence = "Wild " + wildPokemon->getName() + " used "; //TODO
+                break;
+            case 10:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " fainted!";
+                break;
+            case 11:
+                newSentence = "Wild " + wildPokemon->getName() + " fainted!";
+                break;
+            case 12:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " gained " + "Exp.Points!"; //TODO
+                break;
+            case 13:
+                newSentence = Game::getInstance()->player.team[0]->getName() + " grew to Lv " +
+                              std::to_string(Game::getInstance()->player.team[0]->getLevel());
+                break;
+            case 14:
+                newSentence = "Choose your pokemon!";
+                break;
+            case 15:
+                newSentence = Game::getInstance()->player.team[0]->getName() + ", good! Come back!";
+                break;
+            case 16:
+                newSentence =
+                        Game::getInstance()->player.getName() + " defeated wild " + wildPokemon->getName() + "!";
+                break;
+            case 17:
+                newSentence = Game::getInstance()->player.getName() + " got " + " € for winning!"; //TODO
+                break;
+            case 18:
+                newSentence = "Got away safely!";
+                break;
+            case 19:
+                newSentence = "You can't run away!";
+                break;
+            case 20:
+                newSentence = "Wild " + wildPokemon->getName() + " was caught!";
+                break;
+            case 21:
+                newSentence = "Argh! It was almost caught!";
+                break;
+            default:
+                newSentence = "";
+        }
+    }
+
+
+    feedbackSentence.setString(newSentence);
+}
+
+int Battle::getSentenceIndex() const {
+    return sentenceIndex;
+}
+
+void Battle::setSentenceIndex(int sentenceIndex) {
+    Battle::sentenceIndex = sentenceIndex;
+}
+
+
+void Battle::escape() {
+    if(trainer == nullptr && wildPokemon != nullptr) {
+        delete wildPokemon;
+        Game::resetTimer();
+        Game::getInstance()->changeState(GameState::STATE_MAP);
+    }
+}
+

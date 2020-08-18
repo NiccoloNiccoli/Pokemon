@@ -21,6 +21,10 @@ Move::Move(const std::string& moveName){
 #endif
        maxUses = nUsage;
     }
+    for (auto &c : name){
+        c = toupper(c);
+    }
+    std::replace(name.begin(),name.end(),'_', ' ');
 }
 
 const std::string &Move::getName() const {

@@ -32,6 +32,9 @@ Type::Type(const std::string& type) {
             std::cout << i << " ";
 #endif
     }
+    for (auto &c : typeName){
+        c = toupper(c);
+    }
 }
 const std::string &Type::getTypeName() const {
     return typeName;

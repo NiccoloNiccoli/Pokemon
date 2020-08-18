@@ -16,7 +16,7 @@ StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
         game->player.setPosition(206, 81);
         game->player.healTeam();
     }
-    game->map = Map("tileset2.png",27,15,"POKEMONCENTER");
+    game->map = Map("tileset2.png",27,15,"POKEMON_CENTER");
     stateName = GameState ::STATE_POKEMON_CENTER;
 }
 void StatePokemonCenter::changeState(State *nextState) {
