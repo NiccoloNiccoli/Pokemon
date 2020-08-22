@@ -8,8 +8,6 @@
 StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
     game = gamePtr;
     outsideMap = game->map;
-    x = game->player.getXPosition();
-    y = game->player.getYPosition();
     if(game->player.isAnyPokemonAlive())
         game->player.setPosition(200,170);
     else {
@@ -22,7 +20,7 @@ StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
 void StatePokemonCenter::changeState(State *nextState) {
     if(nextState->getStateName() != GameState::STATE_BATTLE){
         game->map = outsideMap;
-        game->player.setPosition(x,y);
+        game->player.setPosition(game->map.findPokemonCenterDoor().x,game->map.findPokemonCenterDoor().y);
         State* tmpState = game->getCurrentState();
         game->setCurrentState(nextState);
         delete tmpState;

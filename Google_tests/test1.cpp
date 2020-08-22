@@ -40,7 +40,7 @@ TEST(PokemonTest, DamageDoneByEveryMove){
     int damageMin = 2;
     int realDamage = -1;
     do {
-        realDamage = blastoise50.doMove(flamethrower, pikachu50, window);
+        realDamage = blastoise50.doMove(flamethrower, pikachu50);
     }while(realDamage < 1);
     doDamage(50, 50, 85, 30, 90, 1, 1, damageMax, damageMin);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
@@ -48,53 +48,53 @@ TEST(PokemonTest, DamageDoneByEveryMove){
     Move hydroPump("hydro_pump");
     doDamage(50, 50, 85, 30, 110, 1, 1.5,damageMax, damageMin);
     do{
-    realDamage = blastoise50.doMove(hydroPump,pikachu50,window);
+    realDamage = blastoise50.doMove(hydroPump, pikachu50);
     }while(realDamage < 1);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST THUNDER
     Move thunder("thunder");
     doDamage(50,50,85,30,120, 0.5,1,damageMax,damageMin);
     do{
-    realDamage = blastoise50.doMove(thunder,pikachu50,window);
+    realDamage = blastoise50.doMove(thunder, pikachu50);
     }while(realDamage < 1);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST QUICK ATTACK
     Move quickAttack("quick_attack");
     doDamage(50,50,85,30,40,1,1,damageMax,damageMin);
-    realDamage = blastoise50.doMove(quickAttack,pikachu50,window);
+    realDamage = blastoise50.doMove(quickAttack, pikachu50);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST BRAVE BIRD
     Move braveBird("brave_bird");
     doDamage(50,50,85,30,120,0.5,1,damageMax,damageMin);
-    realDamage = blastoise50.doMove(braveBird,pikachu50,window);
+    realDamage = blastoise50.doMove(braveBird, pikachu50);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST DARK PULSE
     Move darkPulse("dark_pulse");
     doDamage(50,50,85,30,85,1,1,damageMax,damageMin);
-    realDamage = blastoise50.doMove(darkPulse,pikachu50,window);
+    realDamage = blastoise50.doMove(darkPulse, pikachu50);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST DRACO METEOR
     Move dracoMeteor("draco_meteor");
     doDamage(50,50,85,30,130,1,1,damageMax,damageMin);
     do{
-    realDamage = blastoise50.doMove(dracoMeteor,pikachu50,window);
+    realDamage = blastoise50.doMove(dracoMeteor, pikachu50);
     }while(realDamage < 1);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST GIGA DRAIN
     Move gigaDrain("giga_drain");
     doDamage(50,50,85,30,75,1,1,damageMax,damageMin);
-    realDamage = blastoise50.doMove(gigaDrain,pikachu50,window);
+    realDamage = blastoise50.doMove(gigaDrain, pikachu50);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST HYPER BEAM
     Move hyperBeam("hyper_beam");
     doDamage(50,50,85,30,150,1,1,damageMax,damageMin);
     do{
-    realDamage = blastoise50.doMove(hyperBeam,pikachu50,window);
+    realDamage = blastoise50.doMove(hyperBeam, pikachu50);
     }while(realDamage < 1);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
     //TEST SHADOW BALL
     Move shadowBall("shadow_ball");
     doDamage(50,50,85,30,80,1,1,damageMax,damageMin);
-    realDamage = blastoise50.doMove(shadowBall,pikachu50,window);
+    realDamage = blastoise50.doMove(shadowBall, pikachu50);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
 }

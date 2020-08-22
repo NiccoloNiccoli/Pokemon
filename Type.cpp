@@ -17,10 +17,16 @@ Type::Type(const std::string& type) {
         file >>  nStrengths >> nWeaknesses;
         for(int i = 0; i < nStrengths; i++){
             file >> currentType;
+            for (auto &c : currentType){
+                c = toupper(c);
+            }
             strongAgainst.push_back(currentType);
         }
         for(int i = 0; i < nWeaknesses; i++){
             file >> currentType;
+            for (auto &c : currentType){
+                c = toupper(c);
+            }
             weakAgainst.push_back(currentType);
         }
 #ifdef DEBUG

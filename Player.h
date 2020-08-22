@@ -26,7 +26,9 @@ public:
 
     void setName(std::string playersName);
     bool isAnyPokemonAlive();
+    AnimatedSprite inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 80 ,80, 4);
 private:
+    sf::Texture inBattleSpriteTexture;
 
 };
 

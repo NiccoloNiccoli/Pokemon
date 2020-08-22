@@ -4,19 +4,23 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 #include "Battle.h"
 #include "Player.h"
 #include "Dice.h"
-#include "Game.h"
+
 
 Pokemon* Battle::wildPokemon = nullptr;
 NPC* Battle::trainer = nullptr;
 sf::Text Battle::battleLog;
-int Battle::sentenceIndex = 0;
 int Battle::selectedItemIndex = 0;
-sf::Text Battle::feedbackSentence;
+bool Battle::criticalHit = false;
+bool Battle::notEffective = false;
+bool Battle::superEffective = false;
+bool Battle::firstMove = false;
+Move Battle::lastMoveUsed = Move ("quick_attack");
 
-Battle::Battle(Player& player) {
+Battle::Battle() {
     sf::RectangleShape tmpBox(sf::Vector2f(120.f, 100.f));
     tmpBox.setFillColor(sf::Color::White);
     tmpBox.setPosition(sf::Vector2f(300, 135));
@@ -28,7 +32,7 @@ Battle::Battle(Player& player) {
     resetMenu();
 
     //HP bar
-    sf::RectangleShape tmpHpBox(sf::Vector2f(100, 40));
+   /* sf::RectangleShape tmpHpBox(sf::Vector2f(100, 40));
     tmpHpBox.setFillColor(sf::Color::White);
     myHealthBarBox = tmpHpBox;
     myHealthBarBox.setPosition(sf::Vector2f(0, 100));
@@ -39,23 +43,10 @@ Battle::Battle(Player& player) {
     myHealthBar = tmpHpBar;
     myHealthBar.setPosition(sf::Vector2f(5, 120));
     enemysHealthBar = tmpHpBar;
-    enemysHealthBar.setPosition(sf::Vector2f(135, 25));
-    myPokemonName.setFont(font);
-    myPokemonName.setFillColor(sf::Color::Black);
-    myPokemonName.setPosition(sf::Vector2f(5, 105));
-    myPokemonName.setScale(sf::Vector2f(0.35f, 0.35f));
-    enemysPokemonName.setFont(font);
-    enemysPokemonName.setFillColor(sf::Color::Black);
-    enemysPokemonName.setPosition(sf::Vector2f(135, 10));
-    enemysPokemonName.setScale(sf::Vector2f(0.35f, 0.35f));
-    myPokemonLevel.setFont(font);
-    myPokemonLevel.setFillColor(sf::Color::Black);
-    myPokemonLevel.setPosition(sf::Vector2f(70, 105));
-    myPokemonLevel.setScale(sf::Vector2f(0.2f, 0.2f));
-    enemysPokemonLevel.setFont(font);
-    enemysPokemonLevel.setFillColor(sf::Color::Black);
-    enemysPokemonLevel.setPosition(sf::Vector2f(200, 10));
-    enemysPokemonLevel.setScale(sf::Vector2f(0.2f, 0.2f));
+    enemysHealthBar.setPosition(sf::Vector2f(135, 25));*/
+
+
+
     sf::RectangleShape tmpDialogBox(sf::Vector2f(250.f, 40.f));
     tmpDialogBox.setFillColor(sf::Color::White);
     tmpDialogBox.setPosition(28.f, 190.f);
@@ -64,7 +55,6 @@ Battle::Battle(Player& player) {
     battleLog.setFillColor(sf::Color::Black);
     battleLog.setPosition(35.f, 195.f);
     battleLog.setScale(0.6f, 0.6f);
-    battleLog.setString("What will " + player.team[0]->getName() + " do?");
 #ifdef DEBUG
     std::cout << "Battle created" << std::endl;
     resetMenu();
@@ -122,12 +112,16 @@ Battle::Battle(Player& player) {
     movesBox.setPosition(dialogBox.getPosition());
     playersHPBar.setFillColor(sf::Color::Green);
     playersHPBar.setPosition(playersInfoBox.getPosition().x + 48 * scalingFactor, playersInfoBox.getPosition().y + 17 * scalingFactor);
+    playersHPBarBackground.setFillColor(sf::Color(100,100,100));
+    playersHPBarBackground.setPosition(playersHPBar.getPosition());
     playersEXPBar.setFillColor(sf::Color(255,215,0)); //TODO find a better color
     playersEXPBar.setPosition(playersInfoBox.getPosition().x + 32 * scalingFactor, playersInfoBox.getPosition().y + 33 * scalingFactor);
     playersEXPBackground.setFillColor(sf::Color(70,70,70));
     playersEXPBackground.setPosition(playersEXPBar.getPosition());
     foesHPBar.setFillColor(sf::Color::Green);
     foesHPBar.setPosition(foesInfoBox.getPosition().x + 39 * scalingFactor, foesInfoBox.getPosition().y + 17 * scalingFactor);
+    foesHPBarBackground.setFillColor(sf::Color(100,100,100));
+    foesHPBarBackground.setPosition(foesHPBar.getPosition());
     for(int i = 0; i < 4; i++) {
         menuButtons[i].setFont(font);
         menuButtons[i].setFillColor(sf::Color::Black);
@@ -141,9 +135,25 @@ Battle::Battle(Player& player) {
     }
     feedbackSentence.setFont(font);
     feedbackSentence.setFillColor(sf::Color::White);
-    feedbackSentence.setPosition(dialogBox.getPosition().x + 10 * scalingFactor, dialogBox.getPosition().y + 10 * scalingFactor);
+    resetFeedbackSentencePosition();
     changeFeedbackSentence();
-    UIstate = new BattleUI_FeedbackSentence(this);
+    myPokemonName.setFont(font);
+    myPokemonName.setFillColor(sf::Color::Black);
+    myPokemonName.setPosition(playersInfoBox.getPosition().x + 15 * scalingFactor, playersInfoBox.getPosition().y + 1 * scalingFactor );
+    myPokemonName.setCharacterSize(20);
+    myPokemonLevel.setFont(font);
+    myPokemonLevel.setFillColor(sf::Color::Black);
+    myPokemonLevel.setPosition( playersInfoBox.getPosition().x + playersInfoBox.getGlobalBounds().width - 14 * scalingFactor , myPokemonName.getPosition().y + 2 * scalingFactor);
+    myPokemonLevel.setCharacterSize(17);
+    enemysPokemonName.setFont(font);
+    enemysPokemonName.setFillColor(sf::Color::Black);
+    enemysPokemonName.setPosition(foesInfoBox.getPosition().x + 7 * scalingFactor, foesInfoBox.getPosition().y + 1 * scalingFactor );
+    enemysPokemonName.setCharacterSize(20);
+    enemysPokemonLevel.setFont(font);
+    enemysPokemonLevel.setFillColor(sf::Color::Black);
+    enemysPokemonLevel.setPosition(sf::Vector2f(foesInfoBox.getPosition().x + foesInfoBox.getGlobalBounds().width - 18.5 * scalingFactor , enemysPokemonName.getPosition().y + 2 * scalingFactor));
+    enemysPokemonLevel.setCharacterSize(17);
+    UIstate = new BattleUI_Scene0(this);
 }
 
 void Battle::draw(sf::RenderWindow &window, Player& player) {
@@ -369,11 +379,14 @@ void Battle::resetMenu() {
 #endif
     }*/
    //FIXME
-   BattleUIState* tmp;
-   tmp = UIstate;
-   UIstate = new BattleUI_ChooseAction(this);
-   delete tmp;
-
+   if(dynamic_cast<BattleUI_ChooseAction*>(UIstate) || dynamic_cast<BattleUI_ChooseMove*>(UIstate) || dynamic_cast<BattleUI_ChoosePokemon*>(UIstate)) {
+       BattleUIState *tmp;
+       tmp = UIstate;
+       UIstate = new BattleUI_ChooseAction(this);
+       delete tmp;
+   }else{
+       std::cout<<"No"<<std::endl;
+   }
 
 }
 
@@ -386,6 +399,8 @@ void Battle::updateUI(Player& player) {
 }
 
 void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
+    draw(window,player);
+    /*
     if(trainer == nullptr && wildPokemon != nullptr){ //battle against a wild Pokemon
         if(player.team[0]->isAlive() && wildPokemon->isAlive()){
 //battle cycle
@@ -394,38 +409,35 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
             }else{
                 //wildPokemon does a random move
                 if(haveYouSwitchedYourPokemon){
-                    wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                    wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0]);
                 }else {
                     if (player.team[0]->getSpeed() > wildPokemon->getSpeed()) {
                         //i go first
-                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon,
-                                               window);
+                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon);
                         if (wildPokemon->isAlive() && player.team[0]->isAlive()) {
                             //wildPokemon does a random move
-                            wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                            wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0]);
                         }
                     } else if (player.team[0]->getSpeed() < wildPokemon->getSpeed()) {
                         //wildPokemon goes first
-                        wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                        wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0]);
                         if (wildPokemon->isAlive() && player.team[0]->isAlive()) {
-                            player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon,
-                                                   window);
+                            player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon);
                         }
 
                     } else {
                         if (Dice::random(2) == 0) {
                             //i go first
-                            player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon,
-                                                   window);
+                            player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon);
                             if (wildPokemon->isAlive() && player.team[0]->isAlive()) {
                                 //wildPokemon does a random move
-                                wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                                wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0]);
                             }
                         } else {
-                            wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0], window);
+                            wildPokemon->doMove(wildPokemon->moves[Dice::random(4)], *player.team[0]);
                             if (wildPokemon->isAlive() && player.team[0]->isAlive()) {
-                                player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *wildPokemon,
-                                                       window);
+                                player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1],
+                                                       *wildPokemon);
                             }
 
                         }
@@ -466,39 +478,37 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
             }else{
                 //enemy does a random move
                 if(haveYouSwitchedYourPokemon){
-                    trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                    trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0]);
                 }else {
                     if (player.team[0]->getSpeed() > trainer->team[0]->getSpeed()) {
                         //i go first
-                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *trainer->team[0],
-                                               window);
+                        player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1], *trainer->team[0]);
                         if (trainer->team[0]->isAlive() && player.team[0]->isAlive()) {
                             //enemy does a random move
-                            trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                            trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0]);
                         }
                     } else if (player.team[0]->getSpeed() < trainer->team[0]->getSpeed()) {
                         //wildPokemon goes first
-                        trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                        trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0]);
                         if (trainer->team[0]->isAlive() && player.team[0]->isAlive()) {
                             player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1],
-                                                   *trainer->team[0], window);
+                                                   *trainer->team[0]);
                         }
 
                     } else {
                         if (Dice::random(2) == 0) {
                             //i go first
                             player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1],
-                                                   *trainer->team[0], window);
+                                                   *trainer->team[0]);
                             if (trainer->team[0]->isAlive() && player.team[0]->isAlive()) {
                                 //wildPokemon does a random move
-                                trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0],
-                                                         window);
+                                trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0]);
                             }
                         } else {
-                            trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0], window);
+                            trainer->team[0]->doMove(trainer->team[0]->moves[Dice::random(4)], *player.team[0]);
                             if (trainer->team[0]->isAlive() && player.team[0]->isAlive()) {
                                 player.team[0]->doMove(player.team[0]->moves[haveYouSelectedAnAction - 1],
-                                                       *trainer->team[0], window);
+                                                       *trainer->team[0]);
                             }
                         }
                     }
@@ -542,7 +552,7 @@ void Battle::battleEngine(sf::RenderWindow &window, Player &player) {
         }
 
     }
-
+*/
 }
 
 void Battle::setWildPokemon(Pokemon* pokemon) {
@@ -564,15 +574,21 @@ void Battle::drawBackground(sf::RenderWindow& window) {
 }
 
 void Battle::drawPlayersHPBar(sf::RenderWindow &window) {
+    window.draw(playersHPBarBackground);
     window.draw(playersHPBar);
     window.draw(playersEXPBackground);
     window.draw(playersEXPBar);
     window.draw(playersInfoBox);
+    window.draw(myPokemonName);
+    window.draw(myPokemonLevel);
 }
 
 void Battle::drawFoesHPBar(sf::RenderWindow &window) {
+    window.draw(foesHPBarBackground);
     window.draw(foesHPBar);
     window.draw(foesInfoBox);
+    window.draw(enemysPokemonName);
+    window.draw(enemysPokemonLevel);
 }
 
 void Battle::drawActionBox(sf::RenderWindow &window) {
@@ -646,7 +662,7 @@ void Battle::changeFeedbackSentence() {
                 newSentence = "Go " + Game::getInstance()->player.team[0]->getName();
                 break;
             case 3:
-                newSentence = "What will " + Game::getInstance()->player.team[0]->getName() + " do?";
+                newSentence = "What will\n\n" + Game::getInstance()->player.team[0]->getName() + " do?";
                 break;
             case 4:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " used " +
@@ -661,11 +677,11 @@ void Battle::changeFeedbackSentence() {
             case 7:
                 newSentence = "It's super effective!";
                 break;
-            case 8:
+            case -1:
                 newSentence = "Missed!";
                 break;
             case 9:
-                newSentence = "Foe " + trainer->team[0]->getName() + " used "; //TODO
+                newSentence = "Foe " + trainer->team[0]->getName() + " used "+ lastMoveUsed.getName();
                 break;
             case 10:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " fainted!";
@@ -674,11 +690,15 @@ void Battle::changeFeedbackSentence() {
                 newSentence = "Foe " + trainer->team[0]->getName() + " fainted!";
                 break;
             case 12:
-                newSentence = Game::getInstance()->player.team[0]->getName() + " gained " + "Exp.Points!"; //TODO
+                levelInc = Game::getInstance()->player.team[0]->getLevel();
+                expGained = Game::getInstance()->player.team[0]->gainEXP(trainer->team[0]);
+                levelInc -= Game::getInstance()->player.team[0]->getLevel();
+                levelInc *= -1;
+                newSentence = Game::getInstance()->player.team[0]->getName() + " gained " + std::to_string(expGained) + " Exp.Points!";
                 break;
             case 13:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " grew to Lv " +
-                              std::to_string(Game::getInstance()->player.team[0]->getLevel());
+                              myPokemonLevel.getString().toAnsiString();
                 break;
             case 14:
                 newSentence = "Choose your pokemon!";
@@ -690,13 +710,26 @@ void Battle::changeFeedbackSentence() {
                 newSentence = Game::getInstance()->player.getName() + " defeated " + trainer->getName() + "!";
                 break;
             case 17:
-                newSentence = Game::getInstance()->player.getName() + " got " + " € for winning!"; //TODO
+                newSentence = Game::getInstance()->player.getName() + " got " + std::to_string(Game::getInstance()->player.winMoney(trainer)) + " $ for winning!";
                 break;
+            case 18:
+                sentenceIndex++;
             case 19:
                 newSentence = "You can't run away!";
                 break;
             case 20:
+                sentenceIndex++;
+            case 21:
                 newSentence = "Foe " + trainer->team[0]->getName() + " can't be caught!";
+                break;
+            case 22:
+                newSentence = Game::getInstance()->player.getName() + " has no more Pokemon left!";
+                break;
+            case 23:
+                newSentence = Game::getInstance()->player.getName() + " gave " + std::to_string(trainer->winMoney(&Game::getInstance()->player)) +" $ to the winner...";
+                break;
+            case 24:
+                newSentence = Game::getInstance()->player.getName() + " scurried  to a Pokemon Center,\n\nprotecting the exhausted and fainted Pokemon\n\nfrom further harm...";
                 break;
             default:
                 newSentence = "";
@@ -705,16 +738,15 @@ void Battle::changeFeedbackSentence() {
     } else if(wildPokemon != nullptr){
         switch (sentenceIndex) {
             case 0:
-                newSentence = "Wild " + wildPokemon->getName() + " appeared!";
-                break;
+                sentenceIndex = 1;
             case 1:
-                newSentence = "Wild " + wildPokemon->getName() + " is ready to fight!";
+                newSentence = "Wild " + wildPokemon->getName() + " appeared!";
                 break;
             case 2:
                 newSentence = "Go " + Game::getInstance()->player.team[0]->getName();
                 break;
             case 3:
-                newSentence = "What will " + Game::getInstance()->player.team[0]->getName() + " do?";
+                newSentence = "What will\n\n" + Game::getInstance()->player.team[0]->getName() + " do?";
                 break;
             case 4:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " used " +
@@ -729,11 +761,11 @@ void Battle::changeFeedbackSentence() {
             case 7:
                 newSentence = "It's super effective!";
                 break;
-            case 8:
+            case -1:
                 newSentence = "Missed!";
                 break;
             case 9:
-                newSentence = "Wild " + wildPokemon->getName() + " used "; //TODO
+                newSentence = "Wild " + wildPokemon->getName() + " used " + lastMoveUsed.getName();
                 break;
             case 10:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " fainted!";
@@ -742,11 +774,15 @@ void Battle::changeFeedbackSentence() {
                 newSentence = "Wild " + wildPokemon->getName() + " fainted!";
                 break;
             case 12:
-                newSentence = Game::getInstance()->player.team[0]->getName() + " gained " + "Exp.Points!"; //TODO
+                levelInc = Game::getInstance()->player.team[0]->getLevel();
+                expGained = Game::getInstance()->player.team[0]->gainEXP(wildPokemon);
+                levelInc -= Game::getInstance()->player.team[0]->getLevel();
+                levelInc *= -1;
+                newSentence = Game::getInstance()->player.team[0]->getName() + " gained " + std::to_string(expGained) + " Exp.Points!";
                 break;
             case 13:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " grew to Lv " +
-                              std::to_string(Game::getInstance()->player.team[0]->getLevel());
+                              myPokemonLevel.getString().toAnsiString();
                 break;
             case 14:
                 newSentence = "Choose your pokemon!";
@@ -757,9 +793,6 @@ void Battle::changeFeedbackSentence() {
             case 16:
                 newSentence =
                         Game::getInstance()->player.getName() + " defeated wild " + wildPokemon->getName() + "!";
-                break;
-            case 17:
-                newSentence = Game::getInstance()->player.getName() + " got " + " € for winning!"; //TODO
                 break;
             case 18:
                 newSentence = "Got away safely!";
@@ -772,6 +805,16 @@ void Battle::changeFeedbackSentence() {
                 break;
             case 21:
                 newSentence = "Argh! It was almost caught!";
+                break;
+            case 22:
+                newSentence = Game::getInstance()->player.getName() + " has no more Pokemon left!";
+                break;
+            case 23:
+                Game::getInstance()->player.setMoney(Game::getInstance()->player.getMoney()*0.9f);
+                newSentence = Game::getInstance()->player.getName() + " dropped " + std::to_string(Game::getInstance()->player.getMoney()) +" $ in panic...";
+                break;
+            case 24:
+                newSentence = Game::getInstance()->player.getName() + " scurried  to a Pokemon Center,\n\n protecting the exhausted and fainted Pokemon\n\nfrom further harm...";
                 break;
             default:
                 newSentence = "";
@@ -786,16 +829,132 @@ int Battle::getSentenceIndex() const {
     return sentenceIndex;
 }
 
-void Battle::setSentenceIndex(int sentenceIndex) {
-    Battle::sentenceIndex = sentenceIndex;
+void Battle::setSentenceIndex(int _sentenceIndex) {
+    sentenceIndex = _sentenceIndex;
 }
 
 
-void Battle::escape() {
-    if(trainer == nullptr && wildPokemon != nullptr) {
-        delete wildPokemon;
-        Game::resetTimer();
-        Game::getInstance()->changeState(GameState::STATE_MAP);
+void Battle::setFlags(bool crit, bool notEff, bool supEff) {
+    criticalHit=crit;
+    notEffective = notEff;
+    superEffective = supEff;
+}
+
+bool Battle::isCriticalHit() {
+    return criticalHit;
+}
+
+bool Battle::isNotEffective() {
+    return notEffective;
+}
+
+bool Battle::isSuperEffective() {
+    return superEffective;
+}
+
+bool Battle::amIFaster() {
+    bool amIFaster = false;
+    if(trainer != nullptr){
+        if((Game::getInstance()->player.team[0]->getSpeed() > trainer->team[0]->getSpeed()) ||
+        (Game::getInstance()->player.team[0]->getSpeed() == trainer->team[0]->getSpeed() && Dice::random(2) == 0))
+            amIFaster = true;
+    }else if(wildPokemon != nullptr){
+        if((Game::getInstance()->player.team[0]->getSpeed() > wildPokemon->getSpeed()) ||
+           (Game::getInstance()->player.team[0]->getSpeed() == wildPokemon->getSpeed() && Dice::random(2) == 0))
+            amIFaster = true;
     }
+    return amIFaster;
+}
+
+Pokemon *Battle::getWildPokemon() {
+    return wildPokemon;
+}
+
+NPC *Battle::getTrainer() {
+    return trainer;
+}
+
+sf::Vector2f Battle::getTrainerStandardPosition() {
+    return sf::Vector2f(foesPlatform.getPosition().x + foesPlatform.getLocalBounds().width/2,
+            foesPlatform.getPosition().y - foesPlatform.getLocalBounds().height/2 - 40);
+}
+
+void Battle::setUIState(BattleUIState *state) {
+    BattleUIState *tmp = UIstate;
+    UIstate = state;
+    delete tmp;
+}
+
+sf::Vector2f Battle::getPlayerStandardPosition() {
+    return sf::Vector2f(dialogBox.getPosition().x, dialogBox.getPosition().y - Game::getInstance()->player.inBattleSprite.getGlobalBounds().height);
+}
+
+void Battle::setMyPokemonData() {
+    myPokemonLevel.setString(std::to_string(Game::getInstance()->player.team[0]->getLevel()));
+    myPokemonName.setString(Game::getInstance()->player.team[0]->getName());
+    playersEXPBar.setSize(sf::Vector2f(64 * scalingFactor *  ((pow(Game::getInstance()->player.team[0]->getLevel(),3) * 4/5 -
+    Game::getInstance()->player.team[0]->getExpToNextLevel()))/(pow(Game::getInstance()->player.team[0]->getLevel(),3) * 4/5), 2 * scalingFactor));
+}
+
+void Battle::setEnemysPokemonData() {
+    if (trainer != nullptr) {
+        enemysPokemonLevel.setString(std::to_string(trainer->team[0]->getLevel()));
+        enemysPokemonName.setString(trainer->team[0]->getName());
+    }else if (wildPokemon!= nullptr){
+        enemysPokemonLevel.setString(std::to_string(wildPokemon->getLevel()));
+        enemysPokemonName.setString(wildPokemon->getName());
+    }
+}
+
+Move Battle::getLastMoveUsed() const {
+    return lastMoveUsed;
+}
+
+void Battle::setLastMoveUsed(const Move &lastMoveUsed) {
+    Battle::lastMoveUsed = lastMoveUsed;
+}
+
+void Battle::updateHpBar(float x) {
+    playersHPBar.setScale(x,1);
+}
+
+bool Battle::isFirstMove() {
+    return firstMove;
+}
+
+void Battle::setFirstMove(bool isFirstMove) {
+    Battle::firstMove = isFirstMove;
+}
+
+void Battle::setSelectedItemIndex(int selectedItemIndex) {
+    Battle::selectedItemIndex = selectedItemIndex;
+}
+
+void Battle::resetButtons() {
+    for(int i = 0; i < 4; i++) {
+        menuButtons[i].setFillColor(sf::Color::Black);
+    }
+    selectedItemIndex = 0;
+    menuButtons[0].setFillColor(sf::Color::Red);
+}
+
+int Battle::getLevelInc() {
+    return levelInc;
+}
+
+void Battle::setLevelInc(int levelInc) {
+    Battle::levelInc = levelInc;
+}
+
+void Battle::setExpGained(int expGained) {
+    Battle::expGained = expGained;
+}
+
+int Battle::getExpGained() {
+    return expGained;
+}
+
+void Battle::resetFeedbackSentencePosition() {
+    feedbackSentence.setPosition(dialogBox.getPosition().x + 10 * scalingFactor, dialogBox.getPosition().y + 10 * scalingFactor);
 }
 

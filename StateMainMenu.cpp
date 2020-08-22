@@ -44,6 +44,8 @@ StateMainMenu::StateMainMenu(Game *gamePtr){
 }
 
 void StateMainMenu::changeState(State *nextState) {
+    if(nextState->getStateName() == GameState::STATE_MAP)
+        game->map.restartTimer();
     State* tmpState = game->getCurrentState();
     game->setCurrentState(nextState);
     delete tmpState;

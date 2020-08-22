@@ -63,8 +63,8 @@ const Type &Move::getType() const {
     return type;
 }
 
-void Move::playAnimation(sf::RenderWindow& window){
-    sf::Clock timer;
+void Move::draw(sf::RenderWindow& window){
+    /*sf::Clock timer;
     for(int i = 0; i < power/30; i++){
         timer.restart();
         while(timer.getElapsedTime().asSeconds() < 0.1f){
@@ -85,7 +85,8 @@ void Move::playAnimation(sf::RenderWindow& window){
             window.display();
         }
     }
-
+*/
+   //TODO animation.draw(window,1);
 }
 
 Move::Move() {

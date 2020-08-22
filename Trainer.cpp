@@ -16,8 +16,23 @@ Trainer::Trainer(int ID, int x, int y){
             //player
             spriteName = "player.png";
             Pokemon* pika;
-            pika = new Pokemon ("salamence" ,50);
+            pika = new Pokemon ("vileplume" ,9);
+            Pokemon* pikach;
+            pikach = new Pokemon ("charizard" ,9);
+            team.emplace_back(pikach);
             team.emplace_back(pika);
+           /* Pokemon* pikach1;
+            pikach1 = new Pokemon ("charizard" ,39);
+            team.emplace_back(pikach1);
+            Pokemon* pikachs;
+            pikachs = new Pokemon ("charizard" ,39);
+            team.emplace_back(pikachs);
+            Pokemon* pikachs1;
+            pikachs1 = new Pokemon ("salamence" ,100);
+            team.emplace_back(pikachs1);
+            Pokemon* pikachs11;
+            pikachs11 = new Pokemon ("salamence" ,100);
+            team.emplace_back(pikachs11);*/
             money = 1000;
             break;
         case 1:
@@ -25,7 +40,7 @@ Trainer::Trainer(int ID, int x, int y){
             trainerName = "Blue";
             spriteName = "blue.png";
             Pokemon* squirtle1;
-            squirtle1 = new Pokemon ("squirtle",20);
+            squirtle1 = new Pokemon ("blastoise",20);
             team.emplace_back(squirtle1);
             money = 1000;
             break;
@@ -34,7 +49,7 @@ Trainer::Trainer(int ID, int x, int y){
             trainerName = "Lance";
             spriteName = "lance.png";
             Pokemon* charmander2;
-            charmander2 = new Pokemon ("zangoose",50);
+            charmander2 = new Pokemon ("charizard",50);
             team.emplace_back(charmander2);
             money = 1000;
             break;
@@ -43,8 +58,11 @@ Trainer::Trainer(int ID, int x, int y){
             trainerName = "Megan";
             spriteName = "girl.png";
             Pokemon* pikachu3;
-            pikachu3 = new Pokemon ("Pikachu",15);
+            Pokemon* vileplume1;
+            pikachu3 = new Pokemon ("Pikachu",6);
             team.emplace_back(pikachu3);
+            vileplume1 = new Pokemon ("vileplume",6);
+            team.emplace_back(vileplume1);
             money = 1000;
             break;
         case 4:
@@ -69,8 +87,8 @@ Trainer::Trainer(int ID, int x, int y){
 }
 
 int Trainer::winMoney(Trainer* opponent){
+    int prize = 0;
     if(opponent->money > 0){
-        int prize;
         //You win always 10% of opponent's max money
         prize = opponent->money * 0.1;
         opponent->money -= prize;
@@ -80,6 +98,7 @@ int Trainer::winMoney(Trainer* opponent){
         std::cout<<name<<" ha vinto "<<prize<<std::endl;
 #endif
     }
+    return prize;
 }
 
 int Trainer::getXPosition() const {
@@ -123,9 +142,8 @@ void Trainer::setIsStateUpdated(bool isStateUpdated) {
 }
 
 void Trainer::healTeam() {
-    for(auto i : team){
-        i->heal();
-    }
+    for(int i = 0;i < team.size(); i++)
+        team[i]->heal();
 #ifdef DEBUG
     std::cout<<"team healed!"<<std::endl;
 #endif

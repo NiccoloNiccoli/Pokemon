@@ -16,6 +16,7 @@ sf::Clock Game::timer;
 Game* Game::instance = nullptr;
 
 Game::Game() {
+    battle = new Battle();
     currentState = new StateMainMenu(this);
     remove("../Saves/tmp.txt");//remove tmp file from previous session
 }
@@ -175,5 +176,9 @@ void Game::load() {
             //      map =  Map("tileset1_1.png", 27, 15, mapName); FIXME, per ora non fa nulla ma se faccio il centro pokemon si
         }
     }
+}
+
+float Game::getPlayTime() {
+    return playTime.getElapsedTime().asSeconds();
 }
 

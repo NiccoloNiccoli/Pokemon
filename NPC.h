@@ -16,10 +16,12 @@ public:
     bool getIfIsFightable() const;
 
     void hasBeenDefeated();
+    AnimatedSprite  inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 60 ,80, 2);
 
 private:
     bool isFightable = true;
     Action* action = nullptr;
+    sf::Texture inBattleSpriteTexture;
 };
 
 class Action {

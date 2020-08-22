@@ -22,8 +22,9 @@ public:
     void drawUI(sf::RenderWindow& window);
     void drawNPC(sf::RenderWindow& window);
     NPC* lookForNearestEnemy(const Player& player);
-
     const std::string &getName() const;
+    void restartTimer();
+    sf::Vector2f findPokemonCenterDoor();
 
 
 private:
@@ -44,6 +45,7 @@ private:
     sf::Font font;
     std::vector<NPC*> npc;
     sf::Clock timer;
+
 
     unsigned int averagePokemonLevel;
     std::vector<std::string> wildPokemons;

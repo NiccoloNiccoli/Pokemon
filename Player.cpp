@@ -11,7 +11,10 @@
 
 Player::Player(int id, int x, int y, std::string trainersName) : Trainer(id, x, y) {
    setName(trainersName);
-
+   if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSpritePlayer.png")) {
+        //TODO
+   }
+   inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 80 ,80, 4);
 }
 
 
@@ -50,15 +53,14 @@ void Player::fight(NPC* enemy) {
 #ifdef DEBUG
         std::cout<<"In battle range, "<<enemy->getName()<<" is ready to fight"<<std::endl;
 #endif
-        Battle::setTrainer(enemy);
-        Battle::setSentenceIndex(0);
-        Battle::changeFeedbackSentence();
+        Battle::setTrainer(enemy);/*
+        Game::getInstance()->battle.setSentenceIndex(0);
+        Game::getInstance()->battle.changeFeedbackSentence();*/
         Game::getInstance()->changeState(GameState::STATE_BATTLE);
     }
    }
 
 bool Player::catchPokemon(Pokemon* pokemon) {
-    if(team.size()<6){
         if(Dice::random(10) != 0){
             //FIXME
             team.push_back(pokemon);
@@ -68,10 +70,6 @@ bool Player::catchPokemon(Pokemon* pokemon) {
 #endif
             return true;
         }else return false;
-    }else{
-        Battle::changeBattleLog("Your team is full!");
-    }
-        return false;
 }
 
 void Player::setName(std::string playersName) {
@@ -79,18 +77,18 @@ void Player::setName(std::string playersName) {
 }
 
 int Player::winMoney(NPC *opponent) {
+    int prize = 0;
     if((opponent->getIfIsFightable())){
-        Trainer::winMoney(opponent);
+        prize = Trainer::winMoney(opponent);
         opponent->hasBeenDefeated();
     }
-
+    return prize;
 }
 
 bool Player::isAnyPokemonAlive() {
     bool returnValue = false;
-    for (auto i : team){
-        if(i->isAlive())
-            returnValue = true;
-    }
+   for(int i = 0; i < team.size(); i++)
+       if(team[i]->isAlive())
+           returnValue = true;
     return returnValue;
 }

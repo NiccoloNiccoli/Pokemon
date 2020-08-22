@@ -8,6 +8,7 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include "Type.h"
 #include "Move.h"
 #include "debug.h"
@@ -16,7 +17,7 @@
 class Pokemon {
 public:
     Pokemon(const std::string& pokemonName, unsigned int);
-    int doMove(Move& move, Pokemon& enemy, sf::RenderWindow& window);
+    int doMove(Move &move, Pokemon &enemy);
     void evolve(); //TODO->copia di tutti i valori in un nuovo pokemon
     AnimatedSprite sprite = AnimatedSprite(texture,82,81,1);
 
@@ -40,9 +41,12 @@ public:
 
     int getLevel() const;
 
-    void gainEXP(Pokemon* enemy);
+    int gainEXP(Pokemon* enemy);
+
+    int getExpToNextLevel() const;
 
     void heal();
+
 
 private:
     int id;

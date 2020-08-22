@@ -2,22 +2,31 @@
 // Created by Niccolò Niccoli on 17/08/2020.
 //
 
+#include <iostream>
 #include "BattleUIStates.h"
 #include "Game.h"
 #include "Dice.h"
 
 BattleUI_ChooseAction::BattleUI_ChooseAction(Battle *_battle){
     battle = _battle;
+    battle->resetButtons();
     battle->setMenuButtonString("FIGHT",0);
     battle->setMenuButtonString("SWAP",1);
     battle->setMenuButtonString("CATCH",2);
     battle->setMenuButtonString("RUN",3);
     battle->setMenuButtonPosition(BattleUIStates::CHOOSE_ACTION);
     battle->setSentenceIndex(3);
+    battle->feedbackSentence.setPosition(battle->feedbackSentence.getPosition().x, battle->feedbackSentence.getPosition().y - 6 * battle->scalingFactor);
+    battle->feedbackSentence.setCharacterSize(27);
     battle->changeFeedbackSentence();
 }
 
 void BattleUI_ChooseAction::draw(sf::RenderWindow &window) {
+    if(battle->getTrainer() != nullptr)
+        battle->getTrainer()->team[0]->draw(window,0);
+    else if(battle->getWildPokemon() != nullptr)
+        battle->getWildPokemon()->draw(window,0);
+    Game::getInstance()->player.team[0]->draw(window,2);
     battle->drawActionBox(window);
     battle->drawFoesHPBar(window);
     battle->drawPlayersHPBar(window);
@@ -25,23 +34,39 @@ void BattleUI_ChooseAction::draw(sf::RenderWindow &window) {
 }
 
 BattleUIState* BattleUI_ChooseAction::nextState(int selectedItemIndex) {
+    battle->resetFeedbackSentencePosition();
+    battle->feedbackSentence.setCharacterSize(30);
     BattleUIState* state = nullptr;
-    switch(selectedItemIndex){
+    bool isSomeoneAlive = false;
+    switch(selectedItemIndex) {
         case 0:
             state = new BattleUI_ChooseMove(battle);
             break;
         case 1:
-            //state = new BattleUI_ChoosePokemon(battle);
+            for (int i = 1; i < Game::getInstance()->player.team.size(); i++) {
+                if (Game::getInstance()->player.team[i]->isAlive())
+                    isSomeoneAlive = true;
+            }
+            if (isSomeoneAlive)
+                state = new BattleUI_ChoosePokemon(battle);
+            else
+                state = new BattleUI_ChooseAction(battle);
             break;
         case 2:
-            //TODO Catch
+            if (Game::getInstance()->player.team.size() < 6 && battle->getWildPokemon() != nullptr &&
+                battle->getTrainer() ==
+                nullptr) {
+                state = new BattleUI_CatchPokemon(battle);
+            } else {
+                state = new BattleUI_ChooseAction(battle);
+            }
             break;
         case 3:
-            if(Dice::random(9) > 1)
-                battle->setSentenceIndex(18);
-            else
-                battle->setSentenceIndex(19);
-            state = new BattleUI_FeedbackSentence(battle);
+                if (Dice::random(10) > 1 && battle->getTrainer() == nullptr && battle->getWildPokemon() != nullptr)
+                    battle->setSentenceIndex(18);
+                else
+                    battle->setSentenceIndex(19);
+                state = new BattleUI_FeedbackSentence(battle);
             break;
     }
     return state;
@@ -71,27 +96,61 @@ BattleUI_ChooseMove::BattleUI_ChooseMove(Battle *_battle) {
 }
 
 void BattleUI_ChooseMove::draw(sf::RenderWindow &window) {
+    if(battle->getTrainer() != nullptr)
+        battle->getTrainer()->team[0]->draw(window,0);
+    else if(battle->getWildPokemon() != nullptr)
+        battle->getWildPokemon()->draw(window,0);
+    Game::getInstance()->player.team[0]->draw(window,2);
     battle->drawPlayersHPBar(window);
     battle->drawFoesHPBar(window);
     battle->drawMovesBox(window);
 }
 
 BattleUIState *BattleUI_ChooseMove::nextState(int selectedItemIndex) {
-    BattleUIState* state;
-    switch(selectedItemIndex){
-        case 0:
-            state = new BattleUI_FeedbackSentence(battle);
-                    //TODO textToBeDispayed.setString(pokemon.getName() + " used " + pokemon.move[selecteditem].getName())
-            break;
-        case 1:
-            state = new BattleUI_FeedbackSentence(battle);
-            break;
-        case 2:
-            state = new BattleUI_FeedbackSentence(battle);
-            break;
-        case 3:
-            state = new BattleUI_FeedbackSentence(battle);
-            break;
+    BattleUIState* state = nullptr;
+    if(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getNUsage() > 0) {
+        Battle::setFirstMove(true);
+        if (battle->amIFaster()) {
+            if (battle->getTrainer() != nullptr) {
+                if (Game::getInstance()->player.team[0]->doMove(
+                        Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getTrainer()->team[0])) != 0) {
+                    battle->setSentenceIndex(4);
+                    state = new BattleUI_MoveAnim(battle);
+                }else{
+                    battle->setSentenceIndex(-1);
+                    state = new BattleUI_FeedbackSentence(battle);
+                }
+            }else if(battle->getWildPokemon() != nullptr){
+                if (Game::getInstance()->player.team[0]->doMove(
+                        Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getWildPokemon()))!= 0) {
+                    battle->setSentenceIndex(4);
+                    state = new BattleUI_MoveAnim(battle);
+                }else{
+                    battle->setSentenceIndex(-1);
+                    state = new BattleUI_FeedbackSentence(battle);
+                }
+            }
+        }else{
+            if (battle->getTrainer() != nullptr) {
+                if (battle->getTrainer()->team[0]->doMove(
+                         battle->getTrainer()->team[0]->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                    battle->setSentenceIndex(9);
+                    state = new BattleUI_MoveAnim(battle);
+                }else{
+                    battle->setSentenceIndex(-1);
+                    state = new BattleUI_FeedbackSentence(battle);
+                }
+            }else if(battle->getWildPokemon() != nullptr){
+                if (battle->getWildPokemon()->doMove(
+                        battle->getWildPokemon()->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                    battle->setSentenceIndex(9);
+                    state = new BattleUI_MoveAnim(battle);
+                }else{
+                    battle->setSentenceIndex(-1);
+                    state = new BattleUI_FeedbackSentence(battle);
+                }
+            }
+        }
     }
     return state;
 
@@ -115,11 +174,24 @@ void BattleUI_ChooseMove::moveDown(int& selectedItemIndex) {
 
 BattleUI_FeedbackSentence::BattleUI_FeedbackSentence(Battle *_battle) {
     battle = _battle;
+    if(battle->getSentenceIndex() != -1 && battle->getSentenceIndex() != 18 && battle->getSentenceIndex() != 19) {
+        if (battle->getSentenceIndex() % 4 == 0)
+            oldIndex = 4;
+        else if (battle->getSentenceIndex() % 9 == 0)
+            oldIndex = 9;
+        battle->setSentenceIndex(battle->getSentenceIndex() / oldIndex);
+    }
     battle->changeFeedbackSentence();
+    Game::resetTimer();
 }
 
 
 void BattleUI_FeedbackSentence::draw(sf::RenderWindow &window) {
+    if(battle->getTrainer() != nullptr)
+        battle->getTrainer()->team[0]->draw(window,0);
+    else if(battle->getWildPokemon() != nullptr)
+        battle->getWildPokemon()->draw(window,0);
+    Game::getInstance()->player.team[0]->draw(window,2);
     battle->drawDialogBox(window);
     battle->drawFoesHPBar(window);
     battle->drawPlayersHPBar(window);
@@ -130,30 +202,209 @@ BattleUIState *BattleUI_FeedbackSentence::nextState(int selectedItemIndex) {
     int sentenceIndex = battle->getSentenceIndex();
     BattleUIState* state ;
     switch(sentenceIndex){
-        case 0:
-            battle->setSentenceIndex(battle->getSentenceIndex()+1);
-            state = new BattleUI_FeedbackSentence(battle);
+        case 5:
+            if(battle->isNotEffective()) {
+                battle->setSentenceIndex(6 * oldIndex);
+                state = new BattleUI_FeedbackSentence(battle);
+            }else if(battle->isSuperEffective()) {
+                battle->setSentenceIndex(7 * oldIndex);
+                state = new BattleUI_FeedbackSentence(battle);
+            }else{
+                sentenceIndex = oldIndex;
+                if(Battle::isFirstMove()){
+                    Battle::setFirstMove(false);
+                        if(battle->getTrainer() != nullptr){
+                            if(sentenceIndex == 4){
+                                if(battle->getTrainer()->team[0]->isAlive()){
+                                    if(Game::getInstance()->player.team[0]->isAlive()){
+                                        if (battle->getTrainer()->team[0]->doMove(
+                                                battle->getTrainer()->team[0]->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                                            battle->setSentenceIndex(9);
+                                            state = new BattleUI_MoveAnim(battle);
+                                        }else{
+                                            battle->setSentenceIndex(-1);
+                                            state = new BattleUI_FeedbackSentence(battle);
+                                        }
+                                    }else{
+                                        battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                                    }
+                                }else{
+                                    battle->setSentenceIndex(11);
+                                    state = new BattleUI_OnlyPlayersPokemon(battle);
+                                }
+                            }else if(sentenceIndex==9){
+                                if(Game::getInstance()->player.team[0]->isAlive()) {
+                                    if(battle->getTrainer()->team[0]->isAlive()){
+                                        if (Game::getInstance()->player.team[0]->doMove(
+                                                Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getTrainer()->team[0])) != 0) {
+                                            battle->setSentenceIndex(4);
+                                            state = new BattleUI_MoveAnim(battle);
+                                        }else{
+                                            battle->setSentenceIndex(-1);
+                                            state = new BattleUI_FeedbackSentence(battle);
+                                        }
+                                    }else{
+                                        battle->setSentenceIndex(11);
+                                        state = new BattleUI_OnlyPlayersPokemon(battle);
+                                    }
+                                } else{
+                                    battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                                }
+                            }
+                        }else if(battle->getWildPokemon() != nullptr){
+                            if(sentenceIndex == 4){
+                                if(battle->getWildPokemon()->isAlive()){
+                                    if(Game::getInstance()->player.team[0]->isAlive()){
+                                        if (battle->getWildPokemon()->doMove(
+                                                battle->getWildPokemon()->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                                            battle->setSentenceIndex(9);
+                                            state = new BattleUI_MoveAnim(battle);
+                                        }else{
+                                            battle->setSentenceIndex(-1);
+                                            state = new BattleUI_FeedbackSentence(battle);
+                                        }
+                                    }else{
+                                        battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                                    }
+                                }else{
+                                    battle->setSentenceIndex(11);
+                                    state = new BattleUI_OnlyPlayersPokemon(battle);
+                                }
+                            }else if(sentenceIndex==9){
+                                if(Game::getInstance()->player.team[0]->isAlive()) {
+                                    if(battle->getWildPokemon()->isAlive()){
+                                        if (Game::getInstance()->player.team[0]->doMove(
+                                                Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getWildPokemon()))!= 0) {
+                                            battle->setSentenceIndex(4);
+                                            state = new BattleUI_MoveAnim(battle);
+                                        }else{
+                                            battle->setSentenceIndex(-1);
+                                            state = new BattleUI_FeedbackSentence(battle);
+                                        }
+                                    }else{
+                                        battle->setSentenceIndex(11);
+                                        state = new BattleUI_OnlyPlayersPokemon(battle);
+                                    }
+                                } else{
+                                    battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                                }
+                            }
+                        }
+                }else{
+                    state = new BattleUI_ChooseAction(battle);
+                }
+            }
             break;
-        case 1:
-            battle->setSentenceIndex(battle->getSentenceIndex()+1);
-            state = new BattleUI_FeedbackSentence(battle);
-            break;
-        case 2:
-            battle->setSentenceIndex(battle->getSentenceIndex()+1);
-            state = new BattleUI_ChooseAction(battle);
-            break;
-        case 3:
-           /* battle->setSentenceIndex(battle->getSentenceIndex()+1);
-            state = new BattleUI_ChooseAction(battle);*/
-            break;
-        case 18:
-            state = new BattleUI_FeedbackSentence(battle);
-            battle->escape();
+        case 6:
+        case 7:
+        case -1:
+            sentenceIndex = oldIndex;
+            if(Battle::isFirstMove()){
+                Battle::setFirstMove(false);
+                if(battle->getTrainer() != nullptr){
+                    if(sentenceIndex == 4 || sentenceIndex == -1){
+                        if(battle->getTrainer()->team[0]->isAlive()){
+                            if(Game::getInstance()->player.team[0]->isAlive()){
+                                if (battle->getTrainer()->team[0]->doMove(
+                                        battle->getTrainer()->team[0]->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                                    battle->setSentenceIndex(9);
+                                    state = new BattleUI_MoveAnim(battle);
+                                }else{
+                                    battle->setSentenceIndex(-1);
+                                    state = new BattleUI_FeedbackSentence(battle);
+                                }
+                            }else{
+                                battle->setSentenceIndex(10);
+                                state = new BattleUI_OnlyEnemysPokemon(battle);
+                            }
+                        }else{
+                            battle->setSentenceIndex(11);
+                            state = new BattleUI_OnlyPlayersPokemon(battle);
+                        }
+                    }else if(sentenceIndex==9 || sentenceIndex == -1){
+                        if(Game::getInstance()->player.team[0]->isAlive()) {
+                            if(battle->getTrainer()->team[0]->isAlive()){
+                                if (Game::getInstance()->player.team[0]->doMove(
+                                        Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getTrainer()->team[0])) != 0) {
+                                    battle->setSentenceIndex(4);
+                                    state = new BattleUI_MoveAnim(battle);
+                                }else{
+                                    battle->setSentenceIndex(-1);
+                                    state = new BattleUI_FeedbackSentence(battle);
+                                }
+                            }else{
+                                battle->setSentenceIndex(11);
+                                state = new BattleUI_OnlyPlayersPokemon(battle);
+                            }
+                        } else{
+                            battle->setSentenceIndex(10);
+                            state = new BattleUI_OnlyEnemysPokemon(battle);
+                        }
+                    }
+                }else if(battle->getWildPokemon() != nullptr){
+                    if(sentenceIndex == 4 || sentenceIndex == -1){
+                        if(battle->getWildPokemon()->isAlive()){
+                            if(Game::getInstance()->player.team[0]->isAlive()){
+                                if (battle->getWildPokemon()->doMove(
+                                        battle->getWildPokemon()->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                                    battle->setSentenceIndex(9);
+                                    state = new BattleUI_MoveAnim(battle);
+                                }else{
+                                    battle->setSentenceIndex(-1);
+                                    state = new BattleUI_FeedbackSentence(battle);
+                                }
+                            }else{
+                                battle->setSentenceIndex(10);
+                                state = new BattleUI_OnlyEnemysPokemon(battle);
+                            }
+                        }else{
+                            battle->setSentenceIndex(11);
+                            state = new BattleUI_OnlyPlayersPokemon(battle);
+                        }
+                    }else if(sentenceIndex==9 || sentenceIndex == -1){
+                        if(Game::getInstance()->player.team[0]->isAlive()) {
+                            if(battle->getWildPokemon()->isAlive()){
+                                if (Game::getInstance()->player.team[0]->doMove(
+                                        Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getWildPokemon()))!= 0) {
+                                    battle->setSentenceIndex(4);
+                                    state = new BattleUI_MoveAnim(battle);
+                                }else{
+                                    battle->setSentenceIndex(-1);
+                                    state = new BattleUI_FeedbackSentence(battle);
+                                }
+                            }else{
+                                battle->setSentenceIndex(11);
+                                state = new BattleUI_OnlyPlayersPokemon(battle);
+                            }
+                        } else{
+                            battle->setSentenceIndex(10);
+                            state = new BattleUI_OnlyEnemysPokemon(battle);
+                        }
+                    }
+                }
+            }else{
+                if((battle->getTrainer()!= nullptr && !battle->getTrainer()->team[0]->isAlive())||(battle->getWildPokemon()!=
+                                                                                                   nullptr && !battle->getWildPokemon()->isAlive())){
+                    battle->setSentenceIndex(11);
+                    state = new BattleUI_OnlyPlayersPokemon(battle);
+                }else
+                    state = new BattleUI_ChooseAction(battle);
+            }
+        break;
+        case 18://TODO 18, 19, 20...
+                delete battle->getWildPokemon();
+                Game::resetTimer();
+                Game::getInstance()->changeState(GameState::STATE_MAP);
             break;
         case 19:
-            state = new BattleUI_ChooseAction(battle);
+                state = new BattleUI_ChooseAction(battle);
             break;
-
+        default:
+            state = new BattleUI_FeedbackSentence(battle);
     }
     return state;
 }
@@ -165,4 +416,804 @@ void BattleUI_FeedbackSentence::moveUp(int &selectedItemIndex) {
 void BattleUI_FeedbackSentence::moveDown(int &selectedItemIndex) {
 
 }
+
+BattleUI_Scene0::BattleUI_Scene0(Battle *_battle){
+    battle = _battle;
+    battle->changeFeedbackSentence();
+    Game::resetTimer();
+
+}
+
+
+void BattleUI_Scene0::draw(sf::RenderWindow &window) {
+    if(battle->getTrainer() != nullptr){
+        battle->getTrainer()->inBattleSprite.draw(window,1,0);
+        battle->getTrainer()->inBattleSprite.setPosition(battle->getTrainerStandardPosition()); //FIXME
+    }else if(battle->getWildPokemon() != nullptr){
+        battle->setUIState(nextState());
+    }
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+   if(Game::getTime() > 2.f)
+       battle->setUIState(nextState());
+}
+
+BattleUIState* BattleUI_Scene0::nextState(int selectedItemIndex) {
+    return new BattleUI_Scene1(battle);
+}
+
+void BattleUI_Scene0::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_Scene0::moveDown(int &selectedItemIndex) {}
+
+BattleUI_Scene1::BattleUI_Scene1(Battle *_battle) {
+    battle = _battle;
+    oldIndex = battle->getSentenceIndex();
+    battle->setSentenceIndex(1);
+    battle->changeFeedbackSentence();
+    if(battle->getTrainer() != nullptr) {
+        battle->getTrainer()->team[0]->sprite.setPosition(battle->getTrainerStandardPosition().x - 20, battle->getTrainerStandardPosition().y);
+    }else if(battle->getWildPokemon() != nullptr){
+        battle->getWildPokemon()->sprite.setPosition(battle->getTrainerStandardPosition().x - 20, battle->getTrainerStandardPosition().y);
+    }
+    float newEnemysHpBarLength = 0.f;
+    if(battle->getTrainer() != nullptr){
+        newEnemysHpBarLength = 48 *battle->scalingFactor *battle->getTrainer()->team[0]->getCurrentHp() / battle->getTrainer()->team[0]->getMaxHp();
+    }else if(battle->getWildPokemon() != nullptr){
+        newEnemysHpBarLength = 48 *battle->scalingFactor *battle->getWildPokemon()->getCurrentHp() / battle->getWildPokemon()->getMaxHp();
+    }
+    battle->foesHPBar.setSize(sf::Vector2f(newEnemysHpBarLength, battle->foesHPBar.getSize().y));
+    if(battle->foesHPBar.getSize().x < 48 *battle->scalingFactor/2) {
+        if (battle->foesHPBar.getSize().x < 48 *battle->scalingFactor / 4)
+            battle->foesHPBar.setFillColor(sf::Color::Red);
+        else
+            battle->foesHPBar.setFillColor(sf::Color::Yellow);
+    }else
+        battle->foesHPBar.setFillColor(sf::Color::Green);
+    battle->setEnemysPokemonData();
+    Game::resetTimer();
+}
+
+void BattleUI_Scene1::draw(sf::RenderWindow &window) {
+
+    if(battle->getTrainer() != nullptr){
+        battle->getTrainer()->team[0]->draw(window,0);
+
+    }else if(battle->getWildPokemon() != nullptr){
+        battle->getWildPokemon()->draw(window,0);
+    }
+    if(oldIndex != 0 && oldIndex != 1 ){
+        Game::getInstance()->player.team[0]->draw(window,2);
+    }
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+    if(Game::getTime() > 2.f)
+        battle->setUIState(nextState());
+}
+
+BattleUIState* BattleUI_Scene1::nextState(int selectedItemIndex) {
+    if(oldIndex == 0 || oldIndex == 1) {
+        return new BattleUI_Scene2(battle);
+    }else{
+        battle->setSentenceIndex(3);
+        return new BattleUI_ChooseAction(battle);
+    }
+}
+
+void BattleUI_Scene1::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_Scene1::moveDown(int &selectedItemIndex) {}
+
+BattleUI_Scene2::BattleUI_Scene2(Battle *_battle) {
+    battle = _battle;
+    oldIndex = battle->getSentenceIndex();
+    battle->setSentenceIndex(2);
+    battle->changeFeedbackSentence();
+    Game::getInstance()->player.inBattleSprite.setPosition(battle->getPlayerStandardPosition());
+    Game::getInstance()->player.team[0]->sprite.setPosition(battle->getPlayerStandardPosition().x + Game::getInstance()->player.inBattleSprite.getGlobalBounds().width/2,battle->dialogBox.getPosition().y
+    - Game::getInstance()->player.team[0]->sprite.getGlobalBounds().height/1.3f);//FIXME
+    battle->playersHPBar.setSize(sf::Vector2f(48 *battle->scalingFactor * Game::getInstance()->player.team[0]->getCurrentHp() / Game::getInstance()->player.team[0]->getMaxHp(), battle->playersHPBar.getSize().y));
+    battle->setMyPokemonData();
+    Game::resetTimer();
+}
+
+void BattleUI_Scene2::draw(sf::RenderWindow &window) {
+    int row = 1;
+    if(battle->getTrainer() != nullptr){
+        battle->getTrainer()->team[0]->draw(window,0);
+
+    }else if(battle->getWildPokemon() != nullptr){
+        battle->getWildPokemon()->draw(window,0);
+    }
+    if(Game::getTime() > 1.5f){
+        row = 0;
+        Game::getInstance()->player.team[0]->draw(window,2);
+    }
+    Game::getInstance()->player.inBattleSprite.draw(window,2,row);
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+    if(Game::getTime() > 4.f)
+        battle->setUIState(nextState());
+}
+
+BattleUIState *BattleUI_Scene2::nextState(int selectedItemIndex) {
+    BattleUIState* state;
+    if(oldIndex == 1 || !battle->isFirstMove()) {
+        battle->setSentenceIndex(3);
+        state = new BattleUI_ChooseAction(battle);
+        battle->playersHPBar.setSize(sf::Vector2f(48 *battle->scalingFactor * Game::getInstance()->player.team[0]->getCurrentHp() / Game::getInstance()->player.team[0]->getMaxHp(), battle->playersHPBar.getSize().y));
+        if(battle->playersHPBar.getSize().x < 48 *battle->scalingFactor /2) {
+            if (battle->playersHPBar.getSize().x < 48 *battle->scalingFactor  / 4)
+                battle->playersHPBar.setFillColor(sf::Color::Red);
+            else
+                battle->playersHPBar.setFillColor(sf::Color::Yellow);
+        } else
+            battle->playersHPBar.setFillColor(sf::Color::Green);
+    }else{
+        battle->setFirstMove(false);
+        if(battle->getTrainer() != nullptr) {
+            if (battle->getTrainer()->team[0]->doMove(
+                    battle->getTrainer()->team[0]->moves[Dice::random(4)], *(Game::getInstance()->player.team[0])) !=
+                0) {
+                battle->setSentenceIndex(9);
+                state = new BattleUI_MoveAnim(battle);
+            } else {
+                battle->setSentenceIndex(-1);
+                state = new BattleUI_FeedbackSentence(battle);
+            }
+        }else if (battle->getWildPokemon() != nullptr){
+            if (battle->getWildPokemon()->doMove(
+                    battle->getWildPokemon()->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                battle->setSentenceIndex(9);
+                state = new BattleUI_MoveAnim(battle);
+            }else{
+                battle->setSentenceIndex(-1);
+                state = new BattleUI_FeedbackSentence(battle);
+            }
+        }
+    }
+    return state;
+}
+
+void BattleUI_Scene2::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_Scene2::moveDown(int &selectedItemIndex) {}
+
+BattleUI_MoveAnim::BattleUI_MoveAnim(Battle *_battle) {
+    battle = _battle;
+    battle->changeFeedbackSentence();
+    Game::resetTimer();
+}
+
+void BattleUI_MoveAnim::draw(sf::RenderWindow &window) {
+    if(battle->getSentenceIndex() == 4){
+        if(battle->getTrainer() != nullptr)
+            battle->getTrainer()->team[0]->draw(window,0);
+        else if(battle->getWildPokemon() != nullptr)
+            battle->getWildPokemon()->draw(window,0);
+        Game::getInstance()->player.team[0]->draw(window,3);
+        battle->getLastMoveUsed().draw(window);
+        //TODO quello sotto ma al contrario
+    }else if(battle->getSentenceIndex() == 9){
+        if(battle->getTrainer() != nullptr)
+            battle->getTrainer()->team[0]->draw(window,1);
+        else if(battle->getWildPokemon() != nullptr)
+            battle->getWildPokemon()->draw(window,1);
+        Game::getInstance()->player.team[0]->draw(window,2);
+        battle->getLastMoveUsed().draw(window);
+        //TODO invert image and move it to the top right angle
+    }
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+    if(Game::getTime() > battle->getLastMoveUsed().getPower()/20)
+        battle->setUIState(nextState());
+
+}
+
+BattleUIState *BattleUI_MoveAnim::nextState(int selectedItemIndex) {
+    return new BattleUI_UpdateHpBars(battle);
+}
+
+void BattleUI_MoveAnim::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_MoveAnim::moveDown(int &selectedItemIndex) {}
+
+BattleUI_UpdateHpBars::BattleUI_UpdateHpBars(Battle *_battle) {
+    battle = _battle;
+    oldPlayersHpBarLength = 48 * battle->scalingFactor;
+    oldEnemysHpBarLength = 48 * battle->scalingFactor;
+    newPlayersHpBarLength = 48 *battle->scalingFactor * Game::getInstance()->player.team[0]->getCurrentHp() / Game::getInstance()->player.team[0]->getMaxHp();
+    if(battle->getTrainer() != nullptr){
+        newEnemysHpBarLength = 48 *battle->scalingFactor *battle->getTrainer()->team[0]->getCurrentHp() / battle->getTrainer()->team[0]->getMaxHp();
+    }else if(battle->getWildPokemon() != nullptr){
+        newEnemysHpBarLength = 48 *battle->scalingFactor *battle->getWildPokemon()->getCurrentHp() / battle->getWildPokemon()->getMaxHp();
+    }
+    if(newPlayersHpBarLength > battle->playersHPBar.getSize().x)
+        step1 *= -1;
+    if(newEnemysHpBarLength > battle->foesHPBar.getSize().x)
+        step2 *= -1;
+    Game::resetTimer();
+}
+
+void BattleUI_UpdateHpBars::draw(sf::RenderWindow &window) {
+    if(battle->foesHPBar.getSize().x < oldEnemysHpBarLength/2) {
+        if (battle->foesHPBar.getSize().x < oldEnemysHpBarLength / 4)
+            battle->foesHPBar.setFillColor(sf::Color::Red);
+        else
+            battle->foesHPBar.setFillColor(sf::Color::Yellow);
+    }else
+        battle->foesHPBar.setFillColor(sf::Color::Green);
+    if(battle->playersHPBar.getSize().x < oldPlayersHpBarLength/2) {
+        if (battle->playersHPBar.getSize().x < oldPlayersHpBarLength / 4)
+            battle->playersHPBar.setFillColor(sf::Color::Red);
+        else
+            battle->playersHPBar.setFillColor(sf::Color::Yellow);
+    } else
+        battle->playersHPBar.setFillColor(sf::Color::Green);
+
+        if(battle->getTrainer() != nullptr)
+            battle->getTrainer()->team[0]->draw(window,0);
+        else if(battle->getWildPokemon() != nullptr)
+            battle->getWildPokemon()->draw(window,0);
+    Game::getInstance()->player.team[0]->draw(window,2);
+    if(battle->getSentenceIndex() == 4){
+        if(!updateEnemysHpBar()){
+            updatePlayersHpBar();
+            battle->drawPlayersHPBar(window);
+        }
+        battle->drawFoesHPBar(window);
+    }else if (battle->getSentenceIndex() == 9){
+        if(!updatePlayersHpBar()){
+            updateEnemysHpBar();
+            battle->drawFoesHPBar(window);
+        }
+
+        battle->drawPlayersHPBar(window);
+    }
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+
+
+}
+
+BattleUIState *BattleUI_UpdateHpBars::nextState(int selectedItemIndex) {
+    BattleUIState *state;
+    if(abs(battle->playersHPBar.getSize().x - newPlayersHpBarLength) > 0){
+            battle->playersHPBar.setSize(sf::Vector2f(newPlayersHpBarLength, 3 * battle->scalingFactor));
+        if(battle->playersHPBar.getSize().x < oldPlayersHpBarLength/2) {
+            if (battle->playersHPBar.getSize().x < oldPlayersHpBarLength / 4)
+                battle->playersHPBar.setFillColor(sf::Color::Red);
+            else
+                battle->playersHPBar.setFillColor(sf::Color::Yellow);
+        }
+    }else{
+        if(Game::getInstance()->player.team[0]->getCurrentHp() == 0)
+            battle->playersHPBar.setSize(sf::Vector2f(0, battle->playersHPBar.getSize().y));
+        else if(Game::getInstance()->player.team[0]->getCurrentHp() ==Game::getInstance()->player.team[0]->getMaxHp() )
+            battle->playersHPBar.setSize(sf::Vector2f(oldPlayersHpBarLength,battle->playersHPBar.getSize().y));
+    }
+    if(abs(battle->foesHPBar.getSize().x - newEnemysHpBarLength) > 0){
+        battle->foesHPBar.setSize(sf::Vector2f(newEnemysHpBarLength, battle->foesHPBar.getSize().y));
+        if(battle->foesHPBar.getSize().x < oldEnemysHpBarLength/2) {
+            if (battle->foesHPBar.getSize().x < oldEnemysHpBarLength / 4)
+                battle->foesHPBar.setFillColor(sf::Color::Red);
+            else
+                battle->foesHPBar.setFillColor(sf::Color::Yellow);
+        }else
+            battle->foesHPBar.setFillColor(sf::Color::Green);
+
+    }else{
+        if(battle->getTrainer()!= nullptr) {
+            if (battle->getTrainer()->team[0]->getCurrentHp() == 0)
+                battle->foesHPBar.setSize(sf::Vector2f(0, battle->foesHPBar.getSize().y));
+            else if (battle->getTrainer()->team[0]->getCurrentHp() == battle->getTrainer()->team[0]->getMaxHp())
+                battle->foesHPBar.setSize(sf::Vector2f(oldEnemysHpBarLength, battle->foesHPBar.getSize().y));
+        }else if(battle->getWildPokemon() != nullptr){
+            if (battle->getWildPokemon()->getCurrentHp() == 0)
+                battle->foesHPBar.setSize(sf::Vector2f(0, battle->foesHPBar.getSize().y));
+            else if (battle->getWildPokemon()->getCurrentHp() == battle->getWildPokemon()->getMaxHp())
+                battle->foesHPBar.setSize(sf::Vector2f(oldEnemysHpBarLength, battle->foesHPBar.getSize().y));
+        }
+    }
+
+    int oldIndex = battle->getSentenceIndex();
+    if (Battle::isCriticalHit()){
+        battle->setSentenceIndex(5 * oldIndex);
+        state = new BattleUI_FeedbackSentence(battle);
+    } else if(Battle::isSuperEffective()){
+            battle->setSentenceIndex(7 * oldIndex);
+            state = new BattleUI_FeedbackSentence(battle);
+        }else if(Battle::isNotEffective()){
+            battle->setSentenceIndex(6 * oldIndex);
+            state = new BattleUI_FeedbackSentence(battle);
+        } else{
+        if(Battle::isFirstMove()){
+            Battle::setFirstMove(false);
+         if(battle->getTrainer() != nullptr){
+            if(oldIndex == 4){
+                if(battle->getTrainer()->team[0]->isAlive()){
+                    if(Game::getInstance()->player.team[0]->isAlive()){
+                        if (battle->getTrainer()->team[0]->doMove(
+                                battle->getTrainer()->team[0]->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                            battle->setSentenceIndex(9);
+                            state = new BattleUI_MoveAnim(battle);
+                        }else{
+                            battle->setSentenceIndex(-1);
+                            state = new BattleUI_FeedbackSentence(battle);
+                        }
+                    }else{
+                        battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+
+                    }
+                }else{
+                 battle->setSentenceIndex(11);
+                    state = new BattleUI_OnlyPlayersPokemon(battle);
+                }
+            }else if(oldIndex==9){
+                if(Game::getInstance()->player.team[0]->isAlive()) {
+                    if(battle->getTrainer()->team[0]->isAlive()){
+                        if (Game::getInstance()->player.team[0]->doMove(
+                                Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getTrainer()->team[0])) != 0) {
+                            battle->setSentenceIndex(4);
+                            state = new BattleUI_MoveAnim(battle);
+                        }else{
+                            battle->setSentenceIndex(-1);
+                            state = new BattleUI_FeedbackSentence(battle);
+                        }
+                    }else{
+                     battle->setSentenceIndex(11);
+                     state = new BattleUI_OnlyPlayersPokemon(battle);
+                    }
+                } else{
+                    battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                }
+            }
+        }else if(battle->getWildPokemon() != nullptr){
+            if(oldIndex == 4){
+                if(battle->getWildPokemon()->isAlive()){
+                    if(Game::getInstance()->player.team[0]->isAlive()){
+                        if (battle->getWildPokemon()->doMove(
+                                battle->getWildPokemon()->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+                            battle->setSentenceIndex(9);
+                            state = new BattleUI_MoveAnim(battle);
+                        }else{
+                            battle->setSentenceIndex(-1);
+                            state = new BattleUI_FeedbackSentence(battle);
+                        }
+                    }else{
+                        battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                    }
+                }else{
+                 battle->setSentenceIndex(11);
+                 state = new BattleUI_OnlyPlayersPokemon(battle);
+                }
+            }else if(oldIndex==9){
+                if(Game::getInstance()->player.team[0]->isAlive()) {
+                    if(battle->getWildPokemon()->isAlive()){
+                        if (Game::getInstance()->player.team[0]->doMove(
+                                Game::getInstance()->player.team[0]->moves[selectedItemIndex], *(battle->getWildPokemon()))!= 0) {
+                            battle->setSentenceIndex(4);
+                            state = new BattleUI_MoveAnim(battle);
+                        }else{
+                            battle->setSentenceIndex(-1);
+                            state = new BattleUI_FeedbackSentence(battle);
+                        }
+                    }else{
+                        battle->setSentenceIndex(11);
+                        state = new BattleUI_OnlyPlayersPokemon(battle);
+                    }
+                } else{
+                    battle->setSentenceIndex(10);
+                        state = new BattleUI_OnlyEnemysPokemon(battle);
+                }
+            }
+        }
+    }else{
+            std::cerr<<"ss";
+            state = new BattleUI_ChooseAction(battle);
+        }
+    }
+
+   /* */
+    return state;
+}
+
+void BattleUI_UpdateHpBars::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_UpdateHpBars::moveDown(int &selectedItemIndex) {}
+
+bool BattleUI_UpdateHpBars::updatePlayersHpBar() {
+    bool value = false;
+    if(abs(battle->playersHPBar.getSize().x - newPlayersHpBarLength) > 0) {
+            battle->playersHPBar.setSize(sf::Vector2f(battle->playersHPBar.getSize().x - step1, 3 * battle->scalingFactor));
+        value = true;
+    }else{
+        if(Game::getInstance()->player.team[0]->getCurrentHp() == 0) {
+            battle->playersHPBar.setSize(sf::Vector2f(0, battle->playersHPBar.getSize().y));
+            value = true;
+        }
+        else if(Game::getInstance()->player.team[0]->getCurrentHp() ==Game::getInstance()->player.team[0]->getMaxHp() ) {
+            battle->playersHPBar.setSize(sf::Vector2f(oldPlayersHpBarLength, battle->playersHPBar.getSize().y));
+            value = true;
+        }
+    }
+return value;
+}
+
+bool BattleUI_UpdateHpBars::updateEnemysHpBar() {
+bool value = false;
+    if(abs(battle->foesHPBar.getSize().x - newEnemysHpBarLength )> 0){
+                battle->foesHPBar.setSize(
+                        sf::Vector2f(battle->foesHPBar.getSize().x - step2, 3 * battle->scalingFactor));
+        }else {
+        if (battle->getTrainer() != nullptr) {
+            if (battle->getTrainer()->team[0]->getCurrentHp() == 0)
+                battle->foesHPBar.setSize(sf::Vector2f(0, battle->foesHPBar.getSize().y));
+            else if (battle->getTrainer()->team[0]->getCurrentHp() == battle->getTrainer()->team[0]->getMaxHp())
+                battle->foesHPBar.setSize(sf::Vector2f(oldEnemysHpBarLength, battle->foesHPBar.getSize().y));
+        } else if (battle->getWildPokemon() != nullptr) {
+            if (battle->getWildPokemon()->getCurrentHp() == 0)
+                battle->foesHPBar.setSize(sf::Vector2f(0, battle->foesHPBar.getSize().y));
+            else if (battle->getWildPokemon()->getCurrentHp() == battle->getWildPokemon()->getMaxHp())
+                battle->foesHPBar.setSize(sf::Vector2f(oldEnemysHpBarLength, battle->foesHPBar.getSize().y));
+        }
+
+    }
+    return value;
+}
+
+BattleUI_UpdateExpBar::BattleUI_UpdateExpBar(Battle *_battle) {
+    battle = _battle;
+    battle->changeFeedbackSentence();
+    lvlInc = battle->getLevelInc();
+    oldExpGained = battle->playersEXPBar.getSize().x;
+    std::cout<<oldExpGained<<std::endl;
+    expGained = 64 * battle->scalingFactor * battle->getExpGained()/((pow(Game::getInstance()->player.team[0]->getLevel(),3) * 4/5));
+            std::cout<<battle->getExpGained()<<std::endl;
+            std::cout<<expGained<<std::endl;
+
+    Game::resetTimer();
+}
+
+void BattleUI_UpdateExpBar::draw(sf::RenderWindow &window) {
+    updateExpBar();
+    Game::getInstance()->player.team[0]->draw(window, 2);
+    battle->drawPlayersHPBar(window);
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+}
+
+BattleUIState *BattleUI_UpdateExpBar::nextState(int selectedItemIndex) {
+    battle->setSentenceIndex(16);
+    BattleUIState* state = new BattleUI_Victory(battle);
+    if(battle->getTrainer() != nullptr) {
+        for (int i = 1; i < battle->getTrainer()->team.size(); i++) {
+            if (battle->getTrainer()->team[i]->isAlive()) {
+                auto tmp = battle->getTrainer()->team[0];
+                battle->getTrainer()->team[0] = battle->getTrainer()->team[i];
+                battle->getTrainer()->team[i] = tmp;
+                state = new BattleUI_Scene1(battle);
+            }
+        }
+    }
+    return state;
+}
+
+void BattleUI_UpdateExpBar::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_UpdateExpBar::moveDown(int &selectedItemIndex) {}
+
+void BattleUI_UpdateExpBar::updateExpBar() {
+        if(lvlInc == 0) {
+            if (battle->playersEXPBar.getSize().x < oldExpGained + expGained) {
+                battle->playersEXPBar.setSize(
+                        sf::Vector2f(battle->playersEXPBar.getSize().x + step, battle->playersEXPBar.getSize().y));
+            }
+        }else{
+            if(battle->playersEXPBar.getSize().x < 64 * battle->scalingFactor){
+                battle->playersEXPBar.setSize(
+                        sf::Vector2f(battle->playersEXPBar.getSize().x + step, battle->playersEXPBar.getSize().y));
+            }else{
+                lvlInc--;
+                oldExpGained = 0;
+                battle->setSentenceIndex(13);
+                battle->changeFeedbackSentence();
+                battle->myPokemonLevel.setString(std::to_string(std::stoi(battle->myPokemonLevel.getString().toAnsiString()) + 1));
+                battle->playersEXPBar.setSize(sf::Vector2f(0,battle->playersEXPBar.getSize().y));
+            }
+        }
+}
+
+BattleUI_Victory::BattleUI_Victory(Battle *_battle) {
+    battle = _battle;
+    battle->changeFeedbackSentence();
+    Game::resetTimer();
+}
+
+void BattleUI_Victory::draw(sf::RenderWindow &window) {
+    if(battle->getTrainer() != nullptr)
+        battle->getTrainer()->inBattleSprite.draw(window,1,2);
+    Game::getInstance()->player.team[0]->draw(window,2);
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+}
+
+BattleUIState *BattleUI_Victory::nextState(int selectedItemIndex) {
+    BattleUIState* state = nullptr;
+    if(battle->getSentenceIndex() == 16 && battle->getTrainer() != nullptr){
+        battle->setSentenceIndex(17);
+        state = new BattleUI_Victory(battle);
+    }else{
+        if(battle->getTrainer() != nullptr)
+            battle->setTrainer(nullptr);
+        else if(battle->getWildPokemon() != nullptr)
+            battle->setWildPokemon(nullptr);
+        Game::getInstance()->changeState(GameState::STATE_MAP);
+    }
+    return state;
+}
+
+void BattleUI_Victory::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_Victory::moveDown(int &selectedItemIndex) {}
+
+BattleUI_OnlyPlayersPokemon::BattleUI_OnlyPlayersPokemon(Battle *_battle) {
+battle = _battle;
+battle->changeFeedbackSentence();
+Game::resetTimer();
+}
+
+void BattleUI_OnlyPlayersPokemon::draw(sf::RenderWindow &window) {
+    Game::getInstance()->player.team[0]->draw(window,2);
+    battle->drawPlayersHPBar(window);
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+}
+
+BattleUIState *BattleUI_OnlyPlayersPokemon::nextState(int selectedItemIndex) {
+    battle->setSentenceIndex(12);
+    return new BattleUI_UpdateExpBar(battle);
+}
+
+void BattleUI_OnlyPlayersPokemon::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_OnlyPlayersPokemon::moveDown(int &selectedItemIndex) {}
+
+BattleUI_OnlyEnemysPokemon::BattleUI_OnlyEnemysPokemon(Battle *_battle) {
+    battle = _battle;
+    battle->changeFeedbackSentence();
+    Game::resetTimer();
+}
+
+void BattleUI_OnlyEnemysPokemon::draw(sf::RenderWindow &window) {
+    if(battle->getTrainer() != nullptr){
+        battle->getTrainer()->team[0]->draw(window,0);
+    }else if(battle->getWildPokemon() != nullptr){
+        battle->getWildPokemon()->draw(window,0);
+    }
+    battle->drawFoesHPBar(window);
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+}
+
+BattleUIState *BattleUI_OnlyEnemysPokemon::nextState(int selectedItemIndex) {
+    BattleUIState* state;
+    battle->setSentenceIndex(22);
+    state = new BattleUI_Defeat(battle);
+    for(int i = 1; i < Game::getInstance()->player.team.size(); i++) {
+        if (Game::getInstance()->player.team[i]->isAlive()) {//I have at least one pokemon who is alive
+            battle->setSentenceIndex(14);
+            state = new BattleUI_ChoosePokemon(battle);
+        }
+    }
+    return state;
+}
+
+void BattleUI_OnlyEnemysPokemon::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_OnlyEnemysPokemon::moveDown(int &selectedItemIndex) {}
+
+BattleUI_Defeat::BattleUI_Defeat(Battle *_battle) {
+battle = _battle;
+battle->changeFeedbackSentence();
+if(battle->getSentenceIndex() == 24) {
+    battle->feedbackSentence.setPosition(10,
+                                         720 / 6 - 50);
+    battle->feedbackSentence.setCharacterSize(20);
+}Game::resetTimer();
+}
+
+void BattleUI_Defeat::draw(sf::RenderWindow &window) {
+    if(battle->getSentenceIndex() != 24){
+        if(battle->getTrainer() != nullptr){
+            battle->getTrainer()->team[0]->draw(window,0);
+        }else if(battle->getWildPokemon() != nullptr){
+            battle->getWildPokemon()->draw(window,0);
+        }
+        battle->drawDialogBox(window);
+        battle->drawFeedbackSentence(window);
+    }else{
+        window.clear(sf::Color::Black);
+        battle->drawFeedbackSentence(window);
+    }
+}
+
+BattleUIState *BattleUI_Defeat::nextState(int selectedItemIndex) {
+    BattleUIState *state = nullptr;
+    if (battle->getSentenceIndex() != 24) {
+        battle->setSentenceIndex(battle->getSentenceIndex() + 1);
+        state = new BattleUI_Defeat(battle);
+    }else{
+        if(battle->getTrainer() != nullptr) {
+            battle->setTrainer(nullptr);
+        }else if(battle->getWildPokemon() != nullptr) {
+            battle->setWildPokemon(nullptr);
+        }
+        battle->resetFeedbackSentencePosition();
+        battle->feedbackSentence.setCharacterSize(30);
+        Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
+    }
+    return state;
+}
+
+void BattleUI_Defeat::moveUp(int &selectedItemIndex) {}
+
+void BattleUI_Defeat::moveDown(int &selectedItemIndex) {}
+
+BattleUI_ChoosePokemon::BattleUI_ChoosePokemon(Battle *_battle) {
+    battle = _battle;
+        battle->changeFeedbackSentence();
+        //TODO if(Game::getInstance()->player.team.size() < 1)
+        if (!backgroundTexture.loadFromFile("../Textures/choosePokemonMenu.png")) {
+            //TODO handle error
+        }
+        background.setTexture(backgroundTexture);
+        if (!redXTexture.loadFromFile("../Textures/redx.png")) {
+            //TODO handle error
+        }
+        redX.setTexture(redXTexture);
+        if (!cursorTexture.loadFromFile("../Textures/cursor.png")) {
+            //TODO...
+        }
+        cursor.setTexture(cursorTexture);
+        //ogni posizione che viene cambiata va risistemata quando passo al prossimo stato
+        /*originalSpritePosition = Game::getInstance()->player.team[0]->sprite.getPosition();
+        Game::getInstance()->player.team[0]->sprite.setScale(0.7f,0.7f);
+        Game::getInstance()->player.team[0]->sprite.setPosition(25.f,75.f);
+
+        if(Game::getInstance()->player.team.size() > 1){
+            for(int i = 1; i < Game::getInstance()->player.team.size(); i++){
+                Game::getInstance()->player.team[i]->sprite.setScale(0.5f,0.5f);
+                Game::getInstance()->player.team[i]->sprite.setPosition(200,30);
+
+            }
+        }*/
+        if (!font.loadFromFile("../pkmnem.ttf")) {
+            //TODO handle error
+        }
+        for (int i = 0; i < Game::getInstance()->player.team.size(); i++) {
+            names[i].setFont(font);
+            names[i].setCharacterSize(20);
+            names[i].setScale(0.9f, 0.9f);
+            names[i].setFillColor(sf::Color::Black);
+            if (i == 0) {
+                names[i].setPosition(25, 75);
+                names[i].setString(Game::getInstance()->player.team[i]->getName() + " Lv" +
+                                   std::to_string(Game::getInstance()->player.team[i]->getLevel()) + "\n\nHP: "
+                                   + std::to_string(Game::getInstance()->player.team[i]->getCurrentHp()) + "/" +
+                                   std::to_string(Game::getInstance()->player.team[i]->getMaxHp()));
+            } else {
+                names[i].setString(Game::getInstance()->player.team[i]->getName() + " Lv" +
+                                   std::to_string(Game::getInstance()->player.team[i]->getLevel()) + " HP: "
+                                   + std::to_string(Game::getInstance()->player.team[i]->getCurrentHp()) + "/" +
+                                   std::to_string(Game::getInstance()->player.team[i]->getMaxHp()));
+                names[i].setPosition(200, 35 * i + 3);
+            }
+        }
+        int i = 1;
+        while (!Game::getInstance()->player.team[i]->isAlive() && i < Game::getInstance()->player.team.size()) {
+            i++;
+        }
+        names[i].setFillColor(sf::Color::Red);
+        selectedItem = i;
+    }
+
+void BattleUI_ChoosePokemon::draw(sf::RenderWindow &window) {
+    window.draw(background);
+    /*Game::getInstance()->player.team[0]->draw(window,0);
+    if(Game::getInstance()->player.team.size() >  1){
+     Game::getInstance()->player.team[1]->draw(window,0);
+    }*/
+    for (int i = 0; i < Game::getInstance()->player.team.size(); i++) {
+        window.draw(names[i]);
+    }
+
+}
+
+BattleUIState *BattleUI_ChoosePokemon::nextState(int selectedItemIndex) {
+    BattleUIState* state = nullptr;
+        auto tmp = Game::getInstance()->player.team[0];
+        Game::getInstance()->player.team[0] = Game::getInstance()->player.team[selectedItem];
+        Game::getInstance()->player.team[selectedItem] = tmp;
+        state = new BattleUI_Scene2(battle);
+    return state;
+}
+
+void BattleUI_ChoosePokemon::moveUp(int &selectedItemIndex) {
+    do{
+        selectedItem--;
+        if (selectedItem == 0)
+            selectedItem = 5;
+        for (int i = 1; i < Game::getInstance()->player.team.size(); i++) {
+            names[i].setFillColor(sf::Color::Black);
+        }
+        names[selectedItem].setFillColor(sf::Color::Red);
+    } while (!Game::getInstance()->player.team[selectedItem]->isAlive());
+}
+void BattleUI_ChoosePokemon::moveDown(int &selectedItemIndex) {
+    do{
+    selectedItem++;
+    if(selectedItem == 6)
+        selectedItem = 1;
+    for(int i = 1; i < Game::getInstance()->player.team.size();i++){
+        names[i].setFillColor(sf::Color::Black);
+    }
+    names[selectedItem].setFillColor(sf::Color::Red);
+    } while (!Game::getInstance()->player.team[selectedItem]->isAlive());
+}
+
+BattleUI_CatchPokemon::BattleUI_CatchPokemon(Battle *_battle) {
+    //TODO add a pokeball sprite that is thrown against the wild pokemon
+    battle =_battle;
+    battle->setSentenceIndex(99);
+    battle->changeFeedbackSentence();
+    if(Game::getInstance()->player.catchPokemon(battle->getWildPokemon())){
+        battle->setSentenceIndex(20);
+    }else{
+        battle->setSentenceIndex(21);
+    }
+    //TODO mettere una frasetta quando si prova a catturare il pokemon di un allenatore? battle->setSentenceIndex(21);
+    Game::resetTimer();
+}
+
+void BattleUI_CatchPokemon::draw(sf::RenderWindow &window) {
+    Game::getInstance()->player.team[0]->draw(window,2);
+    if(Game::getTime() < 1){
+        battle->getWildPokemon()->draw(window,0);
+    }else{
+        battle->changeFeedbackSentence();
+        if(battle->getSentenceIndex() == 20){
+        }else{
+            battle->getWildPokemon()->draw(window,0);
+        }
+    }
+    battle->drawDialogBox(window);
+    battle->drawFeedbackSentence(window);
+}
+
+BattleUIState *BattleUI_CatchPokemon::nextState(int selectedItemIndex) {
+    BattleUIState* state = nullptr;
+    while(Game::getTime() < 1){
+        //just wait
+    }
+    if(battle->getSentenceIndex() == 20){
+        Game::getInstance()->changeState(GameState::STATE_MAP);
+    }else{
+        if (battle->getWildPokemon()->doMove(
+                battle->getWildPokemon()->moves[Dice::random(4)], *(Game::getInstance()->player.team[0]))!= 0) {
+            battle->setSentenceIndex(9);
+            state = new BattleUI_MoveAnim(battle);
+        }else{
+            battle->setSentenceIndex(-1);
+            state = new BattleUI_FeedbackSentence(battle);
+        }
+    }
+    return state;
+}
+
+void BattleUI_CatchPokemon::moveUp(int &selectedItemIndex) {}
+void BattleUI_CatchPokemon::moveDown(int &selectedItemIndex) {}
 

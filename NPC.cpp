@@ -12,17 +12,28 @@ NPC::NPC(int id, int x, int y,bool canFight) : Trainer(id, x, y), isFightable (c
     switch(id){
         case 1:
             action = new Chase(this);
+            if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite"+name+".png")) {
+                //TODO
+            }
             break;
         case 2 :
             action = new Idle(this);
+            if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite"+name+".png")) {
+                //TODO
+            }
             break;
         case 3:
             action = new Walk(this);
+            if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSpriteGirl.png")) {
+                //TODO
+            }
             break;
         case 4 :
             action = new Chase(this);
             break;
     }
+
+    inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 60 ,80, 2);
 }
 
 void NPC::doAction() {

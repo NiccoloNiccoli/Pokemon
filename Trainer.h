@@ -26,6 +26,7 @@ public:
     void draw(sf::RenderWindow& window, int row = 0);
     int getState() const;
     AnimatedSprite overworldSprite = AnimatedSprite(overworldSpriteTexture,20,30,4);
+
     std::vector<Pokemon*> team;
 
     void setState(int state);
@@ -39,7 +40,6 @@ protected:
     int id;
     std::string name;
     sf::Texture overworldSpriteTexture;
-    //TODO inBattleSprite
     int money;
     int xPosition;
     int yPosition;

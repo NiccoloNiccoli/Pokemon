@@ -9,12 +9,13 @@
 #include <string>
 #include "Type.h"
 #include "debug.h"
+#include "AnimatedSprite.h"
 
 class Move {
 public:
     Move();
     Move(const std::string& moveName);
-    void playAnimation(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window);
     void use();
 
     int getPower() const;
@@ -43,7 +44,8 @@ private:
     float healingPercentage;
     int nUsage;
     int maxUses;
-    //TODO animation(?)
+    //TODO sf::Texture animationTexture;
+    //TODO AnimatedSprite animation = AnimatedSprite(animationTexture,1,1,1);
     Type type;
     int accuracy;
 };

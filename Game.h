@@ -18,6 +18,9 @@ enum class GameState{
     STATE_POKEMON_CENTER,
     STATE_MAIN_MENU
 };
+
+class Battle;
+
 class Game {
 public:
    static Game* getInstance();
@@ -36,13 +39,13 @@ public:
 
     static float getTime();
     static void resetTimer();
-
+    float getPlayTime();
     void load();
 
     //FIXME
     Map map = Map("tileset1_1.png", 27, 15, "ROUTE_01");
     Player player = Player(0,40,70,"Niccolò");
-    Battle battle = Battle(player);
+    Battle* battle;
 private:
     Game();
     static Game* instance;

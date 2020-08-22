@@ -3,6 +3,7 @@
 //
 
 #include <random>
+#include <iostream>
 #include "Dice.h"
 int Dice::random(int min, int max){
     int diff = max - min;

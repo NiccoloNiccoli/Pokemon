@@ -69,9 +69,9 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
 
     if(_name == "ROUTE_01"){
         averagePokemonLevel = 20;
-        wildPokemons.emplace_back("Pikachu");
-        wildPokemons.emplace_back("Squirtle");
-        wildPokemons.emplace_back("Charmander");
+        wildPokemons.emplace_back("Vileplume");
+        wildPokemons.emplace_back("Umbreon");
+        wildPokemons.emplace_back("Zangoose");
 #ifdef DEBUG
         for(auto i : npc)
             std::cout<<i->getName()<<std::endl;
@@ -82,8 +82,6 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
         for(auto i : wildPokemons)
             std::cout<<i<<std::endl;
     #endif
-
-    timer.restart();
 }
 
 void Map::loadMap(const std::string &_name,const std::string& tilesetName) {
@@ -140,9 +138,9 @@ void Map::checkCollisions(Trainer& player){
 #ifdef DEBUG
                     std::cout<<"You have found "<<wildPokemon->getName()<<" at level "<<wildPokemon->getLevel()<<std::endl;
 #endif
-                    Battle::setWildPokemon(wildPokemon);
-                    Battle::setSentenceIndex(0);
-                    Battle::changeFeedbackSentence();
+                    Battle::setWildPokemon(wildPokemon);/*
+                    Game::getInstance()->battle.setSentenceIndex(0);
+                    Game::getInstance()->battle.changeFeedbackSentence();*/
                     Game::getInstance()->changeState(GameState::STATE_BATTLE);
                 }
                 //else you are already in a battle
@@ -153,8 +151,10 @@ void Map::checkCollisions(Trainer& player){
 
         }else if(tiles[column + row * 27].getType() == POKEMON_CENTER_DOOR){
             //Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
-            if(Game::getInstance()->checkState(GameState::STATE_POKEMON_CENTER))
+            if(Game::getInstance()->checkState(GameState::STATE_POKEMON_CENTER)) {
                 Game::getInstance()->changeState(GameState::STATE_MAP);
+                restartTimer();
+            }
             else
                 Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
 #ifdef DEBUG
@@ -165,7 +165,7 @@ void Map::checkCollisions(Trainer& player){
     }
 }
 void Map::drawUI(sf::RenderWindow &window) {
-    if(Game::getTime() < 5.f){
+    if(timer.getElapsedTime().asSeconds() < 5.f){
         window.draw(box);
         window.draw(name);
     }
@@ -199,4 +199,28 @@ NPC *Map::lookForNearestEnemy(const Player& player) {
 const std::string &Map::getName() const {
     return _name;
 }
+
+void Map::restartTimer() {
+    timer.restart();
+
+}
+
+sf::Vector2f Map::findPokemonCenterDoor() {
+    int i = 0, j =0;
+    bool doorFound = false;
+    while(i < columns && !doorFound){
+        j =0;
+        while(j<rows && !doorFound){
+            if(tiles[i + j * 27].getType() == POKEMON_CENTER_DOOR)
+                doorFound = true, std::cout<<"marker";
+            else
+                j++;
+        }
+        if(!doorFound)
+            i++;
+    }
+    std::cout<<"x:"<<i*tileSize.x<<" y:"<<j*tileSize.y<<std::endl;
+    return sf::Vector2f(i * tileSize.x,j * tileSize.y); //RESTITUIRE LA POSIZIONE DELLA PORTA ù.ù
+}
+
 

@@ -24,7 +24,7 @@ int main() {
     srand(time(NULL));
 
 Game* game = Game::getInstance();
-//TODO sistemare il cartellino con il nome della mappa quando chiudo una battaglia
+
 
         while(window.isOpen()){
             sf::Event event;
