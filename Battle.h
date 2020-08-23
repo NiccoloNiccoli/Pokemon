@@ -85,9 +85,9 @@ public:
     void setMyPokemonData();
     void setEnemysPokemonData();
 
-    Move getLastMoveUsed() const;
+    Move* getLastMoveUsed() const;
 
-    static void setLastMoveUsed(const Move &lastMoveUsed);
+    static void setLastMoveUsed(Move* lastMoveUsed);
 
     void updateHpBar(float x);
 
@@ -157,7 +157,7 @@ private:
     int sentenceIndex;
 
     static bool criticalHit, notEffective, superEffective, firstMove;
-    static Move lastMoveUsed;
+    static Move* lastMoveUsed;
     BattleUIState* UIstate = nullptr;
     int levelInc;
     int expGained;

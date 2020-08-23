@@ -16,7 +16,8 @@ enum class GameState{
     STATE_MAP,
     STATE_BATTLE,
     STATE_POKEMON_CENTER,
-    STATE_MAIN_MENU
+    STATE_MAIN_MENU,
+    STATE_PAUSE_MENU
 };
 
 class Battle;
@@ -27,7 +28,7 @@ public:
     void changeState(GameState nextGameState);
     void drawCurrentScene(sf::RenderWindow& window);
     void update();
-    void handleInput(sf::Event event);
+    void handleInput(sf::Event event, sf::RenderWindow &window);
 
     State *getCurrentState() const;
     void setCurrentState(State *currentState);

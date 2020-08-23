@@ -18,7 +18,7 @@ bool Battle::criticalHit = false;
 bool Battle::notEffective = false;
 bool Battle::superEffective = false;
 bool Battle::firstMove = false;
-Move Battle::lastMoveUsed = Move ("quick_attack");
+Move* Battle::lastMoveUsed = new Move ("quick_attack");
 
 Battle::Battle() {
     sf::RectangleShape tmpBox(sf::Vector2f(120.f, 100.f));
@@ -637,9 +637,9 @@ void Battle::setMenuButtonPosition(BattleUIStates state) {
 }
 
 void Battle::setMoveDataString() {
-    moveData[0].setString(std::to_string(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getNUsage()));
-    moveData[1].setString(std::to_string(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getMaxUses()));
-    moveData[2].setString(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getType().getTypeName());
+    moveData[0].setString(std::to_string(Game::getInstance()->player.team[0]->moves[selectedItemIndex]->getNUsage()));
+    moveData[1].setString(std::to_string(Game::getInstance()->player.team[0]->moves[selectedItemIndex]->getMaxUses()));
+    moveData[2].setString(Game::getInstance()->player.team[0]->moves[selectedItemIndex]->getType().getTypeName());
 }
 
 void Battle::changeColorSelectedButton(sf::Color color) {
@@ -666,7 +666,7 @@ void Battle::changeFeedbackSentence() {
                 break;
             case 4:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " used " +
-                              Game::getInstance()->player.team[0]->moves[selectedItemIndex].getName();
+                              Game::getInstance()->player.team[0]->moves[selectedItemIndex]->getName();
                 break;
             case 5:
                 newSentence = "Critical hit!";
@@ -681,7 +681,7 @@ void Battle::changeFeedbackSentence() {
                 newSentence = "Missed!";
                 break;
             case 9:
-                newSentence = "Foe " + trainer->team[0]->getName() + " used "+ lastMoveUsed.getName();
+                newSentence = "Foe " + trainer->team[0]->getName() + " used "+ lastMoveUsed->getName();
                 break;
             case 10:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " fainted!";
@@ -750,7 +750,7 @@ void Battle::changeFeedbackSentence() {
                 break;
             case 4:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " used " +
-                              Game::getInstance()->player.team[0]->moves[selectedItemIndex].getName();
+                              Game::getInstance()->player.team[0]->moves[selectedItemIndex]->getName();
                 break;
             case 5:
                 newSentence = "Critical hit!";
@@ -765,7 +765,7 @@ void Battle::changeFeedbackSentence() {
                 newSentence = "Missed!";
                 break;
             case 9:
-                newSentence = "Wild " + wildPokemon->getName() + " used " + lastMoveUsed.getName();
+                newSentence = "Wild " + wildPokemon->getName() + " used " + lastMoveUsed->getName();
                 break;
             case 10:
                 newSentence = Game::getInstance()->player.team[0]->getName() + " fainted!";
@@ -906,11 +906,11 @@ void Battle::setEnemysPokemonData() {
     }
 }
 
-Move Battle::getLastMoveUsed() const {
+Move* Battle::getLastMoveUsed() const {
     return lastMoveUsed;
 }
 
-void Battle::setLastMoveUsed(const Move &lastMoveUsed) {
+void Battle::setLastMoveUsed(Move* lastMoveUsed) {
     Battle::lastMoveUsed = lastMoveUsed;
 }
 

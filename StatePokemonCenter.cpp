@@ -4,10 +4,12 @@
 
 #include <iostream>
 #include "StatePokemonCenter.h"
+#include "StatePauseMenu.h"
 
 StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
     game = gamePtr;
     outsideMap = game->map;
+    std::cerr<<outsideMap.getName()<<std::endl;
     if(game->player.isAnyPokemonAlive())
         game->player.setPosition(200,170);
     else {
@@ -18,15 +20,18 @@ StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
     stateName = GameState ::STATE_POKEMON_CENTER;
 }
 void StatePokemonCenter::changeState(State *nextState) {
-    if(nextState->getStateName() != GameState::STATE_BATTLE){
-        game->map = outsideMap;
-        game->player.setPosition(game->map.findPokemonCenterDoor().x,game->map.findPokemonCenterDoor().y);
-        State* tmpState = game->getCurrentState();
+    if (nextState->getStateName() != GameState::STATE_BATTLE) {
+        State *tmpState = game->getCurrentState();
         game->setCurrentState(nextState);
-        delete tmpState;
-
+        auto tmp = dynamic_cast<StatePauseMenu *>(game->getCurrentState()); //TODO converrebbe farlo con unique ptr(?)/shared????
+        if (tmp != 0) {
+            tmp->setPreviousState(tmpState);
+        } else {
+            game->map = outsideMap;
+            game->player.setPosition(game->map.findPokemonCenterDoor().x, game->map.findPokemonCenterDoor().y);
+            delete tmpState;
+        }
     }
-
 }
 
 void StatePokemonCenter::draw(sf::RenderWindow &window) {
@@ -40,7 +45,7 @@ void StatePokemonCenter::update() {
     game->map.checkCollisions(game->player);
 }
 
-void StatePokemonCenter::handleInput(sf::Event event) {
+void StatePokemonCenter::handleInput(sf::Event event, sf::RenderWindow &window) {
     if(event.type == sf::Event::KeyReleased){
         if(event.key.code == sf::Keyboard::Enter){
             if(game->map.lookForNearestEnemy(game->player) != nullptr){
@@ -48,7 +53,7 @@ void StatePokemonCenter::handleInput(sf::Event event) {
             }
         }
         if(event.key.code == sf::Keyboard::Escape){
-            game->save();
+            changeState(new StatePauseMenu(game));
         }
     }
 }

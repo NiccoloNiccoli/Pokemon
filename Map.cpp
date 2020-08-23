@@ -15,6 +15,9 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
     if(!tileset.loadFromFile("../Textures/" + tilesetName)){
         //TODO handle error
     }
+    if(!font.loadFromFile("../pkmnem.ttf")){
+        //TODO error
+    }
     columns = mapColumns;
     rows = mapRows;
     tileSize=tileSize_;
@@ -44,14 +47,16 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
         }
 
     //map ui
-    boxTexture.loadFromFile("../Textures/area_box.png");
+    if(!boxTexture.loadFromFile("../Textures/area_box.png")){
+        //TODO error
+        std::cout<<"aooo"<<std::endl;
+    }
     box.setTexture(boxTexture);
     std::string tmp = _name;
     std::replace(tmp.begin(),tmp.end(),'_',' ');
     name.setString(tmp);
     name.setCharacterSize(20);
     name.setFillColor(sf::Color::Black);
-    font.loadFromFile("../pkmnem.ttf");
     name.setFont(font);
     name.setPosition(box.getPosition().x + 7, box.getPosition().y + 2);
 

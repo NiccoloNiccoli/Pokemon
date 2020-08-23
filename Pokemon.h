@@ -17,12 +17,12 @@
 class Pokemon {
 public:
     Pokemon(const std::string& pokemonName, unsigned int);
-    int doMove(Move &move, Pokemon &enemy);
+    int doMove(Move* move, Pokemon &enemy);
     void evolve(); //TODO->copia di tutti i valori in un nuovo pokemon
     AnimatedSprite sprite = AnimatedSprite(texture,82,81,1);
 
     void draw(sf::RenderWindow& window, int row);
-    Move moves[4];
+    Move* moves[4];
     int loseHp(const int damage);
 
     bool isAlive() ;

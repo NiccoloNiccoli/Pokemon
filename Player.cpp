@@ -19,22 +19,22 @@ Player::Player(int id, int x, int y, std::string trainersName) : Trainer(id, x, 
 
 
 void Player::move(){
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
         overworldSprite.move(1.,0);
         state = 3;
         isStateUpdated=false;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
         overworldSprite.move(-1.,0);
         state = 7;
         isStateUpdated=false;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
         overworldSprite.move(0,-1.);
         state = 5;
         isStateUpdated=false;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
         overworldSprite.move(0,1.);
         state = 1;
         isStateUpdated=false;

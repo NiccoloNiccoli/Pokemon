@@ -47,7 +47,7 @@ void Pokemon::loadData (const std::string& pokemonName){
         std::string currentMove_string;
         int i = 0;
         while(file >> currentMove_string){
-            moves[i] = Move(currentMove_string);
+            moves[i] = new Move(currentMove_string);
             i++;
         }
 #ifdef DEBUG
@@ -66,13 +66,13 @@ void Pokemon::draw(sf::RenderWindow& window, int row){
     sprite.draw(window,1000,row);
 }
 
-int Pokemon::doMove(Move &move, Pokemon &enemy) {
-    move.setNUsage(move.getNUsage() - 1);
+int Pokemon::doMove(Move* move, Pokemon &enemy) {
+    move->setNUsage(move->getNUsage() - 1);
 #ifdef DEBUG
-    std::cout << move.getNUsage() << " uses left" << std::endl;
+    std::cout << move->getNUsage() << " uses left" << std::endl;
 #endif
     Battle::setLastMoveUsed(move);
-    if (Dice::random(100) <= move.getAccuracy()) {
+    if (Dice::random(100) <= move->getAccuracy()) {
         float modifier;
         int damage;
         float criticalHitMultiplier = 1.f;
@@ -86,18 +86,18 @@ int Pokemon::doMove(Move &move, Pokemon &enemy) {
         }
             randomFactor = Dice::random(85, 100);
             for (auto i : type)
-                if (move.getType().getTypeName() == i.getTypeName())
+                if (move->getType().getTypeName() == i.getTypeName())
                     STAB = 1.5f;
             //type advantage mult.
             modifier =
-                    criticalHitMultiplier * randomFactor / 100 * Type::checkTypeAdvantage(move.getType(), enemy.type) *
+                    criticalHitMultiplier * randomFactor / 100 * Type::checkTypeAdvantage(move->getType(), enemy.type) *
                     STAB;
 #ifdef DEBUG
             std::cout << "criticalMult. " << criticalHitMultiplier << " random factor " << randomFactor << " type adv. "
-                      << Type::checkTypeAdvantage(move.getType(), enemy.type) << " STAB " << STAB << std::endl;
+                      << Type::checkTypeAdvantage(move->getType(), enemy.type) << " STAB " << STAB << std::endl;
             std::cout << "modifier: " << modifier << std::endl;
 #endif
-            damage = powf(((2 / 5 * level + 2) * move.getPower() * attack / enemy.getDefense() + 100) / 50, 1.5) *
+            damage = powf(((2 / 5 * level + 2) * move->getPower() * attack / enemy.getDefense() + 100) / 50, 1.5) *
                      modifier; //^1.5 l'ho aggiunto io per rendere il danno più interessante
 #ifdef DEBUG
             std::cout << "il danno inflitto è " << damage << std::endl;
@@ -105,7 +105,7 @@ int Pokemon::doMove(Move &move, Pokemon &enemy) {
             if (damage < 1)
                 damage = 1;
         enemy.loseHp(damage);
-            currentHP += move.getHealingPercentage() * abs(enemy.maxHP - enemy.currentHP);
+            currentHP += move->getHealingPercentage() * abs(enemy.maxHP - enemy.currentHP);
             if (currentHP > maxHP)
                 currentHP = maxHP;
 
@@ -116,9 +116,9 @@ int Pokemon::doMove(Move &move, Pokemon &enemy) {
             bool crit = false, supEff = false, notEff = false;
             if (criticalHitMultiplier == 1.5f)
                 crit = true;
-            if (Type::checkTypeAdvantage(move.getType(), enemy.type) >= 2)
+            if (Type::checkTypeAdvantage(move->getType(), enemy.type) >= 2)
                 supEff = true;
-            else if (Type::checkTypeAdvantage(move.getType(), enemy.type) <= 0.5f)
+            else if (Type::checkTypeAdvantage(move->getType(), enemy.type) <= 0.5f)
                 notEff = true;
             Battle::setFlags(crit, notEff, supEff);
             return damage;
@@ -225,7 +225,7 @@ void Pokemon::heal() {
     currentHP = maxHP;
     alive = true;
     for(int i = 0; i < 4; i++)
-        moves[i].setNUsage(moves[i].getMaxUses());
+        moves[i]->setNUsage(moves[i]->getMaxUses());
 }
 
 int Pokemon::getExpToNextLevel() const {

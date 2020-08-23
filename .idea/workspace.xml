@@ -2,13 +2,13 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="Pokemon" targetName="gmock" />
-      <config projectName="Pokemon" targetName="gmock_main" />
-      <config projectName="Pokemon" targetName="runAllTests" />
       <config projectName="Pokemon" targetName="gtest_main" />
+      <config projectName="Pokemon" targetName="core" />
+      <config projectName="Pokemon" targetName="gmock" />
+      <config projectName="Pokemon" targetName="runAllTests" />
       <config projectName="Pokemon" targetName="Pokemon" />
       <config projectName="Pokemon" targetName="gtest" />
-      <config projectName="Pokemon" targetName="core" />
+      <config projectName="Pokemon" targetName="gmock_main" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -17,41 +17,43 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Refactoring battle">
-      <change afterPath="$PROJECT_DIR$/Textures/choosePokemonMenu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/cursor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/inBattleSpriteBlue.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/inBattleSpriteGirl.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/inBattleSpriteGirl.psd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/inBattleSpriteLance.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/inBattleSpritePlayer.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Textures/redx.png" afterDir="false" />
+    <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Battle almost refactored">
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/brave_bird.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/dark_pulse.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/draco_meteor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/flamethrower.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/giga_drain.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/hydro_pump.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/hyper_beam.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/quick_attack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/shadow_ball.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pokemons/Moves/thunder.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Saves/saves.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StatePauseMenu.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StatePauseMenu.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Battle.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Battle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Battle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BattleUIStates.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/BattleUIStates.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BattleUIStates.h" beforeDir="false" afterPath="$PROJECT_DIR$/BattleUIStates.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dice.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Dice.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/Game.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Google_tests/test1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Google_tests/test1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Map.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Map.h" beforeDir="false" afterPath="$PROJECT_DIR$/Map.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Move.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Move.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Move.h" beforeDir="false" afterPath="$PROJECT_DIR$/Move.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NPC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/NPC.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NPC.h" beforeDir="false" afterPath="$PROJECT_DIR$/NPC.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Player.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Player.h" beforeDir="false" afterPath="$PROJECT_DIR$/Player.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pokemon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Pokemon.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pokemon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Pokemon.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saves/saves.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/State.h" beforeDir="false" afterPath="$PROJECT_DIR$/State.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBattle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateBattle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBattle.h" beforeDir="false" afterPath="$PROJECT_DIR$/StateBattle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateMainMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateMainMenu.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMainMenu.h" beforeDir="false" afterPath="$PROJECT_DIR$/StateMainMenu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateMap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMap.h" beforeDir="false" afterPath="$PROJECT_DIR$/StateMap.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StatePokemonCenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StatePokemonCenter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatePokemonCenter.h" beforeDir="false" afterPath="$PROJECT_DIR$/StatePokemonCenter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Trainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Type.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,6 +106,9 @@
         <option value="https://github.com/NiccoloNiccoli/Pokemon.git" />
       </set>
     </option>
+  </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-core" />
   </component>
   <component name="ProjectId" id="1cB9vGcfaZG0KPx6AMQsWptx9JW" />
   <component name="ProjectLevelVcsManager">
@@ -259,7 +264,8 @@
       <workItem from="1597966666024" duration="71000" />
       <workItem from="1598009997299" duration="24190000" />
       <workItem from="1598045239798" duration="2760000" />
-      <workItem from="1598096338181" duration="15558000" />
+      <workItem from="1598096338181" duration="16492000" />
+      <workItem from="1598184654949" duration="24338000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed collisions">
       <created>1592491206629</created>
@@ -373,7 +379,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597772268659</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Battle almost refactored">
+      <created>1598137618878</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1598137618878</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -410,7 +423,8 @@
     <MESSAGE value="Now trainers can move and there is also a main menu" />
     <MESSAGE value="Added a lot of new pokemons and the pokemon center area" />
     <MESSAGE value="Refactoring battle" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring battle" />
+    <MESSAGE value="Battle almost refactored" />
+    <option name="LAST_COMMIT_MESSAGE" value="Battle almost refactored" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -458,6 +472,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="496" y="134" key="#gtest_main/0.0.1536.824@0.0.1536.824" timestamp="1597412329693" />
+    <state x="627" y="165" key="#xdebugger.XInspectDialog" timestamp="1598220848089">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="627" y="165" key="#xdebugger.XInspectDialog/0.0.1536.824@0.0.1536.824" timestamp="1598220848089" />
+    <state x="524" y="115" key="#xdebugger.evaluate" timestamp="1598220846980">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="524" y="115" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1598220846980" />
     <state width="327" height="442" key="Diff.GoToChangePopup" timestamp="1597771882495">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -486,38 +508,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="639" y="306" key="Github.ShareDialog/0.0.1536.824@0.0.1536.824" timestamp="1589994814526" />
-    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1598137316594">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1598222324447">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598137316594" />
-    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1598137316593">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598222324447" />
+    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1598222324447">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1598137316593" />
-    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1598137316593">
+    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1598222324447" />
+    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1598222324447">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1598137316593" />
-    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1598137316593">
+    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1598222324447" />
+    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1598222324447">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1598137316593" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1598111836438">
+    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1598222324447" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1598221323062">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598111836438" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1598111836437">
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598221323062" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1598221323062">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1598111836437" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1598111836437">
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1598221323062" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1598221323062">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1598111836437" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1598111836438">
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1598221323062" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1598221323062">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1598111836438" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1598221323062" />
     <state x="147" y="65" key="MergeDialog" timestamp="1592492644861">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -546,10 +568,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1597768677822" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1598096338854">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1598184665920">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1598096338854" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1598184665920" />
     <state x="408" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595004080774">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -578,17 +600,43 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="277" key="git4idea.rebase.GitRebaseDialog/0.0.1536.824@0.0.1536.824" timestamp="1594818354322" />
-    <state x="930" y="57" key="refactoring.ChangeSignatureDialog" timestamp="1597413348925">
+    <state x="930" y="57" key="refactoring.ChangeSignatureDialog" timestamp="1598215874118">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="930" y="57" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1597413348925" />
+    <state x="930" y="57" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1598215874118" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1597696590976">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1597696590976" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1598115607201">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1598221048478">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1598115607201" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1598221048478" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/StatePokemonCenter.cpp</url>
+          <line>26</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/StatePokemonCenter.cpp</url>
+          <line>24</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/StatePokemonCenter.cpp</url>
+          <line>25</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Map.cpp</url>
+          <line>174</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

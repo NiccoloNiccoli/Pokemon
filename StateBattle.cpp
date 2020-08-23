@@ -28,11 +28,11 @@ void StateBattle::draw(sf::RenderWindow &window) {
     game->battle->battleEngine(window, game->player); //FIXME maybe it should go into update() but i need "window"
 }
 
-void StateBattle::handleInput(sf::Event event) {
+void StateBattle::handleInput(sf::Event event, sf::RenderWindow &window) {
     if(event.type == sf::Event::KeyReleased){
-        if(event.key.code == sf::Keyboard::Up){
+        if(event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::W){
             game->battle->moveUp(game->player);
-        }else if(event.key.code == sf::Keyboard::Down){
+        }else if(event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S){
             game->battle->moveDown(game->player);
         }else if(event.key.code == sf::Keyboard::Enter){
             game->battle->refreshMenu(game->player);

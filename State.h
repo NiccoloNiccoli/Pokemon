@@ -16,12 +16,12 @@ public:
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual void changeState(State* nextState) = 0;
     virtual void update() = 0;
-    virtual void handleInput(sf::Event event) = 0;
+    virtual void handleInput(sf::Event event, sf::RenderWindow &window) = 0;
     virtual GameState getStateName() = 0;
 
+    GameState stateName;
 protected:
     Game* game;
-    GameState stateName;
 };
 
 

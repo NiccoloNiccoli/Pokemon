@@ -2,6 +2,8 @@
 // Created by Niccolò Niccoli on 10/08/2020.
 //
 
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
@@ -37,8 +39,8 @@ void Game::update() {
     currentState->update();
 }
 
-void Game::handleInput(sf::Event event) {
-    currentState->handleInput(event);
+void Game::handleInput(sf::Event event, sf::RenderWindow &window) {
+    currentState->handleInput(event, window);
 
 }
 
@@ -91,7 +93,7 @@ void Game::save() {
         for (auto i : player.team){
             saveFile << i->getName() << " " << i->getCurrentHp() << " " <<  i->getLevel()<<" ";
             for (int j = 0; j < 4; j++)
-                saveFile << i->moves[j].getNUsage() << " ";
+                saveFile << i->moves[j]->getNUsage() << " ";
         }
         saveFile << map.getName()<<" ";
         saveFile << previousSessionsPlayTime + playTime.getElapsedTime().asSeconds();
@@ -147,7 +149,6 @@ float Game::getPreviousSessionsPlayTime() const {
 }
 
 void Game::load() {
-
     if(doesSaveFileExists()) {
         std::ifstream saveFile("../Saves/saves.txt");
         if (saveFile.is_open()) {
@@ -166,14 +167,20 @@ void Game::load() {
                 playersPokemon[i] = new Pokemon(pokemonsName, lvl);
                 playersPokemon[i]->loseHp(playersPokemon[i]->getMaxHp() - hpCurrent);
                 player.team.emplace_back(playersPokemon[i]);
-                for(int j = 0; j <4; j++){
+                for (int j = 0; j < 4; j++) {
                     saveFile >> usesLeft;
-                    player.team[i]->moves[j].setNUsage(usesLeft);
+                    player.team[i]->moves[j]->setNUsage(usesLeft);
                 }
             }
             saveFile >> mapName >> playtime;
             previousSessionsPlayTime = playtime;
-            //      map =  Map("tileset1_1.png", 27, 15, mapName); FIXME, per ora non fa nulla ma se faccio il centro pokemon si
+            if (mapName == "POKEMON_CENTER") {
+                changeState(GameState::STATE_POKEMON_CENTER);
+                map = Map("tileset2.png", 27, 15, mapName);
+
+            }else{
+                changeState(GameState::STATE_MAP);
+            }
         }
     }
 }

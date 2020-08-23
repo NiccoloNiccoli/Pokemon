@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Move.h"
+#include "Game.h"
 
 Move::Move(const std::string& moveName){
     std::ifstream file("../Pokemons/Moves/" + moveName + ".txt");
@@ -21,6 +22,10 @@ Move::Move(const std::string& moveName){
 #endif
        maxUses = nUsage;
     }
+        if (!animationTexture.loadFromFile("../Pokemons/Moves/" + moveName + ".png")) {
+            //TODO error
+        }
+        animation = AnimatedSprite(animationTexture, 427, 154, 8);
     for (auto &c : name){
         c = toupper(c);
     }
@@ -63,30 +68,8 @@ const Type &Move::getType() const {
     return type;
 }
 
-void Move::draw(sf::RenderWindow& window){
-    /*sf::Clock timer;
-    for(int i = 0; i < power/30; i++){
-        timer.restart();
-        while(timer.getElapsedTime().asSeconds() < 0.1f){
-            window.clear(sf::Color::White);
-            window.display();
-        }
-        while(timer.getElapsedTime().asSeconds() < 0.2f){
-           if(type.getTypeName() == "normal"){
-               window.clear(sf::Color::Black);
-           }else if(type.getTypeName() == "fire"){
-               window.clear(sf::Color::Red);
-           }else if(type.getTypeName() == "electric"){
-               window.clear(sf::Color::Yellow);
-           }else if(type.getTypeName() == "water"){
-               window.clear(sf::Color::Cyan);
-           }
-
-            window.display();
-        }
-    }
-*/
-   //TODO animation.draw(window,1);
+void Move::draw(sf::RenderWindow& window, int row) {
+    animation.draw(window,8,row);
 }
 
 Move::Move() {

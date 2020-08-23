@@ -14,7 +14,7 @@ public:
     void draw(sf::RenderWindow& window) override;
     void changeState(State* nextState) override;
     void update() override;
-    void handleInput(sf::Event event) override;
+    void handleInput(sf::Event event, sf::RenderWindow &window) override;
     GameState getStateName() override;
 private:
     //i need these to set properly the map when i leave the center

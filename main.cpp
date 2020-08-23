@@ -32,10 +32,11 @@ Game* game = Game::getInstance();
                 if (event.type == sf::Event::Closed) {
                     window.close();
                 }
-                game->handleInput(event);
+                game->handleInput(event, window);
             }
             window.clear();
             window.setView(view);
+
 
             game->update();
             game->drawCurrentScene(window);

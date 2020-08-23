@@ -44,8 +44,9 @@ StateMainMenu::StateMainMenu(Game *gamePtr){
 }
 
 void StateMainMenu::changeState(State *nextState) {
-    if(nextState->getStateName() == GameState::STATE_MAP)
+    if(nextState->getStateName() == GameState::STATE_MAP) {
         game->map.restartTimer();
+    }
     State* tmpState = game->getCurrentState();
     game->setCurrentState(nextState);
     delete tmpState;
@@ -85,7 +86,7 @@ void StateMainMenu::update() {
 //TODO
 }
 
-void StateMainMenu::handleInput(sf::Event event) {
+void StateMainMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
     if(event.type == sf::Event::KeyReleased){
         if(event.key.code == sf::Keyboard::Enter){
            switch(menuPageIndex){
@@ -119,7 +120,6 @@ void StateMainMenu::handleInput(sf::Event event) {
                        menuPageIndex = 3;
                    }else{
                        Game::getInstance()->load();
-                       Game::getInstance()->changeState(GameState::STATE_MAP);
                    }
                    break;
                case 3:
@@ -191,7 +191,7 @@ GameState StateMainMenu::getStateName() {
     return stateName;
 }
 
-void StateMainMenu::initializeNPCList() {
+void StateMainMenu::initializeNPCList() {//TODO
     std::ofstream npclist("../Maps/ROUTE_01/npclist.txt", std::ios::trunc);
     if(npclist.is_open()){
         //id - x - y - isFightable

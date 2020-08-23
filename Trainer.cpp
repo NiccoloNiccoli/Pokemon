@@ -16,9 +16,9 @@ Trainer::Trainer(int ID, int x, int y){
             //player
             spriteName = "player.png";
             Pokemon* pika;
-            pika = new Pokemon ("vileplume" ,9);
+            pika = new Pokemon ("charizard" ,9);
             Pokemon* pikach;
-            pikach = new Pokemon ("charizard" ,9);
+            pikach = new Pokemon ("vileplume" ,9);
             team.emplace_back(pikach);
             team.emplace_back(pika);
            /* Pokemon* pikach1;

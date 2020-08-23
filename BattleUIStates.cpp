@@ -90,7 +90,7 @@ void BattleUI_ChooseAction::moveDown(int& selectedItemIndex) {
 BattleUI_ChooseMove::BattleUI_ChooseMove(Battle *_battle) {
     battle = _battle;
     for (int i = 0; i < 4; i++)
-        battle->setMenuButtonString(Game::getInstance()->player.team[0]->moves[i].getName(),i);
+        battle->setMenuButtonString(Game::getInstance()->player.team[0]->moves[i]->getName(),i);
     battle->setMoveDataString();
     battle->setMenuButtonPosition(BattleUIStates::CHOOSE_MOVE);
 }
@@ -108,7 +108,7 @@ void BattleUI_ChooseMove::draw(sf::RenderWindow &window) {
 
 BattleUIState *BattleUI_ChooseMove::nextState(int selectedItemIndex) {
     BattleUIState* state = nullptr;
-    if(Game::getInstance()->player.team[0]->moves[selectedItemIndex].getNUsage() > 0) {
+    if(Game::getInstance()->player.team[0]->moves[selectedItemIndex]->getNUsage() > 0) {
         Battle::setFirstMove(true);
         if (battle->amIFaster()) {
             if (battle->getTrainer() != nullptr) {
@@ -587,25 +587,24 @@ BattleUI_MoveAnim::BattleUI_MoveAnim(Battle *_battle) {
 
 void BattleUI_MoveAnim::draw(sf::RenderWindow &window) {
     if(battle->getSentenceIndex() == 4){
+
         if(battle->getTrainer() != nullptr)
             battle->getTrainer()->team[0]->draw(window,0);
         else if(battle->getWildPokemon() != nullptr)
             battle->getWildPokemon()->draw(window,0);
+        battle->getLastMoveUsed()->draw(window,0);
         Game::getInstance()->player.team[0]->draw(window,3);
-        battle->getLastMoveUsed().draw(window);
-        //TODO quello sotto ma al contrario
     }else if(battle->getSentenceIndex() == 9){
         if(battle->getTrainer() != nullptr)
             battle->getTrainer()->team[0]->draw(window,1);
         else if(battle->getWildPokemon() != nullptr)
             battle->getWildPokemon()->draw(window,1);
+        battle->getLastMoveUsed()->draw(window,1);
         Game::getInstance()->player.team[0]->draw(window,2);
-        battle->getLastMoveUsed().draw(window);
-        //TODO invert image and move it to the top right angle
     }
     battle->drawDialogBox(window);
     battle->drawFeedbackSentence(window);
-    if(Game::getTime() > battle->getLastMoveUsed().getPower()/20)
+    if(Game::getTime() > 0.99f)
         battle->setUIState(nextState());
 
 }
