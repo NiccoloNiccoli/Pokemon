@@ -5,7 +5,7 @@
 #include "StateBattle.h"
 StateBattle::StateBattle(Game *gamePtr){
     game = gamePtr;
-    game->battle->setUIState(new BattleUI_Scene0(game->battle));
+    game->battle->setUIState(new BattleUI_Init(game->battle));
     game->battle->setSentenceIndex(0);
     game->battle->changeFeedbackSentence();
     stateName = GameState ::STATE_BATTLE;
@@ -20,24 +20,23 @@ void StateBattle::changeState(State *nextState) {
 }
 
 void StateBattle::update() {
-
 }
 
 
 void StateBattle::draw(sf::RenderWindow &window) {
-    game->battle->battleEngine(window, game->player); //FIXME maybe it should go into update() but i need "window"
+    game->battle->draw(window);
 }
 
 void StateBattle::handleInput(sf::Event event, sf::RenderWindow &window) {
     if(event.type == sf::Event::KeyReleased){
         if(event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::W){
-            game->battle->moveUp(game->player);
+            game->battle->moveUp();
         }else if(event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S){
-            game->battle->moveDown(game->player);
+            game->battle->moveDown();
         }else if(event.key.code == sf::Keyboard::Enter){
-            game->battle->refreshMenu(game->player);
+            game->battle->goOn();
         }else if(event.key.code == sf::Keyboard::BackSpace){
-            game->battle->resetMenu();
+            game->battle->goBack();
         }
     }
 }

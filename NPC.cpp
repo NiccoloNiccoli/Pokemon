@@ -9,31 +9,35 @@
 #include "Game.h"
 
 NPC::NPC(int id, int x, int y,bool canFight) : Trainer(id, x, y), isFightable (canFight) {
-    switch(id){
+try {
+    switch (id) {
         case 1:
-            action = new Chase(this);
-            if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite"+name+".png")) {
-                //TODO
+            action = new Idle(this);
+            if (!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite" + spriteName)) {
+                throw std::runtime_error("File not found: ../Textures/inBattleSprite" + spriteName);
             }
             break;
         case 2 :
-            action = new Idle(this);
-            if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite"+name+".png")) {
-                //TODO
+            action = new WalkHorizontally(this);
+            if (!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite" + spriteName)) {
+                throw std::runtime_error("File not found: ../Textures/inBattleSprite" + spriteName);
             }
             break;
         case 3:
-            action = new Walk(this);
-            if(!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSpriteGirl.png")) {
-                //TODO
+            action = new WalkVertically(this);
+            if (!inBattleSpriteTexture.loadFromFile("../Textures/inBattleSprite" + spriteName)) {
+                throw std::runtime_error("File not found: ../Textures/inBattleSprite" + spriteName);
             }
             break;
-        case 4 :
-            action = new Chase(this);
-            break;
+        default:
+            action = new Idle(this);
     }
-
     inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 60 ,80, 2);
+}
+catch (const std::runtime_error &ex) {
+    std::cerr << ex.what() << std::endl;
+    exit(-1);
+}
 }
 
 void NPC::doAction() {
@@ -50,18 +54,26 @@ void NPC::hasBeenDefeated() {
     if(tmp.is_open()){
         tmp << Game::getInstance()->map.getName() << " " << id << "\n";
     }
+    tmp.close();
+    nextAction();
+}
+
+void NPC::nextAction() {
+    auto tmp = action;
+    action = action->nextAction();
+    delete tmp;
 }
 
 Idle::Idle(NPC *_npc) {
     npc = _npc;
-    x = npc->getXPosition();
-    y = npc->getYPosition();
+    x = npc->getPosition().x;
+    y = npc->getPosition().y;
 }
 
 void Idle::doAction() {
-    //wanna rotate npc toward the player
-    float xValue = Game::getInstance()->player.getXPosition() - x;
-    float yValue = Game::getInstance()->player.getYPosition() - y;
+    //rotate npc toward the player
+    float xValue = static_cast<float>(Game::getInstance()->player.getPosition().x - x);
+    float yValue = static_cast<float>(Game::getInstance()->player.getPosition().y - y);
     float i = sqrtf(xValue*xValue + yValue*yValue);
     int state = 0;
     if(xValue > 0 && yValue < 0){
@@ -93,43 +105,92 @@ void Idle::doAction() {
     npc->setState(state);
 }
 
-Walk::Walk(NPC *_npc) {
+Action * Idle::nextAction() {
+    return new Idle(npc);
+}
+
+WalkVertically::WalkVertically(NPC *_npc) {
     npc = _npc;
-    yTargetTop = npc->getYPosition() - 16*3;
-    yTargetBottom = npc->getYPosition() + 16*3;
+    yTargetTop = npc->getPosition().y - 16*3;
+    yTargetBottom = npc->getPosition().y + 16*3;
     npc->setState(1);
 }
 
 
 
-void Walk::doAction() {
-  if(npc->getYPosition() == yTargetTop){
-      npc->setState(1);
-      step *= -1;
-  }else if(npc->getYPosition() == yTargetBottom){
-      npc->setState(5);
-      step *= -1;
-  }
-  auto oldPosition = npc->overworldSprite.getPosition();
-  npc->overworldSprite.move(0,step);
+void WalkVertically::doAction() {
 
 
-    if((((npc->overworldSprite.getPosition().x + npc->overworldSprite.getGlobalBounds().width) > Game::getInstance()->player.overworldSprite.getPosition().x) &&
-        (npc->overworldSprite.getPosition().x < (Game::getInstance()->player.overworldSprite.getPosition().x + Game::getInstance()->player.overworldSprite.getGlobalBounds().width))) &&
-       (((npc->overworldSprite.getPosition().y + npc->overworldSprite.getGlobalBounds().height) > Game::getInstance()->player.overworldSprite.getPosition().y) &&
-        (npc->overworldSprite.getPosition().y < (Game::getInstance()->player.overworldSprite.getPosition().y + Game::getInstance()->player.overworldSprite.getGlobalBounds().height)))){
-        npc->overworldSprite.setPosition(oldPosition);
-        //FIXME change state when character is blocked
+    if(npc->getPosition().y == yTargetTop){
+        npc->setState(1);
+        step *= -1;
+    }else if(npc->getPosition().y == yTargetBottom){
+        npc->setState(5);
+        step *= -1;
     }
+    auto oldPosition = npc->getPosition();
+  npc->move(0,step);
 
+
+    if((((npc->getPosition().x + npc->getGlobalBounds().width) > Game::getInstance()->player.getPosition().x) &&
+        (npc->getPosition().x < (Game::getInstance()->player.getPosition().x + Game::getInstance()->player.getGlobalBounds().width))) &&
+       (((npc->getPosition().y + npc->getGlobalBounds().height) > Game::getInstance()->player.getPosition().y) &&
+        (npc->getPosition().y < (Game::getInstance()->player.getPosition().y + Game::getInstance()->player.getGlobalBounds().height)))){
+        npc->setPosition(oldPosition);
+        if(npc->getState() == 1)
+            npc->setState(0);
+        else if(npc->getState() == 5)
+            npc->setState(4);
+    }else{
+        if(npc->getState()==0)
+            npc->setState(1);
+        else if(npc->getState()==4)
+            npc->setState(5);
+    }
   }
 
-
-Chase::Chase(NPC *_npc) {
-
+Action * WalkVertically::nextAction() {
+    return new Idle(npc);
 }
 
-void Chase::doAction() {
-//TODO A* algorithm
+
+WalkHorizontally::WalkHorizontally(NPC *_npc) {
+    npc = _npc;
+    xTargetLeft = npc->getPosition().x - 16*3;
+    xTargetRight = npc->getPosition().x + 16*3;
+    npc->setState(3);
+}
+
+void WalkHorizontally::doAction() {
+    if(npc->getPosition().x == xTargetLeft){
+        npc->setState(3);
+        step *= -1;
+    }else if(npc->getPosition().x == xTargetRight){
+        npc->setState(7);
+        step *= -1;
+    }
+    auto oldPosition = npc->getPosition();
+    npc->move(step,0);
+
+
+    if((((npc->getPosition().x + npc->getGlobalBounds().width) > Game::getInstance()->player.getPosition().x) &&
+        (npc->getPosition().x < (Game::getInstance()->player.getPosition().x + Game::getInstance()->player.getGlobalBounds().width))) &&
+       (((npc->getPosition().y + npc->getGlobalBounds().height) > Game::getInstance()->player.getPosition().y) &&
+        (npc->getPosition().y < (Game::getInstance()->player.getPosition().y + Game::getInstance()->player.getGlobalBounds().height)))){
+        npc->setPosition(oldPosition);
+        if(npc->getState() == 3)
+            npc->setState(2);
+        else if(npc->getState() == 7)
+            npc->setState(6);
+    }else{
+        if(npc->getState()==2)
+            npc->setState(3);
+        else if(npc->getState()==6)
+            npc->setState(7);
+    }
+}
+
+Action *WalkHorizontally::nextAction() {
+    return new Idle(npc);
 }
 

@@ -1,0 +1,1 @@
+x player.png 1 Shelgon 49 1000

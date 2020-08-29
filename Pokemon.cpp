@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <exception>
 #include "Pokemon.h"
 #include <ctime>
 #include <random>
@@ -13,23 +14,27 @@
 #include "Dice.h"
 #include "Battle.h"
 
-Pokemon::Pokemon(const std::string& pokemonName, unsigned int lvl){
-  loadData(pokemonName);
-    if(!texture.loadFromFile("../Pokemons/Textures/" + pokemonName + ".png")){
-        //TODO handle error
+Pokemon::Pokemon(const std::string& pokemonName, int lvl) {
+    try {
+        loadData(pokemonName);
+        if (!texture.loadFromFile("../Pokemons/Textures/" + pokemonName + ".png")) {
+            throw std::runtime_error("File not found: ../Pokemons/Textures/ "+ pokemonName+".png");
+        }
+        if (lvl <= 100 && lvl >= 1)
+            level = lvl;
+        else
+            level = 1;
+        updateStats();
+        currentHP = maxHP;
+        expToNextLevel = pow(level, 3) * 4 / 5 - 16000;
+        std::cerr << expToNextLevel << std::endl;
     }
-    sprite = AnimatedSprite(texture,82,81,1);
-  //TODO load ability, if it's wild,
-  if(lvl <= 100 && lvl >= 1)
-    level = lvl;
-  else
-      level = 1;
-  updateStats();
-  currentHP = maxHP;
-  expToNextLevel = pow(level,3) * 4/5 - 16000; //TODO this must be saved :)
-  std::cerr<<expToNextLevel<<std::endl;
-
+    catch(const std::runtime_error& ex){
+        std::cerr<<ex.what()<<std::endl;
+        exit(-1);
+    }
 }
+
 
 void Pokemon::loadData (const std::string& pokemonName){
     std::string type1, type2;
@@ -59,11 +64,13 @@ void Pokemon::loadData (const std::string& pokemonName){
 #ifdef DEBUG
        std::cout <<  evolvingLevel << " " << nextFormName <<std::endl;
 #endif
+    }else{
+            throw std::runtime_error("File not found: ../Pokemons/"+pokemonName+".txt");
     }
 }
 
 void Pokemon::draw(sf::RenderWindow& window, int row){
-    sprite.draw(window,1000,row);
+    sprite.draw(window,1,row);
 }
 
 int Pokemon::doMove(Move* move, Pokemon &enemy) {
@@ -90,7 +97,8 @@ int Pokemon::doMove(Move* move, Pokemon &enemy) {
                     STAB = 1.5f;
             //type advantage mult.
             modifier =
-                    criticalHitMultiplier * randomFactor / 100 * Type::checkTypeAdvantage(move->getType(), enemy.type) *
+                    criticalHitMultiplier *
+                            static_cast<float>(randomFactor) / 100.f  *Type::checkTypeAdvantage(move->getType(), enemy.type) *
                     STAB;
 #ifdef DEBUG
             std::cout << "criticalMult. " << criticalHitMultiplier << " random factor " << randomFactor << " type adv. "
@@ -105,14 +113,13 @@ int Pokemon::doMove(Move* move, Pokemon &enemy) {
             if (damage < 1)
                 damage = 1;
         enemy.loseHp(damage);
-            currentHP += move->getHealingPercentage() * abs(enemy.maxHP - enemy.currentHP);
+            currentHP += static_cast<int>(move->getHealingPercentage() * static_cast<float>(abs(enemy.maxHP - enemy.currentHP)));
             if (currentHP > maxHP)
                 currentHP = maxHP;
 
 #ifdef DEBUG
             std::cout << enemy.name << " has " << enemy.currentHP << " / " << enemy.maxHP << " HP" << std::endl;
 #endif
-            //TODO play anim
             bool crit = false, supEff = false, notEff = false;
             if (criticalHitMultiplier == 1.5f)
                 crit = true;
@@ -160,7 +167,6 @@ int Pokemon::getLevel() const {
 bool Pokemon::isAlive(){
     if(currentHP <= 0) {
         currentHP = 0;
-        Battle::changeBattleLog(name + " fainted!");
         alive = false;
     }
     return alive;
@@ -180,8 +186,8 @@ int Pokemon::gainEXP(Pokemon *enemy) {
 #ifdef DEBUG
             std::cout<<"level up!"<<std::endl;
 #endif
-            expToNextLevel = pow(level,3) * 4/5;
-            if(level > evolvingLevel)
+            expToNextLevel = static_cast<int>(pow(level,3)) * 4/5;
+            if(level >= evolvingLevel)
                 evolve();
         }
         expToNextLevel -= expGained;
@@ -213,11 +219,16 @@ void Pokemon::evolve() {
       alive = tmp.alive;
       expToNextLevel = tmp.expToNextLevel;
       name = tmp.name;
-      if(!texture.loadFromFile("../Pokemons/Textures/" + name + ".png")){
-        //TODO handle error
+      try {
+          if (!texture.loadFromFile("../Pokemons/Textures/" + name + ".png")) {
+              throw std::runtime_error("File not found: ../Pokemons/Textures/ "+ name+".png");
+          }
+          sprite.setPosition(tmp.getPosition());
       }
-     sprite = AnimatedSprite(texture,82,81,1);
-
+      catch(const std::runtime_error& ex){
+          std::cerr<<ex.what()<<std::endl;
+          exit(-1);
+      }
 
 }
 
@@ -230,4 +241,25 @@ void Pokemon::heal() {
 
 int Pokemon::getExpToNextLevel() const {
     return expToNextLevel;
+}
+
+void Pokemon::setExpToNextLevel(int _expToNextLevel) {
+    Pokemon::expToNextLevel = _expToNextLevel;
+}
+
+void Pokemon::setPosition(float x, float y) {
+    sprite.setPosition(x,y);
+
+}
+
+sf::Rect<float> Pokemon::getGlobalBounds() {
+    return sprite.getGlobalBounds();
+}
+
+sf::Vector2f Pokemon::getPosition() {
+    return sprite.getPosition();
+}
+
+Move *const Pokemon::getMoves(int index) const {
+    return moves[index];
 }

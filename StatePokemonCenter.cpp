@@ -6,14 +6,14 @@
 #include "StatePokemonCenter.h"
 #include "StatePauseMenu.h"
 
-StatePokemonCenter::StatePokemonCenter(Game *gamePtr){
+StatePokemonCenter::StatePokemonCenter(Game *gamePtr) : outsideMap(gamePtr->map){
     game = gamePtr;
-    outsideMap = game->map;
     std::cerr<<outsideMap.getName()<<std::endl;
-    if(game->player.isAnyPokemonAlive())
-        game->player.setPosition(200,170);
-    else {
-        game->player.setPosition(206, 81);
+
+    if(game->player.isAnyPokemonAlive()) {
+        game->player.setPosition(200.f, 170.f);
+    }else {
+        game->player.setPosition(sf::Vector2f(206, 81));
         game->player.healTeam();
     }
     game->map = Map("tileset2.png",27,15,"POKEMON_CENTER");
@@ -23,12 +23,12 @@ void StatePokemonCenter::changeState(State *nextState) {
     if (nextState->getStateName() != GameState::STATE_BATTLE) {
         State *tmpState = game->getCurrentState();
         game->setCurrentState(nextState);
-        auto tmp = dynamic_cast<StatePauseMenu *>(game->getCurrentState()); //TODO converrebbe farlo con unique ptr(?)/shared????
-        if (tmp != 0) {
+        auto tmp = dynamic_cast<StatePauseMenu *>(game->getCurrentState());
+        if (tmp != nullptr) {
             tmp->setPreviousState(tmpState);
         } else {
             game->map = outsideMap;
-            game->player.setPosition(game->map.findPokemonCenterDoor().x, game->map.findPokemonCenterDoor().y);
+            game->player.setPosition(game->map.findPokemonCenterDoor());
             delete tmpState;
         }
     }

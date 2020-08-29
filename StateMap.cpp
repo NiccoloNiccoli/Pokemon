@@ -14,8 +14,8 @@ void StateMap::changeState(State* nextState) {
     State* tmpState = game->getCurrentState();
     game->setCurrentState(nextState);
     if(nextState->getStateName() == GameState::STATE_PAUSE_MENU){
-        auto tmp = dynamic_cast<StatePauseMenu *>(game->getCurrentState()); //TODO converrebbe farlo con unique ptr(?)/shared????
-        if (tmp != 0) {
+        auto tmp = dynamic_cast<StatePauseMenu *>(game->getCurrentState());
+        if (tmp != nullptr) {
             tmp->setPreviousState(tmpState);
         } else{
             delete tmpState;

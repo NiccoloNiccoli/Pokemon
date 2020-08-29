@@ -12,21 +12,18 @@
 
 class Player : public Trainer {
 public:
-    Player(int id, int x, int y, std::string trainersName);
+    Player(int id, int x, int y, const std::string& trainersName);
 
-    void fight(NPC* enemy); //TODO fight-catch-escape
+    void fight(NPC* enemy);
 
     bool catchPokemon(Pokemon* pokemon); //True if pokemon get caught, False if not
 
     int winMoney(NPC* opponent);
 
-    bool escape(); //True if you run away, false if not
-
     void move();
 
-    void setName(std::string playersName);
+    void setName(const std::string& playersName);
     bool isAnyPokemonAlive();
-    AnimatedSprite inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 80 ,80, 4);
 private:
     sf::Texture inBattleSpriteTexture;
 

@@ -15,13 +15,18 @@ void StatePauseMenu::draw(sf::RenderWindow &window) {
 
 StatePauseMenu::StatePauseMenu(Game *gamePtr) {
     game = gamePtr;
-    if(!font.loadFromFile("../pkmnem.ttf")){
-        //TODO handle error
+    try {
+        if (!font.loadFromFile("../pkmnem.ttf")) {
+            throw std::runtime_error("File not found: ../pkmnem.ttf");
+        }
+    }
+    catch(const std::runtime_error& ex){
+        std::cerr<<ex.what()<<std::endl;
     }
     for(int i = 0; i < 3; i++){
         buttons[i].setFont(font);
         buttons[i].setFillColor(sf::Color::White);
-        buttons[i].setPosition(1280/6 - 17, 240/5 + i * 240/5 );
+        buttons[i].setPosition(static_cast<int>(1280/6 - 17), static_cast<int>(240/5 + i * 240/5 ));
     }
     buttons[0].setString("BACK");
     buttons[0].setFillColor(sf::Color::Red);

@@ -5,7 +5,7 @@
 #ifndef POKEMON_TILE_H
 #define POKEMON_TILE_H
 
-enum TypeOfTile{ //TODO class enum
+enum TypeOfTile{
     WALKABLE,
     NOT_WALKABLE,
     POKEMON_CENTER_DOOR,
@@ -14,11 +14,11 @@ enum TypeOfTile{ //TODO class enum
 
 class Tile {
 public:
-    Tile(const int currentTileValue,const std::string& tileset);
+    Tile(int currentTileValue,const std::string& tileset);
 
-    int getValue() const;
+    [[nodiscard]]int getValue() const;
 
-    TypeOfTile getType() const;
+    [[nodiscard]] TypeOfTile getType() const;
 
 private:
     int value;

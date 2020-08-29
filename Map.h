@@ -39,7 +39,7 @@ private:
     std::vector<Tile> tiles;
     sf::Text name;
     std::string _name;
-    //map ui
+
     sf::Sprite box;
     sf::Texture boxTexture;
     sf::Font font;

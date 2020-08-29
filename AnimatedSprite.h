@@ -10,6 +10,7 @@
 
 class AnimatedSprite {
 public:
+    AnimatedSprite()= default;
     AnimatedSprite(sf::Texture& spriteSheet, int widthOfSingleFrame, int heightOfSingleFrame, int nFrames);
     void draw(sf::RenderWindow& window,int frequency=1, int row = 0);
 
@@ -19,11 +20,11 @@ public:
     sf::Rect<float> getGlobalBounds() const;
     void setScale(float factorX, float factorY);
     void move(float x, float y);
+    void resetFrame();
 
 private:
-    int frames;
+    int frames{};
     sf::IntRect rectangle;
-   // sf::Texture texture;
     sf::Sprite sprite;
     sf::Clock clock;
 };

@@ -14,8 +14,10 @@ AnimatedSprite::AnimatedSprite(sf::Texture& spriteSheet, int widthOfSingleFrame,
 }
 
 void AnimatedSprite::draw(sf::RenderWindow &window, int frequency, int row) {
+    if(frequency == 0)
+        frequency = 1;
     rectangle.top = rectangle.height * row;
-    if(clock.getElapsedTime().asMilliseconds() > 1000/frequency){
+    if(clock.getElapsedTime().asMilliseconds() >= 1000/frequency){
         if(rectangle.left == rectangle.width * frames){
             rectangle.left = 0;
         } else{
@@ -49,6 +51,10 @@ void AnimatedSprite::move(float x, float y) {
 
 void AnimatedSprite::setScale(float factorX, float factorY) {
     sprite.setScale(factorX,factorY);
+}
+
+void AnimatedSprite::resetFrame() {
+    rectangle.left = 0;
 }
 
 

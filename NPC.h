@@ -14,21 +14,21 @@ public:
     void doAction();
 
     bool getIfIsFightable() const;
-
+    void nextAction();
     void hasBeenDefeated();
-    AnimatedSprite  inBattleSprite = AnimatedSprite(inBattleSpriteTexture, 60 ,80, 2);
 
 private:
     bool isFightable = true;
     Action* action = nullptr;
     sf::Texture inBattleSpriteTexture;
+
 };
 
 class Action {
 public:
-    virtual ~Action(){};
+    virtual ~Action()= default;
     virtual void doAction() = 0;
-
+    virtual Action * nextAction() = 0;
 protected:
 
     NPC* npc;
@@ -39,24 +39,28 @@ class Idle : public Action{
 public:
     explicit Idle(NPC*  _npc);
     void doAction() override ;
+    Action * nextAction() override;
 private:
     float x,y;
 };
 
-class Walk : public Action{
+class WalkVertically : public Action{
     //walk "up and down"
 public:
-    explicit Walk(NPC* _npc);
-
+    explicit WalkVertically(NPC* _npc);
+    Action * nextAction() override;
     void doAction() override;
 private:
     float yTargetTop, yTargetBottom,step = 0.5f;
 };
 
-class Chase : public Action{
+class WalkHorizontally : public Action{
 public:
-    Chase(NPC* _npc);
+    explicit WalkHorizontally(NPC* _npc);
     void doAction() override;
+    Action * nextAction() override;
+private:
+    float xTargetLeft, xTargetRight,step = 0.5f;
 };
 
 

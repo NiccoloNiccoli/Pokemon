@@ -13,10 +13,10 @@
 class Type {
 public:
     Type();
-    Type(const std::string& type);
+    explicit Type(const std::string& type);
 
-    const std::string &getTypeName() const;
-    static float checkTypeAdvantage(Type moveType,std::vector<Type> pokemonType);
+    [[nodiscard]] const std::string &getTypeName() const;
+    static float checkTypeAdvantage(const Type& moveType,const std::vector<Type>& pokemonType) ;
 
 private:
     std::string typeName;

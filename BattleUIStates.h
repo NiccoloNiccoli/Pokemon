@@ -16,7 +16,7 @@ enum class BattleUIStates{
     CHOOSE_POKEMON,
     CHOOSE_MOVE,
     UPDATE_MY_UI,
-    BATTLE_INFO /*FIXME change name*/,
+    BATTLE_INFO,
     UPDATE_FOES_UI
 };
 class BattleUIState{
@@ -25,7 +25,7 @@ public:
     virtual BattleUIState* nextState (int selectedItemIndex) = 0;
     virtual void moveUp(int& selectedItemIndex) = 0;
     virtual void moveDown(int& selectedItemIndex) = 0;
-
+    virtual ~BattleUIState(){};
 protected:
     Battle* battle;
 };
@@ -47,7 +47,7 @@ public:
     void moveUp(int& selectedItemIndex) override ;
     void moveDown(int& selectedItemIndex) override;
 };
-class BattleUI_FeedbackSentence /*FIXME find better name*/ : public BattleUIState{
+class BattleUI_FeedbackSentence : public BattleUIState{
 public:
     explicit BattleUI_FeedbackSentence(Battle* _battle);
     void draw(sf::RenderWindow& window) override;
@@ -57,17 +57,17 @@ public:
 private:
     int oldIndex = -1;
 };
-class BattleUI_Scene0 : public BattleUIState{
+class BattleUI_Init : public BattleUIState{
 public:
-    explicit BattleUI_Scene0(Battle *_battle);
+    explicit BattleUI_Init(Battle *_battle);
     void draw(sf::RenderWindow& window) override;
     BattleUIState* nextState (int selectedItemIndex = 0) override;
     void moveUp(int& selectedItemIndex) override ;
     void moveDown(int& selectedItemIndex) override;
 };
-class BattleUI_Scene1 : public BattleUIState{
+class BattleUI_FoeEnters : public BattleUIState{
 public:
-    explicit BattleUI_Scene1(Battle *_battle);
+    explicit BattleUI_FoeEnters(Battle *_battle);
     void draw(sf::RenderWindow& window) override;
     BattleUIState* nextState (int selectedItemIndex = 0) override;
     void moveUp(int& selectedItemIndex) override ;
@@ -75,9 +75,9 @@ public:
 private:
     int oldIndex = 0;
 };
-class BattleUI_Scene2 : public BattleUIState{
+class BattleUI_PlayersPokemonEnters : public BattleUIState{
 public:
-    explicit BattleUI_Scene2(Battle *_battle);
+    explicit BattleUI_PlayersPokemonEnters(Battle *_battle);
     void draw(sf::RenderWindow& window) override;
     BattleUIState* nextState (int selectedItemIndex = 0) override;
     void moveUp(int& selectedItemIndex) override ;
@@ -167,13 +167,6 @@ public:
 private:
     sf::Texture backgroundTexture;
     sf::Sprite background;
-    sf::Texture redXTexture;
-    sf::Sprite redX;
-    sf::Texture cursorTexture;
-    sf::Sprite cursor;
-    sf::Vector2f originalSpritePosition;
-    sf::RectangleShape hpBars[6];
-    sf::RectangleShape hpBarsBackground [6];
     sf::Font font;
     sf::Text names[6];
     int selectedItem = 1;
@@ -186,5 +179,8 @@ public:
     BattleUIState* nextState (int selectedItemIndex = 0) override;
     void moveUp(int& selectedItemIndex) override ;
     void moveDown(int& selectedItemIndex) override;
+private:
+    sf::Texture animationTexture;
+    AnimatedSprite animation = AnimatedSprite(animationTexture,427,154,6);
 };
 #endif //POKEMON_BATTLEUISTATES_H

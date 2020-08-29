@@ -1,0 +1,1 @@
+Lance lance.png 1 Charizard 45 1000

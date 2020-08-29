@@ -6,107 +6,53 @@
 #include "Battle.h"
 #include <SFML/Window.hpp>
 #include <iostream>
+#include <fstream>
 
-Trainer::Trainer(int ID, int x, int y){
-    id = ID;
-    std::string spriteName;
-    std::string trainerName;
-    switch(id){
-        case 0:
-            //player
-            spriteName = "player.png";
-            Pokemon* pika;
-            pika = new Pokemon ("charizard" ,9);
-            Pokemon* pikach;
-            pikach = new Pokemon ("vileplume" ,9);
-            team.emplace_back(pikach);
-            team.emplace_back(pika);
-           /* Pokemon* pikach1;
-            pikach1 = new Pokemon ("charizard" ,39);
-            team.emplace_back(pikach1);
-            Pokemon* pikachs;
-            pikachs = new Pokemon ("charizard" ,39);
-            team.emplace_back(pikachs);
-            Pokemon* pikachs1;
-            pikachs1 = new Pokemon ("salamence" ,100);
-            team.emplace_back(pikachs1);
-            Pokemon* pikachs11;
-            pikachs11 = new Pokemon ("salamence" ,100);
-            team.emplace_back(pikachs11);*/
-            money = 1000;
-            break;
-        case 1:
-            //rival
-            trainerName = "Blue";
-            spriteName = "blue.png";
-            Pokemon* squirtle1;
-            squirtle1 = new Pokemon ("blastoise",20);
-            team.emplace_back(squirtle1);
-            money = 1000;
-            break;
-        case 2:
-            //lance
-            trainerName = "Lance";
-            spriteName = "lance.png";
-            Pokemon* charmander2;
-            charmander2 = new Pokemon ("charizard",50);
-            team.emplace_back(charmander2);
-            money = 1000;
-            break;
-        case 3:
-            //girl
-            trainerName = "Megan";
-            spriteName = "girl.png";
-            Pokemon* pikachu3;
-            Pokemon* vileplume1;
-            pikachu3 = new Pokemon ("Pikachu",6);
-            team.emplace_back(pikachu3);
-            vileplume1 = new Pokemon ("vileplume",6);
-            team.emplace_back(vileplume1);
-            money = 1000;
-            break;
-        case 4:
-            trainerName = "Nurse";
-            spriteName = "nurse.png";
-            Pokemon* pkmn;
-            pkmn = new Pokemon("Pikachu",1);
-            team.emplace_back(pkmn);
-            state = 0;
-            money = 0;
-            break;
+Trainer::Trainer(int ID, int x, int y) {
+    try {
+        id = ID;
+        std::ifstream trainerData("../Trainers/" + std::to_string(id) + ".txt");
+        if (trainerData.is_open()) {
+            trainerData >> name >> spriteName;
+            int max;
+            trainerData >> max;
+
+            for (int i = 0; i < max; i++) {
+                std::string pokemonName;
+                int level;
+                trainerData >> pokemonName >> level;
+                team.emplace_back(new Pokemon(pokemonName, level));
+            }
+            trainerData >> money;
+        } else {
+            throw std::runtime_error("Unable to open: ../Trainers/" + std::to_string(id) + ".txt");
+        }
+
+        xPosition = x;
+        yPosition = y;
+        if (!overworldSpriteTexture.loadFromFile("../Textures/" + spriteName)) {
+            throw std::runtime_error("File not found: ../Textures/" + spriteName);
+        }
+        sf::Vector2f position(xPosition, yPosition);
+        overworldSprite.setPosition(position);
+    }catch(const std::runtime_error& ex){
+        std::cerr<<ex.what()<<std::endl;
+        exit(-1);
     }
-    xPosition = x;
-    yPosition = y;
-    name = trainerName;
-    if(!overworldSpriteTexture.loadFromFile("../Textures/" + spriteName)) {
-        //TODO EXCEPTION
-    }
-    overworldSprite = AnimatedSprite(overworldSpriteTexture,20,30,4);
-    sf::Vector2f position (xPosition,yPosition);
-    overworldSprite.setPosition(position);
 }
 
 int Trainer::winMoney(Trainer* opponent){
     int prize = 0;
     if(opponent->money > 0){
         //You win always 10% of opponent's max money
-        prize = opponent->money * 0.1;
+        prize = static_cast<int>(opponent->money * 0.1);
         opponent->money -= prize;
-        Trainer::money += prize;
-        Battle::changeBattleLog(name+" has won "+opponent->name+"$!");
+        money += prize;
 #ifdef DEBUG
         std::cout<<name<<" ha vinto "<<prize<<std::endl;
 #endif
     }
     return prize;
-}
-
-int Trainer::getXPosition() const {
-    return overworldSprite.getPosition().x;
-}
-
-int Trainer::getYPosition() const {
-    return overworldSprite.getPosition().y;
 }
 
 const std::string &Trainer::getName() const {
@@ -125,20 +71,16 @@ int Trainer::getMoney() const {
     return money;
 }
 
-void Trainer::setMoney(int money) {
-    Trainer::money = money;
+void Trainer::setMoney(int _money) {
+    Trainer::money = _money;
 }
 
 void Trainer::setPosition(int x, int y) {
     overworldSprite.setPosition(x,y);
 }
 
-void Trainer::setState(int state) {
-    Trainer::state = state;
-}
-
-void Trainer::setIsStateUpdated(bool isStateUpdated) {
-    Trainer::isStateUpdated = isStateUpdated;
+void Trainer::setState(int _state) {
+    Trainer::state = _state;
 }
 
 void Trainer::healTeam() {
@@ -148,3 +90,40 @@ void Trainer::healTeam() {
     std::cout<<"team healed!"<<std::endl;
 #endif
 }
+
+sf::Vector2f Trainer::getPosition() const {
+    return overworldSprite.getPosition();
+}
+
+sf::Rect<float> Trainer::getGlobalBounds() const {
+    return overworldSprite.getGlobalBounds();
+}
+
+void Trainer::setPosition(const sf::Vector2f& position) {
+    overworldSprite.setPosition(position);
+}
+void Trainer::setPosition(float x, float y) {
+    overworldSprite.setPosition(x,y);
+}
+
+
+void Trainer::move(float x, float y) {
+    overworldSprite.move(x,y);
+}
+
+void Trainer::drawInBattleSprite(sf::RenderWindow &window, int frequency, int row) {
+    inBattleSprite.draw(window,frequency,row);
+}
+
+void Trainer::setInBattleSpritePosition(sf::Vector2f position) {
+    inBattleSprite.setPosition(position);
+}
+
+sf::Rect<float> Trainer::getInBattleSpriteGlobalBounds() {
+    return inBattleSprite.getGlobalBounds();
+}
+
+sf::Vector2f Trainer::getInBattleSpritePosition() {
+    return inBattleSprite.getPosition();
+}
+

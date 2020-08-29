@@ -6,26 +6,27 @@
 #include <fstream>
 #include "StateMainMenu.h"
 
-StateMainMenu::StateMainMenu(Game *gamePtr){
+StateMainMenu::StateMainMenu(Game *gamePtr) {
+    try{
     game = gamePtr;
     stateName = GameState::STATE_MAIN_MENU;
-    if(!texture.loadFromFile("../Textures/titleScreen.png")){
-        //TODO EXCEPTION
+    if (!texture.loadFromFile("../Textures/titleScreen.png")) {
+        throw std::runtime_error("File not found: ../Textures/titleScreen.png");
     }
-    sprite = AnimatedSprite(texture,1280,720,4);
-    sprite.setScale(0.34f,0.34f);
+    sprite = AnimatedSprite(texture, 1280, 720, 4);
+    sprite.setScale(0.34f, 0.34f);
     newGameBox.setFillColor(sf::Color::White);
     continueGameBox.setFillColor(sf::Color::White);
-    continueGameBox.setPosition(sf::Vector2f(38.f,20.f));
-    if(!font.loadFromFile("../pkmnem.ttf")){
-        //TODO handle error
+    continueGameBox.setPosition(sf::Vector2f(38.f, 20.f));
+    if (!font.loadFromFile("../pkmnem.ttf")) {
+        throw std::runtime_error("File not found: ../pkmnem.ttf");
     }
     newGame.setFont(font);
 
     newGame.setFillColor(sf::Color::Blue);
     newGame.setString("NEW GAME");
     continueGame.setFont(font);
-    continueGame.setPosition(sf::Vector2f(50.f,30.f));
+    continueGame.setPosition(sf::Vector2f(50.f, 30.f));
     continueGame.setFillColor(sf::Color::Blue);
     continueGame.setString("CONTINUE");
     playersName.setPosition(sf::Vector2f(70.f, 80.f));
@@ -35,12 +36,15 @@ StateMainMenu::StateMainMenu(Game *gamePtr){
     playTime.setFont(font);
     playTime.setPosition(sf::Vector2f(70.f, 110.f));
     playTime.setFillColor(sf::Color::Blue);
-    playTime.setScale(0.5f,0.5f);
+    playTime.setScale(0.5f, 0.5f);
     insertName.setFont(font);
-    insertName.setPosition(sf::Vector2f(50.f,30.f));
+    insertName.setPosition(sf::Vector2f(50.f, 30.f));
     insertName.setFillColor(sf::Color::Blue);
     insertName.setString("INSERT YOUR NAME");
-
+}
+catch(const std::runtime_error& ex){
+    std::cerr<<ex.what()<<std::endl;
+}
 }
 
 void StateMainMenu::changeState(State *nextState) {
@@ -82,8 +86,6 @@ void StateMainMenu::draw(sf::RenderWindow &window) {
 }
 
 void StateMainMenu::update() {
-
-//TODO
 }
 
 void StateMainMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
@@ -191,12 +193,18 @@ GameState StateMainMenu::getStateName() {
     return stateName;
 }
 
-void StateMainMenu::initializeNPCList() {//TODO
-    std::ofstream npclist("../Maps/ROUTE_01/npclist.txt", std::ios::trunc);
-    if(npclist.is_open()){
+void StateMainMenu::initializeNPCList() {
+    std::ofstream npc_ROUTE01("../Maps/ROUTE_01/npclist.txt", std::ios::trunc);
+    if(npc_ROUTE01.is_open()){
         //id - x - y - isFightable
-        npclist << 1 <<" " << 390 << " " << 140 << " true\n";
-        npclist << 2 <<" " << 144 << " " << 30 << " true\n";
-        npclist << 3 <<" " << 200 << " " << 150 << " true\n";
+        npc_ROUTE01 << 1 << " " << 390 << " " << 140 << " true\n";
+        npc_ROUTE01 << 2 << " " << 144 << " " << 30 << " true\n";
+        npc_ROUTE01 << 3 << " " << 200 << " " << 150 << " true\n";
     }
+    npc_ROUTE01.close();
+    std::ofstream npc_POKEMONCENTER("../Maps/POKEMON_CENTER/npclist.txt", std::ios::trunc);
+    if(npc_POKEMONCENTER.is_open()){
+        npc_POKEMONCENTER << 4 << " " << 206 << " " << 47<<" false\n";
+    }
+    npc_POKEMONCENTER.close();
 }

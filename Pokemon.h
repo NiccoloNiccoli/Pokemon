@@ -16,14 +16,16 @@
 
 class Pokemon {
 public:
-    Pokemon(const std::string& pokemonName, unsigned int);
+    Pokemon(const std::string& pokemonName,int lvl);
     int doMove(Move* move, Pokemon &enemy);
-    void evolve(); //TODO->copia di tutti i valori in un nuovo pokemon
-    AnimatedSprite sprite = AnimatedSprite(texture,82,81,1);
-
+    void evolve();
+    void setPosition(float x, float y);
+    sf::Rect<float> getGlobalBounds();
+    sf::Vector2f getPosition();
     void draw(sf::RenderWindow& window, int row);
-    Move* moves[4];
-    int loseHp(const int damage);
+
+    Move*const getMoves(int index) const;
+    int loseHp(int damage);
 
     bool isAlive() ;
 
@@ -45,29 +47,27 @@ public:
 
     int getExpToNextLevel() const;
 
-    void heal();
+    void setExpToNextLevel(int expToNextLevel);
 
+    void heal();
 
 private:
     int id;
     std::string name;
-
     sf::Texture texture;
+    AnimatedSprite sprite = AnimatedSprite(texture,82,81,1);
     int currentHP = 0;
     int maxHP = 0;
     int attack;
     int defense;
     int speed;
     std::vector<Type> type;
-
-    //TODO Ability
-    bool isWild;
     int level;
     int evolvingLevel;
     std::string nextFormName;
     bool alive = true;
     int expToNextLevel;
-
+    Move* moves[4];
 
     void loadData(const std::string& pokemonName);
     void updateStats();

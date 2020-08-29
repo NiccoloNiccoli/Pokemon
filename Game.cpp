@@ -18,6 +18,7 @@ sf::Clock Game::timer;
 Game* Game::instance = nullptr;
 
 Game::Game() {
+
     battle = new Battle();
     currentState = new StateMainMenu(this);
     remove("../Saves/tmp.txt");//remove tmp file from previous session
@@ -48,8 +49,8 @@ State *Game::getCurrentState() const {
     return currentState;
 }
 
-void Game::setCurrentState(State *currentState) {
-    Game::currentState = currentState;
+void Game::setCurrentState(State *_currentState) {
+    Game::currentState = _currentState;
 }
 
 bool Game::checkState(GameState state) {
@@ -64,6 +65,8 @@ State* Game::createPointer(GameState state) {
         return new StateBattle(this);
     else if (state == GameState::STATE_POKEMON_CENTER)
         return new StatePokemonCenter(this);
+    else
+        return nullptr;
 }
 
 float Game::getTime() {
@@ -87,13 +90,13 @@ void Game::save() {
     std::ofstream saveFile("../Saves/saves.txt", std::ios::trunc);
     if(saveFile.is_open()){
         saveFile << player.getName()<<" ";
-        saveFile << player.getXPosition() << " " << player.getYPosition()<<" ";
+        saveFile << player.getPosition().x << " " << player.getPosition().y<<" ";
         saveFile << player.getMoney()<<" ";
         saveFile << player.team.size()<<" ";
         for (auto i : player.team){
-            saveFile << i->getName() << " " << i->getCurrentHp() << " " <<  i->getLevel()<<" ";
+            saveFile << i->getName() << " " << i->getCurrentHp() << " " <<  i->getLevel()<<" " << i->getExpToNextLevel()<<" ";
             for (int j = 0; j < 4; j++)
-                saveFile << i->moves[j]->getNUsage() << " ";
+                saveFile << i->getMoves(j)->getNUsage() << " ";
         }
         saveFile << map.getName()<<" ";
         saveFile << previousSessionsPlayTime + playTime.getElapsedTime().asSeconds();
@@ -111,7 +114,7 @@ void Game::save() {
         while(tmpNpcList >> mapName >> id){
             table.emplace(mapName,id);
         }
-        for (auto i : table) {
+        for (const auto& i : table) {
             std::string oldNpcFile("../Maps/" + i.first + "/npclist.txt");
             std::ifstream oldNpcList(oldNpcFile);
             std::string newNpcFile("../Maps/" + i.first + "/tmpnpclist.txt");
@@ -144,32 +147,29 @@ bool Game::doesSaveFileExists() {
     return std::ifstream("../Saves/saves.txt").good();
 }
 
-float Game::getPreviousSessionsPlayTime() const {
-    return previousSessionsPlayTime;
-}
-
 void Game::load() {
     if(doesSaveFileExists()) {
         std::ifstream saveFile("../Saves/saves.txt");
         if (saveFile.is_open()) {
             std::string playersName, pokemonsName, mapName;
-            int money, teamSize, hpCurrent, lvl, xpos, ypos, usesLeft;
+            int money, teamSize, hpCurrent, lvl, xpos, ypos, usesLeft,xp;
             float playtime;
             saveFile >> playersName >> xpos >> ypos >> money >> teamSize;
             player.setName(playersName);
-            player.setPosition(xpos, ypos);
+            player.setPosition(sf::Vector2f(xpos, ypos));
             player.setMoney(money);
             player.team.clear();
             Pokemon **playersPokemon;
             playersPokemon = new Pokemon *[teamSize];
             for (int i = 0; i < teamSize; i++) {
-                saveFile >> pokemonsName >> hpCurrent >> lvl;
+                saveFile >> pokemonsName >> hpCurrent >> lvl >> xp;
                 playersPokemon[i] = new Pokemon(pokemonsName, lvl);
                 playersPokemon[i]->loseHp(playersPokemon[i]->getMaxHp() - hpCurrent);
+                playersPokemon[i]->setExpToNextLevel(xp);
                 player.team.emplace_back(playersPokemon[i]);
                 for (int j = 0; j < 4; j++) {
                     saveFile >> usesLeft;
-                    player.team[i]->moves[j]->setNUsage(usesLeft);
+                    player.team[i]->getMoves(j)->setNUsage(usesLeft);
                 }
             }
             saveFile >> mapName >> playtime;
@@ -183,9 +183,5 @@ void Game::load() {
             }
         }
     }
-}
-
-float Game::getPlayTime() {
-    return playTime.getElapsedTime().asSeconds();
 }
 

@@ -8,28 +8,38 @@
 #include "Move.h"
 #include "Game.h"
 
-Move::Move(const std::string& moveName){
-    std::ifstream file("../Pokemons/Moves/" + moveName + ".txt");
-    if (file.is_open()) {
-        std::string tmpType_string;
-        name = moveName;
-        file >> power >> healingPercentage >> nUsage >> tmpType_string >> accuracy;
-        Type tmpType(tmpType_string);
-        type = tmpType;
+Move::Move(const std::string& moveName) {
+    try {
+        std::ifstream file("../Pokemons/Moves/" + moveName + ".txt");
+        if (file.is_open()) {
+            std::string tmpType_string;
+            name = moveName;
+            file >> power >> healingPercentage >> nUsage >> tmpType_string >> accuracy;
+            Type tmpType(tmpType_string);
+            type = tmpType;
 #ifdef DEBUG
-       std::cout << name << " Power: " << power << " Healing percentage: " << healingPercentage << " Number of usage: " << nUsage <<
-        " Type: " << type.getTypeName() << " Accuracy: " << accuracy << std::endl;
+            std::cout << name << " Power: " << power << " Healing percentage: " << healingPercentage
+                      << " Number of usage: " << nUsage <<
+                      " Type: " << type.getTypeName() << " Accuracy: " << accuracy << std::endl;
 #endif
-       maxUses = nUsage;
-    }
-        if (!animationTexture.loadFromFile("../Pokemons/Moves/" + moveName + ".png")) {
-            //TODO error
+            maxUses = nUsage;
+        }else{
+            throw std::runtime_error("Unable to open: ../Pokemons/Moves/"+moveName+".txt");
         }
-        animation = AnimatedSprite(animationTexture, 427, 154, 8);
-    for (auto &c : name){
-        c = toupper(c);
+        file.close();
+        if (!animationTexture.loadFromFile("../Pokemons/Moves/" + moveName + ".png")) {
+            throw std::runtime_error("File not found: ../Pokemons/Moves/"+moveName+".png");
+        }
+        for (auto &c : name) {
+            c = toupper(c);
+        }
+        std::replace(name.begin(), name.end(), '_', ' ');
     }
-    std::replace(name.begin(),name.end(),'_', ' ');
+    catch (const std::runtime_error &ex) {
+        std::cerr << ex.what() << std::endl;
+        exit(-1);
+    }
+
 }
 
 const std::string &Move::getName() const {
@@ -40,24 +50,16 @@ int Move::getPower() const {
     return power;
 }
 
-void Move::setPower(int power) {
-    Move::power = power;
-}
-
 float Move::getHealingPercentage() const {
     return healingPercentage;
-}
-
-void Move::setHealingPercentage(float healingPercentage) {
-    Move::healingPercentage = healingPercentage;
 }
 
 int Move::getNUsage() const {
     return nUsage;
 }
 
-void Move::setNUsage(int nUsage) {
-    Move::nUsage = nUsage;
+void Move::setNUsage(int _nUsage) {
+    Move::nUsage = _nUsage;
 }
 
 int Move::getAccuracy() const {
@@ -72,10 +74,13 @@ void Move::draw(sf::RenderWindow& window, int row) {
     animation.draw(window,8,row);
 }
 
-Move::Move() {
-    Move("quick_attack");
+Move::Move() : Move("quick_attack"){
 }
 
 int Move::getMaxUses() const {
     return maxUses;
+}
+
+void Move::resetAnim() {
+    animation.resetFrame();
 }

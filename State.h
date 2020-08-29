@@ -12,7 +12,7 @@
 
 class State {
 public:
-    virtual ~State() {};
+    virtual ~State() = default;
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual void changeState(State* nextState) = 0;
     virtual void update() = 0;

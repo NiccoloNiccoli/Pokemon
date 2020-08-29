@@ -9,11 +9,11 @@ Type::Type(){
 
 }
 Type::Type(const std::string& type) {
-    int nStrengths, nWeaknesses;
     std::string currentType;
     std::ifstream file("../Pokemons/Types/" + type + ".txt");
     typeName = type;
     if (file.is_open()) {
+        int nStrengths, nWeaknesses;
         file >>  nStrengths >> nWeaknesses;
         for(int i = 0; i < nStrengths; i++){
             file >> currentType;
@@ -37,7 +37,10 @@ Type::Type(const std::string& type) {
         for(auto i:weakAgainst)
             std::cout << i << " ";
 #endif
+    }else{
+        throw std::runtime_error("Unable to open: ../Pokemons/Types/" + type + ".txt");
     }
+    file.close();
     for (auto &c : typeName){
         c = toupper(c);
     }
@@ -46,13 +49,13 @@ const std::string &Type::getTypeName() const {
     return typeName;
 }
 
-float Type::checkTypeAdvantage(Type moveType, std::vector<Type> pokemonType) {
+float Type::checkTypeAdvantage(const Type& moveType,const std::vector<Type>& pokemonType) {
     float multiplier = 1.f;
    for(int i = 0; i < pokemonType.size(); i++) {
-       for (auto j : moveType.strongAgainst)
+       for (const auto& j : moveType.strongAgainst)
            if (j == pokemonType[i].getTypeName())
                multiplier *= 2.f;
-       for (auto j : moveType.weakAgainst)
+       for (const auto& j : moveType.weakAgainst)
            if (j == pokemonType[i].getTypeName())
                multiplier *= 0.5f;
    }

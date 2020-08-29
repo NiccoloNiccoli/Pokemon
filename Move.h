@@ -14,17 +14,12 @@
 class Move {
 public:
     Move();
-    Move(const std::string& moveName);
+    explicit Move(const std::string& moveName);
     void draw(sf::RenderWindow& window,int row);
-    void use();
 
     int getPower() const;
 
-    void setPower(int power);
-
     float getHealingPercentage() const;
-
-    void setHealingPercentage(float healingPercentage);
 
     int getNUsage() const;
 
@@ -38,6 +33,7 @@ public:
 
     int getMaxUses() const;
 
+    void resetAnim();
 private:
     std::string name;
     int power;
@@ -45,7 +41,7 @@ private:
     int nUsage;
     int maxUses;
     sf::Texture animationTexture;
-    AnimatedSprite animation = AnimatedSprite(animationTexture,1,1,1);
+    AnimatedSprite animation = AnimatedSprite(animationTexture, 427, 154, 8);
     Type type;
     int accuracy;
 };
