@@ -78,6 +78,7 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
             wildPokemons.emplace_back("Vileplume");
             wildPokemons.emplace_back("Umbreon");
             wildPokemons.emplace_back("Zangoose");
+            wildPokemons.emplace_back("Pikachu");
 #ifdef DEBUG
             for (auto i : npc)
                 std::cout << i->getName() << std::endl;
@@ -229,6 +230,12 @@ sf::Vector2f Map::findPokemonCenterDoor() {
     }
     std::cout << "x:" << i * tileSize.x << " y:" << j * tileSize.y << std::endl;
     return sf::Vector2f(i * tileSize.x, j * tileSize.y);
+}
+
+void Map::resetMap() {
+    for(auto i : npc){
+        i->resetIsFightable();
+    }
 }
 
 

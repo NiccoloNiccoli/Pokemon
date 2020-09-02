@@ -14,6 +14,7 @@ public:
     void doAction();
 
     bool getIfIsFightable() const;
+    void resetIsFightable();
     void nextAction();
     void hasBeenDefeated();
 

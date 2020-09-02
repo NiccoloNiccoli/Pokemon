@@ -127,11 +127,12 @@ void StateMainMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
                case 3:
                    Game::getInstance()->player.setName(playersName.getString().toAnsiString());
                    initializeNPCList();
+                   Game::getInstance()->map.resetMap();
                    Game::getInstance()->changeState(GameState::STATE_MAP);
                    break;
            }
         }
-        if(event.key.code == sf::Keyboard::BackSpace){
+       if(event.key.code == sf::Keyboard::BackSpace && menuPageIndex != 3){
             continueGame.setFillColor(sf::Color::Blue);
             playersName.setFillColor(sf::Color::Blue);
             playTime.setFillColor(sf::Color::Blue);
@@ -164,8 +165,18 @@ void StateMainMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
                 playerInput.getSize() < 16)
                 playerInput += event.text.unicode;
         }
-        if(event.key.code == sf::Keyboard::Escape){
-            playerInput = "";
+        if(event.key.code == sf::Keyboard::BackSpace) {
+            if (playerInput == "" && Game::getTime() > 0.5f) {
+                continueGame.setFillColor(sf::Color::Blue);
+                playersName.setFillColor(sf::Color::Blue);
+                playTime.setFillColor(sf::Color::Blue);
+                newGame.setFillColor(sf::Color::Blue);
+                selectedItemIndex = 0;
+                menuPageIndex=0;
+            } else {
+                playerInput = "";
+                Game::resetTimer();
+            }
         }
         playersName.setString(playerInput);
 

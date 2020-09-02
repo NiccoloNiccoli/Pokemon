@@ -25,6 +25,7 @@ public:
     const std::string &getName() const;
     void restartTimer();
     sf::Vector2f findPokemonCenterDoor();
+    void resetMap(); //must be used when a new game is created
 
 
 private:

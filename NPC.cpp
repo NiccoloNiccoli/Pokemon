@@ -64,6 +64,10 @@ void NPC::nextAction() {
     delete tmp;
 }
 
+void NPC::resetIsFightable() {
+    isFightable = true;
+}
+
 Idle::Idle(NPC *_npc) {
     npc = _npc;
     x = npc->getPosition().x;
