@@ -17,6 +17,7 @@ public:
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
     GameState getStateName() override;
     void setPreviousState(State* state);
+    void playMusic() override ;
 
 private:
     State* previousState;

@@ -11,7 +11,6 @@
 #include <cmath>
 #include "Type.h"
 #include "Move.h"
-#include "debug.h"
 #include "AnimatedSprite.h"
 
 class Pokemon {
@@ -24,7 +23,7 @@ public:
     sf::Vector2f getPosition();
     void draw(sf::RenderWindow& window, int row);
 
-    Move*const getMoves(int index) const;
+    Move*getMoves(int index) const;
     int loseHp(int damage);
 
     bool isAlive() ;

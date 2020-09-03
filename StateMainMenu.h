@@ -15,6 +15,7 @@ public:
     void changeState(State* nextState) override;
     void update() override;
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
+    void playMusic() override ;
     GameState getStateName() override;
 private:
     void loadInfo();
@@ -26,7 +27,6 @@ private:
     sf::RectangleShape newGameBox = sf::RectangleShape(sf::Vector2f(350,60));
     sf::RectangleShape continueGameBox = sf::RectangleShape(sf::Vector2f(350, 120));
 
-    //76,180
     sf::Font font;
     sf::Text newGame;
     sf::Text continueGame;

@@ -2,7 +2,6 @@
 // Created by Niccolò Niccoli on 11/07/2020.
 //
 
-#include <random>
 #include <iostream>
 #include "Dice.h"
 int Dice::random(int min, int max){

@@ -18,10 +18,11 @@ public:
     virtual void update() = 0;
     virtual void handleInput(sf::Event event, sf::RenderWindow &window) = 0;
     virtual GameState getStateName() = 0;
-
+    virtual void playMusic() = 0;
     GameState stateName;
 protected:
     Game* game;
+    sf::Music music;
 };
 
 

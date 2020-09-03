@@ -41,6 +41,11 @@ StateMainMenu::StateMainMenu(Game *gamePtr) {
     insertName.setPosition(sf::Vector2f(50.f, 30.f));
     insertName.setFillColor(sf::Color::Blue);
     insertName.setString("INSERT YOUR NAME");
+    if(!music.openFromFile("../SoundEffects/TitleScreen.wav")){
+        throw std::runtime_error("File not found: ../SoundEffects/TitleScreen.wav");
+    }
+    music.setLoop(true);
+    music.play();
 }
 catch(const std::runtime_error& ex){
     std::cerr<<ex.what()<<std::endl;
@@ -53,6 +58,7 @@ void StateMainMenu::changeState(State *nextState) {
     }
     State* tmpState = game->getCurrentState();
     game->setCurrentState(nextState);
+    music.stop();
     delete tmpState;
 }
 
@@ -89,97 +95,117 @@ void StateMainMenu::update() {
 }
 
 void StateMainMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
-    if(event.type == sf::Event::KeyReleased){
-        if(event.key.code == sf::Keyboard::Enter){
-           switch(menuPageIndex){
-               case 0:
-                   if(Game::getInstance()->doesSaveFileExists()){
-                       continueGame.setFillColor(sf::Color::Red);
-                       playersName.setFillColor(sf::Color::Red);
-                       playTime.setFillColor(sf::Color::Red);
-                       loadInfo();
-                       newGameBox.setPosition(sf::Vector2f(38.f,160.f));
-                       newGame.setPosition(sf::Vector2f(50.f,170.f));
-                       menuPageIndex = 2;
-                   }
-                   else{
-                       newGame.setFillColor(sf::Color::Red);
-                       newGameBox.setPosition(sf::Vector2f(38.f,20.f));
-                       newGame.setPosition(sf::Vector2f(50.f,30.f));
-                       menuPageIndex = 1;
-                   }
-                   break;
-               case 1:
-                    menuPageIndex = 3;
-                    playerInput = "";
-                    playersName.setString(playerInput);
-                   break;
-               case 2:
-                   if(selectedItemIndex){
-                       remove("../Saves/saves.txt");
-                       playerInput = "";
-                       playersName.setString(playerInput);
-                       menuPageIndex = 3;
-                   }else{
-                       Game::getInstance()->load();
-                   }
-                   break;
-               case 3:
-                   Game::getInstance()->player.setName(playersName.getString().toAnsiString());
-                   initializeNPCList();
-                   Game::getInstance()->map.resetMap();
-                   Game::getInstance()->changeState(GameState::STATE_MAP);
-                   break;
-           }
-        }
-       if(event.key.code == sf::Keyboard::BackSpace && menuPageIndex != 3){
-            continueGame.setFillColor(sf::Color::Blue);
-            playersName.setFillColor(sf::Color::Blue);
-            playTime.setFillColor(sf::Color::Blue);
-            newGame.setFillColor(sf::Color::Blue);
-            selectedItemIndex = 0;
-            menuPageIndex=0;
-        }
-        if(menuPageIndex == 2){
-            if(event.key.code == sf::Keyboard::Down){
+    try {
+        if (event.type == sf::Event::KeyReleased) {
+            if (event.key.code == sf::Keyboard::Enter) {
+                switch (menuPageIndex) {
+                    case 0:
+                        if (Game::getInstance()->doesSaveFileExists()) {
+                            continueGame.setFillColor(sf::Color::Red);
+                            playersName.setFillColor(sf::Color::Red);
+                            playTime.setFillColor(sf::Color::Red);
+                            loadInfo();
+                            newGameBox.setPosition(sf::Vector2f(38.f, 160.f));
+                            newGame.setPosition(sf::Vector2f(50.f, 170.f));
+                            menuPageIndex = 2;
+
+                        } else {
+                            newGame.setFillColor(sf::Color::Red);
+                            newGameBox.setPosition(sf::Vector2f(38.f, 20.f));
+                            newGame.setPosition(sf::Vector2f(50.f, 30.f));
+                            menuPageIndex = 1;
+                        }
+                        //change music
+                        if (!music.openFromFile("../SoundEffects/Menu.wav")) {
+                            throw std::runtime_error("File not found: ../SoundEffects/Menu.wav");
+                        }
+                        music.setLoop(true);
+                        music.setVolume(50.f);
+                        music.play();
+                        break;
+                    case 1:
+                        menuPageIndex = 3;
+                        playerInput = "";
+                        playersName.setString(playerInput);
+                        break;
+                    case 2:
+                        if (selectedItemIndex) {
+                            remove("../Saves/saves.txt");
+                            playerInput = "";
+                            playersName.setString(playerInput);
+                            menuPageIndex = 3;
+                        } else {
+                            Game::getInstance()->load();
+                        }
+                        break;
+                    case 3:
+                        Game::getInstance()->player.setName(playersName.getString().toAnsiString());
+                        initializeNPCList();
+                        Game::getInstance()->map.resetMap();
+                        Game::getInstance()->changeState(GameState::STATE_MAP);
+                        break;
+                }
+            }
+            if (event.key.code == sf::Keyboard::BackSpace && menuPageIndex != 3) {
                 continueGame.setFillColor(sf::Color::Blue);
                 playersName.setFillColor(sf::Color::Blue);
                 playTime.setFillColor(sf::Color::Blue);
-                newGame.setFillColor(sf::Color::Red);
-                selectedItemIndex = 1;
-            }
-
-            if(event.key.code == sf::Keyboard::Up){
                 newGame.setFillColor(sf::Color::Blue);
-                continueGame.setFillColor(sf::Color::Red);
-                playersName.setFillColor(sf::Color::Red);
-                playTime.setFillColor(sf::Color::Red);
                 selectedItemIndex = 0;
+                menuPageIndex = 0;
+                //change music
+                if (!music.openFromFile("../SoundEffects/TitleScreen.wav")) {
+                    throw std::runtime_error("File not found: ../SoundEffects/TitleScreen.wav");
+                }
+                music.setLoop(true);
+                music.play();
             }
+            if (menuPageIndex == 2) {
+                if (event.key.code == sf::Keyboard::Down) {
+                    continueGame.setFillColor(sf::Color::Blue);
+                    playersName.setFillColor(sf::Color::Blue);
+                    playTime.setFillColor(sf::Color::Blue);
+                    newGame.setFillColor(sf::Color::Red);
+                    selectedItemIndex = 1;
+                }
+
+                if (event.key.code == sf::Keyboard::Up) {
+                    newGame.setFillColor(sf::Color::Blue);
+                    continueGame.setFillColor(sf::Color::Red);
+                    playersName.setFillColor(sf::Color::Red);
+                    playTime.setFillColor(sf::Color::Red);
+                    selectedItemIndex = 0;
+                }
+
+            }
+        }
+        if (menuPageIndex == 3) {
+            if (event.type == sf::Event::TextEntered) {
+                if (((event.text.unicode >= 33 && event.text.unicode <= 126) ||
+                     (event.text.unicode >= 192 && event.text.unicode <= 255)) &&
+                    playerInput.getSize() < 16)
+                    playerInput += event.text.unicode;
+            }
+            if (event.key.code == sf::Keyboard::BackSpace) {
+                if (playerInput == "" && Game::getTime() > 0.5f) {
+                    continueGame.setFillColor(sf::Color::Blue);
+                    playersName.setFillColor(sf::Color::Blue);
+                    playTime.setFillColor(sf::Color::Blue);
+                    newGame.setFillColor(sf::Color::Blue);
+                    selectedItemIndex = 0;
+                    menuPageIndex = 0;
+                } else {
+                    playerInput = "";
+                    Game::resetTimer();
+                }
+            }
+            playersName.setString(playerInput);
 
         }
     }
-    if(menuPageIndex == 3){
-        if(event.type == sf::Event::TextEntered){
-            if(((event.text.unicode >= 33 && event.text.unicode <= 126) || (event.text.unicode >=192 && event.text.unicode <=255)) &&
-                playerInput.getSize() < 16)
-                playerInput += event.text.unicode;
-        }
-        if(event.key.code == sf::Keyboard::BackSpace) {
-            if (playerInput == "" && Game::getTime() > 0.5f) {
-                continueGame.setFillColor(sf::Color::Blue);
-                playersName.setFillColor(sf::Color::Blue);
-                playTime.setFillColor(sf::Color::Blue);
-                newGame.setFillColor(sf::Color::Blue);
-                selectedItemIndex = 0;
-                menuPageIndex=0;
-            } else {
-                playerInput = "";
-                Game::resetTimer();
-            }
-        }
-        playersName.setString(playerInput);
-
+    catch (const std::runtime_error &ex) {
+        std::cerr << ex.what() << std::endl;
+        exit(-1);
     }
 }
 
@@ -194,8 +220,8 @@ void StateMainMenu::loadInfo() {
                 saveFile >> pokemonsName >> hpCurrent >> lvl;
             saveFile >> mapName >> time;
             playersName.setString(_playersName);
-            int hours = time/3600;
-            int minutes = (time - hours)/60;
+            int hours = static_cast<int>(time)/3600;
+            int minutes = (static_cast<int>(time) - hours)/60;
             playTime.setString(std::to_string(hours) + ":" + std::to_string(minutes));
     }
 }
@@ -218,4 +244,8 @@ void StateMainMenu::initializeNPCList() {
         npc_POKEMONCENTER << 4 << " " << 206 << " " << 47<<" false\n";
     }
     npc_POKEMONCENTER.close();
+}
+
+void StateMainMenu::playMusic() {
+    music.play();
 }

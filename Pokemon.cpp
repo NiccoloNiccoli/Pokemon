@@ -8,7 +8,6 @@
 #include <iostream>
 #include <exception>
 #include "Pokemon.h"
-#include <ctime>
 #include <random>
 #include "Type.h"
 #include "Dice.h"
@@ -27,7 +26,6 @@ Pokemon::Pokemon(const std::string& pokemonName, int lvl) {
         updateStats();
         currentHP = maxHP;
         expToNextLevel = pow(level, 3) * 4 / 5 - 16000;
-        std::cerr << expToNextLevel << std::endl;
     }
     catch(const std::runtime_error& ex){
         std::cerr<<ex.what()<<std::endl;
@@ -47,7 +45,6 @@ void Pokemon::loadData (const std::string& pokemonName){
         if(type2 != "NULL"){
             Type tmpType(type2);
             type.push_back(tmpType);
-
         }
         std::string currentMove_string;
         int i = 0;
@@ -55,15 +52,6 @@ void Pokemon::loadData (const std::string& pokemonName){
             moves[i] = new Move(currentMove_string);
             i++;
         }
-#ifdef DEBUG
-        std::cout << id << " " <<  name << " " << maxHP << " " << attack << " " << defense << " " << speed << " ";
-#endif
-        for (auto i: type){
-            std::cout << i.getTypeName() << " ";
-        }
-#ifdef DEBUG
-       std::cout <<  evolvingLevel << " " << nextFormName <<std::endl;
-#endif
     }else{
             throw std::runtime_error("File not found: ../Pokemons/"+pokemonName+".txt");
     }
@@ -75,11 +63,8 @@ void Pokemon::draw(sf::RenderWindow& window, int row){
 
 int Pokemon::doMove(Move* move, Pokemon &enemy) {
     move->setNUsage(move->getNUsage() - 1);
-#ifdef DEBUG
-    std::cout << move->getNUsage() << " uses left" << std::endl;
-#endif
     Battle::setLastMoveUsed(move);
-    if (Dice::random(100) <= move->getAccuracy()) {
+    if (Dice::random(101) <= move->getAccuracy()) {
         float modifier;
         int damage;
         float criticalHitMultiplier = 1.f;
@@ -87,9 +72,6 @@ int Pokemon::doMove(Move* move, Pokemon &enemy) {
         float STAB = 1.f; //same type attack bonus
         if (Dice::random(16) == 0) {
             criticalHitMultiplier = 1.5f;
-#ifdef DEBUG
-            std::cout << "Critical hit!" << std::endl;
-#endif
         }
             randomFactor = Dice::random(85, 100);
             for (auto i : type)
@@ -100,26 +82,14 @@ int Pokemon::doMove(Move* move, Pokemon &enemy) {
                     criticalHitMultiplier *
                             static_cast<float>(randomFactor) / 100.f  *Type::checkTypeAdvantage(move->getType(), enemy.type) *
                     STAB;
-#ifdef DEBUG
-            std::cout << "criticalMult. " << criticalHitMultiplier << " random factor " << randomFactor << " type adv. "
-                      << Type::checkTypeAdvantage(move->getType(), enemy.type) << " STAB " << STAB << std::endl;
-            std::cout << "modifier: " << modifier << std::endl;
-#endif
             damage = powf(((2 / 5 * level + 2) * move->getPower() * attack / enemy.getDefense() + 100) / 50, 1.5) *
                      modifier; //^1.5 l'ho aggiunto io per rendere il danno più interessante
-#ifdef DEBUG
-            std::cout << "il danno inflitto è " << damage << std::endl;
-#endif
             if (damage < 1)
                 damage = 1;
         enemy.loseHp(damage);
             currentHP += static_cast<int>(move->getHealingPercentage() * static_cast<float>(abs(enemy.maxHP - enemy.currentHP)));
             if (currentHP > maxHP)
                 currentHP = maxHP;
-
-#ifdef DEBUG
-            std::cout << enemy.name << " has " << enemy.currentHP << " / " << enemy.maxHP << " HP" << std::endl;
-#endif
             bool crit = false, supEff = false, notEff = false;
             if (criticalHitMultiplier == 1.5f)
                 crit = true;
@@ -183,9 +153,6 @@ int Pokemon::gainEXP(Pokemon *enemy) {
             expGained -= expToNextLevel;
             level++;
             updateStats();
-#ifdef DEBUG
-            std::cout<<"level up!"<<std::endl;
-#endif
             expToNextLevel = static_cast<int>(pow(level,3)) * 4/5;
             if(level >= evolvingLevel)
                 evolve();
@@ -215,7 +182,7 @@ void Pokemon::evolve() {
       defense = tmp.defense;
       speed = tmp.speed;
       type = tmp.type;
-      level = tmp.level; //non dovrebbe essere necessario
+      level = tmp.level;
       alive = tmp.alive;
       expToNextLevel = tmp.expToNextLevel;
       name = tmp.name;
@@ -260,6 +227,6 @@ sf::Vector2f Pokemon::getPosition() {
     return sprite.getPosition();
 }
 
-Move *const Pokemon::getMoves(int index) const {
+Move *Pokemon::getMoves(int index) const {
     return moves[index];
 }

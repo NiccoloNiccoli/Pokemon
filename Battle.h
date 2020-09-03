@@ -7,7 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include "Trainer.h"
 #include "Pokemon.h"
-#include "debug.h"
 #include "Player.h"
 #include "BattleUIStates.h"
 #include "Game.h"

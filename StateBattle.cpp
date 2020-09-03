@@ -2,9 +2,22 @@
 // Created by Niccolò Niccoli on 10/08/2020.
 //
 
+#include <iostream>
 #include "StateBattle.h"
 StateBattle::StateBattle(Game *gamePtr){
     game = gamePtr;
+    try{
+        if(!music.openFromFile("../SoundEffects/Battle.wav")){
+            throw std::runtime_error("File not found: ../SoundEffects/Battle.wav");
+        }
+       music.setLoop(true);
+        music.setVolume(15.f);
+        music.play();
+    }
+    catch (const std::runtime_error &ex) {
+        std::cerr << ex.what() << std::endl;
+        exit(-1);
+    }
     game->battle->setUIState(new BattleUI_Init(game->battle));
     game->battle->setSentenceIndex(0);
     game->battle->changeFeedbackSentence();
@@ -15,6 +28,7 @@ void StateBattle::changeState(State *nextState) {
     if(nextState->getStateName() != GameState::STATE_MAIN_MENU) {
         State *tmpState = game->getCurrentState();
         game->setCurrentState(nextState);
+        music.stop();
         delete tmpState;
     }
 }
@@ -43,4 +57,8 @@ void StateBattle::handleInput(sf::Event event, sf::RenderWindow &window) {
 
 GameState StateBattle::getStateName() {
         return stateName;
+}
+
+void StateBattle::playMusic() {
+    music.play();
 }

@@ -11,7 +11,7 @@
 #include "Map.h"
 #include "Battle.h"
 
-class State; //To avoid circular dependency
+class State;
 enum class GameState{
     STATE_MAP,
     STATE_BATTLE,

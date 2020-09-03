@@ -4,7 +4,7 @@
 
 #ifndef POKEMON_DICE_H
 #define POKEMON_DICE_H
-#include "debug.h"
+
 
 class Dice {
 public:

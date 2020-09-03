@@ -79,16 +79,7 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
             wildPokemons.emplace_back("Umbreon");
             wildPokemons.emplace_back("Zangoose");
             wildPokemons.emplace_back("Pikachu");
-#ifdef DEBUG
-            for (auto i : npc)
-                std::cout << i->getName() << std::endl;
-#endif
         }
-#ifdef DEBUG
-        std::cout << "Here you can find: " << std::endl;
-        for (auto i : wildPokemons)
-            std::cout << i << std::endl;
-#endif
     } catch (const std::runtime_error &ex) {
         std::cerr << ex.what() << std::endl;
         exit(-1);
@@ -154,9 +145,6 @@ void Map::checkCollisions(Trainer& player){
                     Game::getInstance()->changeState(GameState::STATE_BATTLE);
                 }
                 //else you are already in a battle
-#ifdef DEBUG
-                std::cout<<"Qui puoi trovare pokemon selvatici"<<std::endl;
-#endif
             }
 
         }else if(tiles[column + row * 27].getType() == POKEMON_CENTER_DOOR){
@@ -166,9 +154,6 @@ void Map::checkCollisions(Trainer& player){
             }
             else
                 Game::getInstance()->changeState(GameState::STATE_POKEMON_CENTER);
-#ifdef DEBUG
-            std::cout<<"Questo è il centro pokemon"<<std::endl;
-#endif
         }
     oldPlayerPosition = player.getPosition();
     }
@@ -228,7 +213,6 @@ sf::Vector2f Map::findPokemonCenterDoor() {
         if (!doorFound)
             i++;
     }
-    std::cout << "x:" << i * tileSize.x << " y:" << j * tileSize.y << std::endl;
     return sf::Vector2f(i * tileSize.x, j * tileSize.y);
 }
 

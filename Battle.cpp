@@ -161,10 +161,6 @@ void Battle::goBack() {
        tmp = UIstate;
        UIstate = new BattleUI_ChooseAction(this);
        delete tmp;
-   }else{
-#ifdef DEBUG
-       std::cout<<"No"<<std::endl;
-#endif
    }
 }
 

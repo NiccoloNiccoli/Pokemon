@@ -10,6 +10,11 @@
 
 NPC::NPC(int id, int x, int y,bool canFight) : Trainer(id, x, y), isFightable (canFight) {
 try {
+        if (!buffer.loadFromFile("../SoundEffects/FoeDefeated.wav")) {
+            throw std::runtime_error("File not found: ../SoundEffects/FoeDefeated.wav");
+        }
+        defeatedSound.setBuffer(buffer);
+        defeatedSound.setLoop(false);
     switch (id) {
         case 1:
             action = new Idle(this);
@@ -44,7 +49,9 @@ void NPC::doAction() {
     action->doAction();
 }
 
-bool NPC::getIfIsFightable() const {
+bool NPC::getIfIsFightable(){
+   if(!isFightable)
+       defeatedSound.play();
     return isFightable;
 }
 

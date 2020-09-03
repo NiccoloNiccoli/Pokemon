@@ -2,8 +2,7 @@
 // Created by Niccolò Niccoli on 11/08/2020.
 //
 
-#include <fstream>
-#include <iostream>
+
 #include "AnimatedSprite.h"
 
 AnimatedSprite::AnimatedSprite(sf::Texture& spriteSheet, int widthOfSingleFrame, int heightOfSingleFrame,

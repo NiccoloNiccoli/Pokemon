@@ -4,8 +4,6 @@
 
 #include <iostream>
 #include "StatePauseMenu.h"
-#include "StatePokemonCenter.h"
-#include "StateMap.h"
 
 void StatePauseMenu::draw(sf::RenderWindow &window) {
     window.clear(sf::Color::Blue);
@@ -19,6 +17,12 @@ StatePauseMenu::StatePauseMenu(Game *gamePtr) {
         if (!font.loadFromFile("../pkmnem.ttf")) {
             throw std::runtime_error("File not found: ../pkmnem.ttf");
         }
+        if (!music.openFromFile("../SoundEffects/Menu.wav")) {
+            throw std::runtime_error("File not found: ../SoundEffects/Menu.wav");
+        }
+        music.setLoop(true);
+        music.setVolume(50.f);
+        music.play();
     }
     catch(const std::runtime_error& ex){
         std::cerr<<ex.what()<<std::endl;
@@ -39,6 +43,8 @@ void StatePauseMenu::changeState(State *nextState) {
     if(nextState->getStateName() != GameState::STATE_BATTLE){
         State *tmpState = game->getCurrentState();
         game->setCurrentState(nextState);
+        music.stop();
+        game->getCurrentState()->playMusic();
         delete tmpState;
     }
 }
@@ -66,6 +72,7 @@ void StatePauseMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
                     game->save();
                     break;
                 case 2:
+                    music.stop();
                     window.close();
             }
         }else if(event.key.code == sf::Keyboard::Escape){
@@ -84,4 +91,8 @@ GameState StatePauseMenu::getStateName() {
 
 void StatePauseMenu::setPreviousState(State *state) {
     previousState = state;
+}
+
+void StatePauseMenu::playMusic() {
+    music.play();
 }

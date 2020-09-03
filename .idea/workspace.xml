@@ -2,13 +2,13 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="Pokemon" targetName="gmock" />
-      <config projectName="Pokemon" targetName="gmock_main" />
-      <config projectName="Pokemon" targetName="runAllTests" />
       <config projectName="Pokemon" targetName="gtest_main" />
+      <config projectName="Pokemon" targetName="core" />
+      <config projectName="Pokemon" targetName="gmock" />
+      <config projectName="Pokemon" targetName="runAllTests" />
       <config projectName="Pokemon" targetName="Pokemon" />
       <config projectName="Pokemon" targetName="gtest" />
-      <config projectName="Pokemon" targetName="core" />
+      <config projectName="Pokemon" targetName="gmock_main" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -18,14 +18,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Fixed some small things">
+      <change afterPath="$PROJECT_DIR$/Saves/tmp.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/Battle.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/FoeDefeated.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/Menu.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/PokemonCenter.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/Route.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/TeamHealed.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SoundEffects/TitleScreen.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnimatedSprite.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AnimatedSprite.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Battle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Battle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Battle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Battle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BattleUIStates.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/BattleUIStates.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dice.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Dice.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dice.h" beforeDir="false" afterPath="$PROJECT_DIR$/Dice.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/Game.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Map.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Map.h" beforeDir="false" afterPath="$PROJECT_DIR$/Map.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maps/ROUTE_01/npclist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Maps/ROUTE_01/npclist.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Move.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Move.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Move.h" beforeDir="false" afterPath="$PROJECT_DIR$/Move.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NPC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/NPC.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NPC.h" beforeDir="false" afterPath="$PROJECT_DIR$/NPC.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saves/saves.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Player.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Player.h" beforeDir="false" afterPath="$PROJECT_DIR$/Player.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Pokemon.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Pokemon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemons/Charmander.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemons/Squirtle.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemons/Textures/Untitled-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemons/Textures/charmander.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pokemons/Textures/squirtle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/State.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/State.h" beforeDir="false" afterPath="$PROJECT_DIR$/State.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBattle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateBattle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBattle.h" beforeDir="false" afterPath="$PROJECT_DIR$/StateBattle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateMainMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateMainMenu.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMainMenu.h" beforeDir="false" afterPath="$PROJECT_DIR$/StateMainMenu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateMap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMap.h" beforeDir="false" afterPath="$PROJECT_DIR$/StateMap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatePauseMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StatePauseMenu.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatePauseMenu.h" beforeDir="false" afterPath="$PROJECT_DIR$/StatePauseMenu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatePokemonCenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StatePokemonCenter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatePokemonCenter.h" beforeDir="false" afterPath="$PROJECT_DIR$/StatePokemonCenter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Textures/boxTexture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Textures/cursor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Textures/redx.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Textures/trainer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trainer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Type.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/Type.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debug.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,7 +296,9 @@
       <workItem from="1598552593299" duration="4669000" />
       <workItem from="1598616796309" duration="10664000" />
       <workItem from="1598701358421" duration="11891000" />
-      <workItem from="1599052774037" duration="3112000" />
+      <workItem from="1599052774037" duration="3333000" />
+      <workItem from="1599140892567" duration="4695000" />
+      <workItem from="1599150770216" duration="8124000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed collisions">
       <created>1592491206629</created>
@@ -384,7 +433,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598718877862</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Fixed some small things">
+      <created>1599056085335</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1599056085335</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -444,10 +500,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="451" y="117" key="#com.intellij.featureStatistics.actions.ShowFeatureUsageStatisticsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597511412846" />
-    <state x="526" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598456592855">
+    <state x="526" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1599147448035">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="526" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1598456592855" />
+    <state x="526" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1599147448035" />
     <state x="548" y="119" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1594563530968">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -456,10 +512,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1598715828854" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598617169343">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1599157632174">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1598617169343" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1599157632174" />
     <state x="537" y="243" width="460" height="341" key="#com.intellij.tools.ToolEditorDialog" timestamp="1594563538090">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -480,10 +536,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="524" y="115" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1598220846980" />
-    <state x="516" y="268" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1598364850534">
+    <state x="516" y="268" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1599160118390">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="516" y="268" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824@0.0.1536.824" timestamp="1598364850534" />
+    <state x="516" y="268" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824@0.0.1536.824" timestamp="1599160118390" />
     <state width="327" height="442" key="Diff.GoToChangePopup" timestamp="1597771882495">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -508,38 +564,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="548" y="279" key="Github.CreatePullRequestDialog/0.0.1536.824@0.0.1536.824" timestamp="1592492541118" />
-    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1599056006128">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1599161005902">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599056006128" />
-    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1599056006128">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599161005902" />
+    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1599161005901">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599056006128" />
-    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1599056006128">
+    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599161005901" />
+    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1599161005901">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599056006128" />
-    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1599056006128">
+    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599161005901" />
+    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1599161005902">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599056006128" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1598720622763">
+    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599161005902" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1599160318149">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598720622763" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1598720622763">
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599160318149" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1599160318148">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1598720622763" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1598720622763">
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1599160318148" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1599160318148">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1598720622763" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1598720622763">
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1599160318148" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1599160318149">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1598720622763" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1599160318149" />
     <state x="147" y="65" key="MergeDialog" timestamp="1592492644861">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -560,10 +616,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1536.824@0.0.1536.824" timestamp="1598640996933" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1597674177632">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599056142018">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1597674177632" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599056142018" />
     <state x="433" y="141" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1592491160497">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -572,14 +628,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1597768677822" />
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.RecentChangeDialog" timestamp="1598712616773">
+    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.RecentChangeDialog" timestamp="1599158936862">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.RecentChangeDialog/0.0.1536.824@0.0.1536.824" timestamp="1598712616773" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1599052775267">
+    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.RecentChangeDialog/0.0.1536.824@0.0.1536.824" timestamp="1599158936862" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1599150778701">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1599052775267" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1599150778701" />
     <state x="408" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595004080774">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -636,21 +692,5 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599055273109" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Player.cpp</url>
-          <line>84</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/StateMainMenu.cpp</url>
-          <line>129</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -57,9 +57,6 @@ void Player::move(){
 
 void Player::fight(NPC* enemy) {
     if(enemy != nullptr && enemy->getIfIsFightable()){
-#ifdef DEBUG
-        std::cout<<"In battle range, "<<enemy->getName()<<" is ready to fight"<<std::endl;
-#endif
         Battle::setTrainer(enemy);
         Game::getInstance()->changeState(GameState::STATE_BATTLE);
     }
@@ -68,9 +65,6 @@ void Player::fight(NPC* enemy) {
 bool Player::catchPokemon(Pokemon* pokemon) {
         if(Dice::random(10) != 0){
             team.push_back(pokemon);
-#ifdef DEBUG
-            std::cout<<pokemon->getName()<<" is now in your team "<<std::endl;
-#endif
             return true;
         }else return false;
 }

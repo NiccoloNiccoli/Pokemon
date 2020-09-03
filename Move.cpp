@@ -6,7 +6,7 @@
 #include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Move.h"
-#include "Game.h"
+
 
 Move::Move(const std::string& moveName) {
     try {
@@ -17,11 +17,6 @@ Move::Move(const std::string& moveName) {
             file >> power >> healingPercentage >> nUsage >> tmpType_string >> accuracy;
             Type tmpType(tmpType_string);
             type = tmpType;
-#ifdef DEBUG
-            std::cout << name << " Power: " << power << " Healing percentage: " << healingPercentage
-                      << " Number of usage: " << nUsage <<
-                      " Type: " << type.getTypeName() << " Accuracy: " << accuracy << std::endl;
-#endif
             maxUses = nUsage;
         }else{
             throw std::runtime_error("Unable to open: ../Pokemons/Moves/"+moveName+".txt");

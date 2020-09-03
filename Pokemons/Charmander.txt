@@ -1,1 +1,0 @@
-004 Charmander 39 52 43 65 fire NULL 16 Charizard flamethrower hydro_pump quick_attack thunder

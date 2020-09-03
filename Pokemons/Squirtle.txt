@@ -1,1 +1,0 @@
-007 Squirtle 44 48 65 43 water NULL 16 Warturtle hydro_pump quick_attack flamethrower thunder

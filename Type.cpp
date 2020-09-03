@@ -22,21 +22,13 @@ Type::Type(const std::string& type) {
             }
             strongAgainst.push_back(currentType);
         }
-        for(int i = 0; i < nWeaknesses; i++){
+        for(int i = 0; i < nWeaknesses; i++) {
             file >> currentType;
-            for (auto &c : currentType){
+            for (auto &c : currentType) {
                 c = toupper(c);
             }
             weakAgainst.push_back(currentType);
         }
-#ifdef DEBUG
-        std::cout << typeName << " is strong against: ";
-        for(auto i:strongAgainst)
-            std::cout << i << " ";
-        std::cout << "and weak against: ";
-        for(auto i:weakAgainst)
-            std::cout << i << " ";
-#endif
     }else{
         throw std::runtime_error("Unable to open: ../Pokemons/Types/" + type + ".txt");
     }

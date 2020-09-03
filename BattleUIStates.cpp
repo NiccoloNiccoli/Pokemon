@@ -900,10 +900,7 @@ BattleUI_UpdateExpBar::BattleUI_UpdateExpBar(Battle *_battle) {
     battle->changeFeedbackSentence();
     lvlInc = battle->getLevelInc();
     oldExpGained = battle->playersEXPBar.getSize().x;
-    std::cout<<oldExpGained<<std::endl;
     expGained = 64 * battle->getScalingFactor() * battle->getExpGained()/((pow(Game::getInstance()->player.team[0]->getLevel(),3) * 4/5));
-            std::cout<<battle->getExpGained()<<std::endl;
-            std::cout<<expGained<<std::endl;
     Game::getInstance()->player.team[0]->setPosition(position.x, position.y);
     Game::resetTimer();
 }

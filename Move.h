@@ -8,7 +8,7 @@
 
 #include <string>
 #include "Type.h"
-#include "debug.h"
+
 #include "AnimatedSprite.h"
 
 class Move {

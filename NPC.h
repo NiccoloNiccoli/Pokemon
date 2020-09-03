@@ -5,7 +5,7 @@
 #ifndef POKEMON_NPC_H
 #define POKEMON_NPC_H
 
-
+#include <SFML/Audio.hpp>
 #include "Trainer.h"
 class Action;
 class NPC : public Trainer{
@@ -13,7 +13,7 @@ public:
     NPC(int id, int x, int y,bool canFight = true);
     void doAction();
 
-    bool getIfIsFightable() const;
+    bool getIfIsFightable();
     void resetIsFightable();
     void nextAction();
     void hasBeenDefeated();
@@ -22,6 +22,8 @@ private:
     bool isFightable = true;
     Action* action = nullptr;
     sf::Texture inBattleSpriteTexture;
+    sf::SoundBuffer buffer;
+    sf::Sound defeatedSound;
 
 };
 

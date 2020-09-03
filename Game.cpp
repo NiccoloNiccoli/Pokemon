@@ -12,13 +12,12 @@
 #include "StatePokemonCenter.h"
 #include "StateBattle.h"
 #include "StateMainMenu.h"
-#include "debug.h"
+
 
 sf::Clock Game::timer;
 Game* Game::instance = nullptr;
 
 Game::Game() {
-
     battle = new Battle();
     currentState = new StateMainMenu(this);
     remove("../Saves/tmp.txt");//remove tmp file from previous session
@@ -100,9 +99,6 @@ void Game::save() {
         }
         saveFile << map.getName()<<" ";
         saveFile << previousSessionsPlayTime + playTime.getElapsedTime().asSeconds();
-#ifdef DEBUG
-    std::cout<<"Saved!"<<std::endl;
-#endif
     }
     std::string tmpNpcFile("../Saves/tmp.txt");
     std::ifstream tmpNpcList(tmpNpcFile);

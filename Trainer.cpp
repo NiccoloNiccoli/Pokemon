@@ -2,11 +2,11 @@
 // Created by Niccolò Niccoli on 19/06/2020.
 //
 
-#include "Trainer.h"
-#include "Battle.h"
+
 #include <SFML/Window.hpp>
 #include <iostream>
 #include <fstream>
+#include "Trainer.h"
 
 Trainer::Trainer(int ID, int x, int y) {
     try {
@@ -48,9 +48,6 @@ int Trainer::winMoney(Trainer* opponent){
         prize = static_cast<int>(opponent->money * 0.1);
         opponent->money -= prize;
         money += prize;
-#ifdef DEBUG
-        std::cout<<name<<" ha vinto "<<prize<<std::endl;
-#endif
     }
     return prize;
 }
@@ -75,10 +72,6 @@ void Trainer::setMoney(int _money) {
     Trainer::money = _money;
 }
 
-void Trainer::setPosition(int x, int y) {
-    overworldSprite.setPosition(x,y);
-}
-
 void Trainer::setState(int _state) {
     Trainer::state = _state;
 }
@@ -86,9 +79,6 @@ void Trainer::setState(int _state) {
 void Trainer::healTeam() {
     for(int i = 0;i < team.size(); i++)
         team[i]->heal();
-#ifdef DEBUG
-    std::cout<<"team healed!"<<std::endl;
-#endif
 }
 
 sf::Vector2f Trainer::getPosition() const {
@@ -121,9 +111,5 @@ void Trainer::setInBattleSpritePosition(sf::Vector2f position) {
 
 sf::Rect<float> Trainer::getInBattleSpriteGlobalBounds() {
     return inBattleSprite.getGlobalBounds();
-}
-
-sf::Vector2f Trainer::getInBattleSpritePosition() {
-    return inBattleSprite.getPosition();
 }
 

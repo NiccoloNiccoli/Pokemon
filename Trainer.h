@@ -6,14 +6,12 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "Pokemon.h"
-#include "debug.h"
 #include "AnimatedSprite.h"
 
 class Trainer {
 public:
     Trainer(int ID, int x, int y);
-    void setPosition(int x, int y);
-    int winMoney(Trainer* opponent); //Print how much money you've won
+    int winMoney(Trainer* opponent);
     const std::string &getName() const;
     void draw(sf::RenderWindow& window, int row = 0);
     int getState() const;
@@ -29,7 +27,6 @@ public:
     void drawInBattleSprite(sf::RenderWindow& window, int frequency, int row);
     void setInBattleSpritePosition(sf::Vector2f position);
     sf::Rect<float>getInBattleSpriteGlobalBounds();
-    sf::Vector2f getInBattleSpritePosition();
     std::vector<Pokemon*> team;
 
 protected:

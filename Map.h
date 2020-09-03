@@ -11,7 +11,6 @@
 #include "Tile.h"
 #include "Trainer.h"
 #include "Player.h"
-#include "debug.h"
 #include "NPC.h"
 
 class Map : public sf::Drawable, public sf::Transformable {

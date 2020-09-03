@@ -7,7 +7,6 @@
 
 
 #include "Trainer.h"
-#include "debug.h"
 #include "NPC.h"
 
 class Player : public Trainer {
