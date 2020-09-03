@@ -2,8 +2,6 @@
 // Created by Niccolò Niccoli on 22/06/2020.
 //
 
-//Textures are 256x256 px
-
 #include <fstream>
 #include <iostream>
 #include <exception>
