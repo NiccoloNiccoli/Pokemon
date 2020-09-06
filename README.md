@@ -2,6 +2,7 @@
 	
 ## Introduction
 This is a small pokemon clone game I made for a school project.
+
 Currently I have no intentions to develop it further.
 	
 	
