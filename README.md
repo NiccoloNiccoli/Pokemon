@@ -3,7 +3,7 @@
 ## Introduction
 This is a small pokemon clone game I made for a school project.
 
-Currently I have no intentions to develop it further.
+Currently I have no intention to develop it further.
 	
 	
 ## What can you do?
