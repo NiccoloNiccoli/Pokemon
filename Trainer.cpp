@@ -13,17 +13,20 @@ Trainer::Trainer(int ID, int x, int y) {
         id = ID;
         std::ifstream trainerData("../Trainers/" + std::to_string(id) + ".txt");
         if (trainerData.is_open()) {
-            trainerData >> name >> spriteName;
-            int max;
-            trainerData >> max;
-
-            for (int i = 0; i < max; i++) {
-                std::string pokemonName;
-                int level;
-                trainerData >> pokemonName >> level;
+            std::string token;
+            std::getline(trainerData, name, ',');
+            std::getline(trainerData, spriteName, ',');
+            std::getline(trainerData, token, ',');
+            int teamSize = std::stoi(token);
+            for (int i = 0; i < teamSize; i++) {
+                std::getline(trainerData, token, ',');
+                std::string pokemonName = token;
+                std::getline(trainerData, token, ',');
+                int level = std::stoi(token);
                 team.emplace_back(new Pokemon(pokemonName, level));
             }
-            trainerData >> money;
+            std::getline(trainerData, token, ',');
+            money = std::stoi(token);
         } else {
             throw std::runtime_error("Unable to open: ../Trainers/" + std::to_string(id) + ".txt");
         }

@@ -1,1 +1,1 @@
-Megan girl.png 1 Pikachu 35 1000
+Megan,girl.png,1,Pikachu,35,1000
