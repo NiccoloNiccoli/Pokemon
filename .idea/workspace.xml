@@ -19,159 +19,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Fixed some small things">
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeCache.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeRCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdC/a.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdCXX/a.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Makefile2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/main.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/objects.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/cmake.check_cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/AnimatedSprite.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Battle.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/BattleUIStates.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Dice.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Game.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Map.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Move.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/NPC.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Player.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Pokemon.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StateBattle.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StateMainMenu.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StateMap.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StatePauseMenu.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StatePokemonCenter.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Tile.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Trainer.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Type.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/CMakeFiles/runAllTests.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/Google_tests.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/gmock_main.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googlemock/gmock.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest-distribution.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets-release.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/gtest_main.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/generated/GTestConfig.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/generated/GTestConfigVersion.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/generated/gmock.pc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/generated/gmock_main.pc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/generated/gtest.pc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/generated/gtest_main.pc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Google_tests/lib/googletest/gtest.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Pokemon.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/Pokemon.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-release/libcore.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maps/ROUTE_01/npclist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Maps/ROUTE_01/npclist.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainers/0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Trainers/0.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainers/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Trainers/1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainers/2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Trainers/2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainers/3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Trainers/3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainers/4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Trainers/4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdC/a.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdC/a.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdCXX/a.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.15.3/CompilerIdCXX/a.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/CXX.includecache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/main.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/Pokemon.dir/objects.a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/clion-log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/AnimatedSprite.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Battle.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/BattleUIStates.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/CXX.includecache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Dice.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Game.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Map.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Move.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/NPC.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Player.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Pokemon.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StateBattle.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StateMainMenu.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StateMap.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StatePauseMenu.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/StatePokemonCenter.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Tile.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Trainer.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/Type.cpp.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/core.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/Pokemon.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/libcore.a" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -400,7 +281,7 @@
       <workItem from="1599227598462" duration="10063000" />
       <workItem from="1599410156152" duration="1359000" />
       <workItem from="1599475213923" duration="2226000" />
-      <workItem from="1599487623540" duration="1548000" />
+      <workItem from="1599487623540" duration="1796000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed collisions">
       <created>1592491206629</created>
@@ -563,7 +444,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599476917505</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Fixed some small things">
+      <created>1599489192990</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1599489192990</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -728,10 +616,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="474" y="128" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1594818399383" />
-    <state x="556" y="134" key="RollbackChangesDialog" timestamp="1592491399155">
+    <state x="556" y="134" key="RollbackChangesDialog" timestamp="1599489415951">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="556" y="134" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592491399155" />
+    <state x="556" y="134" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1599489415951" />
     <state x="277" y="55" width="1007" height="714" key="SettingsEditor" timestamp="1599488550684">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -740,10 +628,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1536.824@0.0.1536.824" timestamp="1598640996933" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599478803529">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599489446274">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599478803529" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599489446274" />
     <state x="433" y="141" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1592491160497">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
