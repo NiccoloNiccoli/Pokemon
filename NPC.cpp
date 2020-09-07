@@ -59,7 +59,7 @@ void NPC::hasBeenDefeated() {
     isFightable = false;
     std::ofstream tmp("../Saves/tmp.txt", std::ios::app);
     if(tmp.is_open()){
-        tmp << Game::getInstance()->map.getName() << " " << id << "\n";
+        tmp << Game::getInstance()->map.getName() << "," << id << "\n";
     }
     tmp.close();
     nextAction();

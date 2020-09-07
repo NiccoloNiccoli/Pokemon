@@ -212,16 +212,17 @@ void StateMainMenu::handleInput(sf::Event event, sf::RenderWindow &window) {
 void StateMainMenu::loadInfo() {
         std::ifstream saveFile("../Saves/saves.txt");
         if (saveFile.is_open()) {
-            std::string _playersName, pokemonsName, mapName;
-            int money, teamSize, hpCurrent, lvl, xpos, ypos;
-            float time;
-            saveFile >> _playersName >> xpos >> ypos >> money >> teamSize;
-            for (int i = 0; i < teamSize; i++)
-                saveFile >> pokemonsName >> hpCurrent >> lvl;
-            saveFile >> mapName >> time;
+            std::string _playersName, skip, time;
+            std::getline(saveFile, _playersName, ',');
+            for(int i = 0; i < 4 ; i++)
+                std::getline(saveFile, skip, ',');
+            int teamSize = std::stoi(skip);
+            for(int i = 0; i < 8 * teamSize + 1; i++)
+                std::getline(saveFile, skip, ',');
+            std::getline(saveFile, time, ',');
             playersName.setString(_playersName);
-            int hours = static_cast<int>(time)/3600;
-            int minutes = (static_cast<int>(time) - hours)/60;
+            int hours = static_cast<int>(std::stof(time))/3600;
+            int minutes = (static_cast<int>(std::stof(time)) - hours)/60;
             playTime.setString(std::to_string(hours) + ":" + std::to_string(minutes));
     }
 }
@@ -234,14 +235,14 @@ void StateMainMenu::initializeNPCList() {
     std::ofstream npc_ROUTE01("../Maps/ROUTE_01/npclist.txt", std::ios::trunc);
     if(npc_ROUTE01.is_open()){
         //id - x - y - isFightable
-        npc_ROUTE01 << 1 << " " << 390 << " " << 140 << " true\n";
-        npc_ROUTE01 << 2 << " " << 144 << " " << 30 << " true\n";
-        npc_ROUTE01 << 3 << " " << 200 << " " << 150 << " true\n";
+        npc_ROUTE01 << 1 << "," << 390 << "," << 140 << ",true\n";
+        npc_ROUTE01 << 2 << "," << 144 << "," << 30 << ",true\n";
+        npc_ROUTE01 << 3 << "," << 200 << "," << 150 << ",true\n";
     }
     npc_ROUTE01.close();
     std::ofstream npc_POKEMONCENTER("../Maps/POKEMON_CENTER/npclist.txt", std::ios::trunc);
     if(npc_POKEMONCENTER.is_open()){
-        npc_POKEMONCENTER << 4 << " " << 206 << " " << 47<<" false\n";
+        npc_POKEMONCENTER << 4 << "," << 206 << "," << 47<<",false\n";
     }
     npc_POKEMONCENTER.close();
 }

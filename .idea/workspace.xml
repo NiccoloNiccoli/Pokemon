@@ -2,22 +2,34 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="Pokemon" targetName="gtest_main" />
-      <config projectName="Pokemon" targetName="core" />
       <config projectName="Pokemon" targetName="gmock" />
+      <config projectName="Pokemon" targetName="gmock_main" />
       <config projectName="Pokemon" targetName="runAllTests" />
+      <config projectName="Pokemon" targetName="gtest_main" />
       <config projectName="Pokemon" targetName="Pokemon" />
       <config projectName="Pokemon" targetName="gtest" />
-      <config projectName="Pokemon" targetName="gmock_main" />
+      <config projectName="Pokemon" targetName="core" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Release" CONFIG_NAME="Release" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Removed some unused files and added some sound effects" />
+    <list default="true" id="59aa0371-5de3-4f71-818b-0aa4a073ccd0" name="Default Changelist" comment="Removed some unused files and added some sound effects">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Google_tests/test1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Google_tests/test1.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Map.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Maps/POKEMON_CENTER/npclist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Maps/POKEMON_CENTER/npclist.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Maps/ROUTE_01/npclist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Maps/ROUTE_01/npclist.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NPC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/NPC.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Saves/tmp.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateMainMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/StateMainMenu.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,9 +81,6 @@
       </set>
     </option>
   </component>
-  <component name="OCResolveContextSettings">
-    <option name="configuration" value="0-Debug-core" />
-  </component>
   <component name="ProjectId" id="1cB9vGcfaZG0KPx6AMQsWptx9JW" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -89,7 +98,7 @@
     <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Google_tests" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="dynamic.analysis.tools.valgrind" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -99,7 +108,7 @@
       <recent name="C:\Users\super\CLionProjects\Pokemon_cloned\Maps\ROUTE01" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.Pokemon">
+  <component name="RunManager" selected="Google Test.All in runAllTests">
     <configuration name="All in runAllTests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" nameIsGenerated="true" WORKING_DIR="file://$PROJECT_DIR$/cmake-build-debug" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pokemon" TARGET_NAME="runAllTests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pokemon" RUN_TARGET_NAME="runAllTests" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -148,14 +157,14 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Google Test.All in runAllTests" />
-      <item itemvalue="CMake Application.Pokemon" />
       <item itemvalue="CMake Application.core" />
+      <item itemvalue="CMake Application.Pokemon" />
+      <item itemvalue="CMake Application.runAllTests" />
       <item itemvalue="CMake Application.gmock" />
       <item itemvalue="CMake Application.gmock_main" />
       <item itemvalue="CMake Application.gtest" />
       <item itemvalue="CMake Application.gtest_main" />
-      <item itemvalue="CMake Application.runAllTests" />
+      <item itemvalue="Google Test.All in runAllTests" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -243,6 +252,11 @@
       <workItem from="1599052774037" duration="3333000" />
       <workItem from="1599140892567" duration="4695000" />
       <workItem from="1599150770216" duration="9046000" />
+      <workItem from="1599161947889" duration="342000" />
+      <workItem from="1599226570561" duration="994000" />
+      <workItem from="1599227598462" duration="10063000" />
+      <workItem from="1599410156152" duration="1359000" />
+      <workItem from="1599475213923" duration="715000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed collisions">
       <created>1592491206629</created>
@@ -391,7 +405,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599161437784</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Removed some unused files and added some sound effects">
+      <created>1599162022473</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1599162022473</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -440,14 +461,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="71" key="#Inspections/0.0.1536.824@0.0.1536.824" timestamp="1597847281833" />
-    <state x="361" y="71" key="#Notifications" timestamp="1594818239885">
+    <state x="361" y="71" key="#Notifications" timestamp="1599228051010">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="71" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1594818239885" />
-    <state x="365" y="124" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598452907906">
+    <state x="361" y="71" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1599228051010" />
+    <state x="365" y="124" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599410188904">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="365" y="124" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1598452907906" />
+    <state x="365" y="124" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1599410188904" />
     <state x="451" y="117" key="#com.intellij.featureStatistics.actions.ShowFeatureUsageStatisticsDialog" timestamp="1597511412846">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -516,22 +537,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="548" y="279" key="Github.CreatePullRequestDialog/0.0.1536.824@0.0.1536.824" timestamp="1592492541118" />
-    <state width="1493" height="261" key="GridCell.Tab.0.bottom" timestamp="1599161929244">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom" timestamp="1599240157157">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599161929244" />
-    <state width="1493" height="261" key="GridCell.Tab.0.center" timestamp="1599161929244">
+    <state width="1493" height="233" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599240157157" />
+    <state width="1493" height="233" key="GridCell.Tab.0.center" timestamp="1599240157157">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599161929244" />
-    <state width="1493" height="261" key="GridCell.Tab.0.left" timestamp="1599161929244">
+    <state width="1493" height="233" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599240157157" />
+    <state width="1493" height="233" key="GridCell.Tab.0.left" timestamp="1599240157157">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599161929244" />
-    <state width="1493" height="261" key="GridCell.Tab.0.right" timestamp="1599161929244">
+    <state width="1493" height="233" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599240157157" />
+    <state width="1493" height="233" key="GridCell.Tab.0.right" timestamp="1599240157157">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599161929244" />
+    <state width="1493" height="233" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599240157157" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1599161929245">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -560,18 +581,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="556" y="134" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592491399155" />
-    <state x="277" y="55" width="1007" height="714" key="SettingsEditor" timestamp="1598359096945">
+    <state x="277" y="55" width="1007" height="714" key="SettingsEditor" timestamp="1599410306859">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="277" y="55" width="1007" height="714" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1598359096945" />
+    <state x="277" y="55" width="1007" height="714" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599410306859" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1598640996933">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1536.824@0.0.1536.824" timestamp="1598640996933" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599161544905">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1599162266098">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599161544905" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1599162266098" />
     <state x="433" y="141" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1592491160497">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -584,10 +605,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.RecentChangeDialog/0.0.1536.824@0.0.1536.824" timestamp="1599158936862" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1599161974962">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1599475294614">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1599161974962" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1599475294614" />
     <state x="408" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595004080774">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

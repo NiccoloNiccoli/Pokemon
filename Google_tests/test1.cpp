@@ -5,6 +5,8 @@
 #include "../Pokemon.h"
 #include "SFML/Graphics.hpp"
 #include "tools.h"
+#include "../Player.h"
+
 TEST(PokemonTest, Stats) {
     Pokemon pikachu1("pikachu",1);
     Pokemon pikachu2("pikachu",100);
@@ -97,4 +99,17 @@ TEST(PokemonTest, DamageDoneByEveryMove){
     doDamage(50,50,85,30,80,1,1,damageMax,damageMin);
     realDamage = blastoise50.doMove(&shadowBall, pikachu50);
     ASSERT_TRUE(realDamage <= damageMax && realDamage >= damageMin);
+}
+TEST(PokemonTest, catchPokemon){
+    Pokemon pikachu50("pikachu",50);
+    Player player = Player(0,0,0,"Test");
+    //when I create the player, he has only one pokemon
+    ASSERT_EQ(player.team.size(),1);
+    //then I catch "pikachu50"
+    player.catchPokemon(&pikachu50);
+    //so his second pokemon must be it
+    ASSERT_EQ(player.team.size(),2);
+    ASSERT_EQ(player.team[1]->getName(), pikachu50.getName());
+    ASSERT_EQ(player.team[1]->getLevel(), pikachu50.getLevel());
+    ASSERT_EQ(player.team[1]->getCurrentHp(), pikachu50.getCurrentHp());
 }

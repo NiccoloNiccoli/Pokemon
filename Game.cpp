@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
+#include <sstream>
 #include "Game.h"
 #include "StateMap.h"
 #include "StatePokemonCenter.h"
@@ -88,27 +89,29 @@ void Game::save() {
     //ci scrivo nome, team, dove mi trovo e da quanto tempo sto giocando
     std::ofstream saveFile("../Saves/saves.txt", std::ios::trunc);
     if(saveFile.is_open()){
-        saveFile << player.getName()<<" ";
-        saveFile << player.getPosition().x << " " << player.getPosition().y<<" ";
-        saveFile << player.getMoney()<<" ";
-        saveFile << player.team.size()<<" ";
+        saveFile << player.getName()<<",";
+        saveFile << player.getPosition().x << "," << player.getPosition().y<<",";
+        saveFile << player.getMoney()<<",";
+        saveFile << player.team.size()<<",";
         for (auto i : player.team){
-            saveFile << i->getName() << " " << i->getCurrentHp() << " " <<  i->getLevel()<<" " << i->getExpToNextLevel()<<" ";
+            saveFile << i->getName() << "," << i->getCurrentHp() << "," <<  i->getLevel()<<"," << i->getExpToNextLevel()<<",";
             for (int j = 0; j < 4; j++)
-                saveFile << i->getMoves(j)->getNUsage() << " ";
+                saveFile << i->getMoves(j)->getNUsage() << ",";
         }
-        saveFile << map.getName()<<" ";
+        saveFile << map.getName()<<",";
         saveFile << previousSessionsPlayTime + playTime.getElapsedTime().asSeconds();
     }
     std::string tmpNpcFile("../Saves/tmp.txt");
     std::ifstream tmpNpcList(tmpNpcFile);
 
     if(tmpNpcList.is_open()){
-        std::string mapName;
-        int id;
         std::multimap<std::string, int> table;
-        while(tmpNpcList >> mapName >> id){
-            table.emplace(mapName,id);
+        std::string line, mapName, id;
+        while(std::getline(tmpNpcList,line)){
+            std::stringstream ss(line);
+            std::getline(ss, mapName, ',');
+            std::getline(ss, id, ',');
+            table.emplace(mapName,std::stoi(id));
         }
         for (const auto& i : table) {
             std::string oldNpcFile("../Maps/" + i.first + "/npclist.txt");
@@ -116,14 +119,18 @@ void Game::save() {
             std::string newNpcFile("../Maps/" + i.first + "/tmpnpclist.txt");
             std::ofstream newNpcList(newNpcFile);
             if (oldNpcList.is_open()) {
-                int _id, _x, _y;
-                std::string _state;
-                while (oldNpcList >> _id >> _x >> _y >> _state) {
+                std::string _id, _x, _y, _state, line2;
+                while (std::getline(oldNpcList, line2)) {
+                    std::stringstream ss(line2);
+                    std::getline(ss, _id, ',');
+                    std::getline(ss, _x, ',');
+                    std::getline(ss, _y, ',');
+                    std::getline(ss, _state, ',');
                     for (auto j : table) {
-                        if (_id == i.second)
+                        if (std::stoi(_id) == i.second)
                             _state = "false";
                     }
-                    newNpcList << _id << " " << _x << " " << _y << " " << _state << "\n";
+                    newNpcList << _id << "," << _x << "," << _y << "," << _state << "\n";
                 }
             }
             oldNpcList.close();
@@ -147,29 +154,36 @@ void Game::load() {
     if(doesSaveFileExists()) {
         std::ifstream saveFile("../Saves/saves.txt");
         if (saveFile.is_open()) {
-            std::string playersName, pokemonsName, mapName;
-            int money, teamSize, hpCurrent, lvl, xpos, ypos, usesLeft,xp;
-            float playtime;
-            saveFile >> playersName >> xpos >> ypos >> money >> teamSize;
+            std::string playersName, pokemonsName, mapName, xpos, ypos, money,_teamSize, hpCurrent, lvl, usesLeft,xp,playtime;
+            std::getline(saveFile, playersName, ',');
+            std::getline(saveFile, xpos, ',');
+            std::getline(saveFile, ypos, ',');
+            std::getline(saveFile, money, ',');
+            std::getline(saveFile, _teamSize, ',');
             player.setName(playersName);
-            player.setPosition(sf::Vector2f(xpos, ypos));
-            player.setMoney(money);
+            player.setPosition(sf::Vector2f(std::stoi(xpos),std::stoi(ypos)));
+            player.setMoney(std::stoi(money));
             player.team.clear();
             Pokemon **playersPokemon;
+            int teamSize = std::stoi(_teamSize);
             playersPokemon = new Pokemon *[teamSize];
             for (int i = 0; i < teamSize; i++) {
-                saveFile >> pokemonsName >> hpCurrent >> lvl >> xp;
-                playersPokemon[i] = new Pokemon(pokemonsName, lvl);
-                playersPokemon[i]->loseHp(playersPokemon[i]->getMaxHp() - hpCurrent);
-                playersPokemon[i]->setExpToNextLevel(xp);
+                std::getline(saveFile, pokemonsName, ',');
+                std::getline(saveFile, hpCurrent, ',');
+                std::getline(saveFile, lvl, ',');
+                std::getline(saveFile, xp, ',');
+                playersPokemon[i] = new Pokemon(pokemonsName, std::stoi(lvl));
+                playersPokemon[i]->loseHp(playersPokemon[i]->getMaxHp() - std::stoi(hpCurrent));
+                playersPokemon[i]->setExpToNextLevel(std::stoi(xp));
                 player.team.emplace_back(playersPokemon[i]);
                 for (int j = 0; j < 4; j++) {
-                    saveFile >> usesLeft;
-                    player.team[i]->getMoves(j)->setNUsage(usesLeft);
+                    std::getline(saveFile, usesLeft, ',');
+                    player.team[i]->getMoves(j)->setNUsage(std::stoi(usesLeft));
                 }
             }
-            saveFile >> mapName >> playtime;
-            previousSessionsPlayTime = playtime;
+            std::getline(saveFile, mapName, ',');
+            std::getline(saveFile, playtime, ',');
+            previousSessionsPlayTime = std::stof(playtime);
             if (mapName == "POKEMON_CENTER") {
                 changeState(GameState::STATE_POKEMON_CENTER);
                 map = Map("tileset2.png", 27, 15, mapName);

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <sstream>
 #include "Map.h"
 #include "Dice.h"
 #include "Game.h"
@@ -61,13 +62,17 @@ Map::Map(const std::string &tilesetName, unsigned int mapColumns, unsigned int m
 
         std::ifstream npclist("../Maps/" + _name + "/npclist.txt");
         if (npclist.is_open()) {
-            int id, x, y;
-            std::string isFightable;
-            while (npclist >> id >> x >> y >> isFightable) {
+            std::string line, _id, _x, _y, isFightable;
+            while (std::getline(npclist, line)) {
+                std::stringstream ss(line);
+                std::getline(ss, _id, ',');
+                std::getline(ss, _x, ',');
+                std::getline(ss, _y, ',');
+                std::getline(ss, isFightable, ',');
                 bool _isFightable = false;
                 if (isFightable == "true")
                     _isFightable = true;
-                npc.emplace_back(new NPC(id, x, y, _isFightable));
+                npc.emplace_back(new NPC(std::stoi(_id),std::stoi(_x),std::stoi(_y), _isFightable));
             }
         }else{
             throw std::runtime_error("Unable to open:../Maps/" + _name + "/npclist.txt");
